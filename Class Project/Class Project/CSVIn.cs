@@ -8,7 +8,7 @@ namespace Class_Project
     class CSVIn : IInput
     {
         private List<Ticket> storedTickets = new List<Ticket>();
-        private string rx = ", (?= (?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        private string rx = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private string fileName;
 
         public CSVIn(string fileName)

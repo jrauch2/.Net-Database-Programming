@@ -61,9 +61,16 @@ namespace Class_Project
             //        db.Tickets.Remove(item);
             //    }
 
-            IInput csvIn = new CSVIn("support_tickets.csv");
 
-            Console.WriteLine();
+
+            IInput csvIn = new CSVIn("support_tickets.csv");
+            List<Ticket> allTickets = csvIn.GetStoredTickets();
+
+            foreach (Ticket ticket in allTickets)
+            {
+                Console.WriteLine(ticket.ToString());
+            }
+            
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
