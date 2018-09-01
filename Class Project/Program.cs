@@ -11,10 +11,15 @@ namespace Class_Project
     {
         static void Main(string[] args)
         {
-            ArrayList watching = new ArrayList() { "this", "that", "another"};
+            ArrayList watching = new ArrayList();
+            watching.Add("this");
+            watching.Add("that");
+            watching.Add("another");
+
             Ticket ticket = new Ticket("1", "none", Status.OPEN, Priority.LOW, "me", "you", watching);
 
-            System.oyt
+            Console.WriteLine(ticket.ToString());
+            Console.ReadKey();
         }
     }
 }

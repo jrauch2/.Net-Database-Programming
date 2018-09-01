@@ -15,94 +15,117 @@ namespace Class_Project
 
         public Ticket(string ticketId, string summary, Status status, Priority priority, string submitter, string assigned, ArrayList watching)
         {
-            setTicketId(ticketId);
-            setSummary(summary);
-            setStatus(status);
-            setPriority(priority);
-            setSubmitter(submitter);
-            setAssigned(assigned);
-            setWatching(watching);
+            SetTicketId(ticketId);
+            SetSummary(summary);
+            SetStatus(status);
+            SetPriority(priority);
+            SetSubmitter(submitter);
+            SetAssigned(assigned);
+            SetWatching(watching);
         }
 
-        public string getTicketId()
+        public string GetTicketId()
         {
             return ticketId;
         }
 
-        private void setTicketId(string ticketId)
+        private void SetTicketId(string ticketId)
         {
             this.ticketId = ticketId;
         }
 
-        public string getSummary()
+        public string GetSummary()
         {
             return summary;
         }
 
-        private void setSummary(string summary)
+        private void SetSummary(string summary)
         {
             this.summary = summary;
         }
 
-        public Status getStatus()
+        public Status GetStatus()
         {
             return status;
         }
 
-        public void setStatus(Status status)
+        public void SetStatus(Status status)
         {
             this.status = status;
         }
 
-        public Priority getPriority()
+        public Priority GetPriority()
         {
             return priority;
         }
 
-        public void setPriority(Priority priority)
+        public void SetPriority(Priority priority)
         {
             this.priority = priority;
         }
 
-        public string getSubmitter()
+        public string GetSubmitter()
         {
             return submitter;
         }
 
-        private void setSubmitter(string submitter)
+        private void SetSubmitter(string submitter)
         {
             this.submitter = submitter;
         }
 
-        public string getAssigned()
+        public string GetAssigned()
         {
             return assigned;
         }
 
-        public void setAssigned(string assigned)
+        public void SetAssigned(string assigned)
         {
             this.assigned = assigned;
         }
 
-        public ArrayList getWatching()
+        public ArrayList GetWatching()
         {
             return watching;
         }
 
-        private void setWatching(ArrayList watching)
+        private void SetWatching(ArrayList watching)
         {
             this.watching = watching;
         }
 
-        public void appendSummary(string newSummary)
+        public void AppendSummary(string newSummary)
         {
             summary += "\n" + newSummary;
         }
 
-        public void addWatching(string watcher)
+        public void AddWatching(string watcher)
         {
             watching.Add(watcher);
         }
-    }
 
+        public string GetWatchingString()
+        {
+            string watchers = "";
+
+            for (int i = 0; i < watching.Count; i++)
+            {
+                if (i == watching.Count - 1)
+                {
+                    watchers += watching[i];
+                }
+                else
+                {
+                    watchers += watching[i] + "|";
+                }
+            }
+
+            return watchers;
+        }       
+
+        public override string ToString()
+        {
+            return ticketId + ",\"" + summary + "\"," + status + "," + priority + "," + submitter + "," + assigned + "," + GetWatchingString();
+        }
+    }
 }
