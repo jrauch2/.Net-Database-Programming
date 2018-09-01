@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections.Generic;
 
 namespace Class_Project
 {
     public class Ticket
     {
-        string ticketId;
-        string summary;
-        Status status;
-        Priority priority;
-        string submitter;
-        string assigned;
-        ArrayList watching;
+        private int ticketId;
+        private string summary;
+        private Status status;
+        private Priority priority;
+        private string submitter;
+        private string assigned;
+        private List<string> watching;
 
-        public Ticket(string ticketId, string summary, Status status, Priority priority, string submitter, string assigned, ArrayList watching)
+        public Ticket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
             SetTicketId(ticketId);
             SetSummary(summary);
@@ -24,12 +23,12 @@ namespace Class_Project
             SetWatching(watching);
         }
 
-        public string GetTicketId()
+        public int GetTicketId()
         {
             return ticketId;
         }
 
-        private void SetTicketId(string ticketId)
+        private void SetTicketId(int ticketId)
         {
             this.ticketId = ticketId;
         }
@@ -84,12 +83,12 @@ namespace Class_Project
             this.assigned = assigned;
         }
 
-        public ArrayList GetWatching()
+        public List<string> GetWatching()
         {
             return watching;
         }
 
-        private void SetWatching(ArrayList watching)
+        private void SetWatching(List<string> watching)
         {
             this.watching = watching;
         }
