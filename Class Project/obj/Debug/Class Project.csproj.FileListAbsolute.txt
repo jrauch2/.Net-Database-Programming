@@ -1,9 +1,0 @@
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\Class Project\Class Project\Class Project\obj\Debug\Class Project.csprojAssemblyReference.cache
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\Class Project\Class Project\Class Project\obj\Debug\Class Project.csproj.CoreCompileInputs.cache
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\obj\Debug\Class Project.csprojAssemblyReference.cache
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\obj\Debug\Class Project.csproj.CoreCompileInputs.cache
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\bin\Debug\Class Project.exe.config
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\bin\Debug\Class Project.exe
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\bin\Debug\Class Project.pdb
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\obj\Debug\Class Project.exe
-C:\Users\Joshua Rauch\OneDrive - Waukesha County Technical College\2018 Fall\.NET Database Programming\programs\.Net-Database-Programming\Class Project\obj\Debug\Class Project.pdb
