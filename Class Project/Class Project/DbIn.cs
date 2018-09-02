@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Database_Functions;
 using System.Linq;
+using System;
 
 namespace Class_Project
 {
@@ -15,14 +16,23 @@ namespace Class_Project
         private string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
         /// <summary>
-        /// FInd ticke tby Id.
+        /// Find ticket by Id.
         /// </summary>
         /// <param name="id">The ID of the ticket to be found</param>
         /// <returns><c>Ticket</c></returns>
         public Ticket FindId(int id)
         {
-            TicketEntity ticketEntity = db.Tickets.Find(id);
-            Ticket ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), regex);
+            Ticket ticket = null;
+            try
+            {
+                TicketEntity ticketEntity = db.Tickets.Find(id);
+                ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), regex);
+            }
+            catch (NullReferenceException)
+            {
+                //make this generic
+                Console.WriteLine("Ticket not found");
+            }
             return ticket;
         }
 

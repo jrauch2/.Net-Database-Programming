@@ -11,75 +11,15 @@ namespace Class_Project
     {
         static void Main(string[] args)
         {
+        IInput csvIn = new CSVIn("support_tickets.csv");
+        IOutput dbOut = new DbOut();
+        IInput dbIn = new DbIn();
+        
+        Ticket ticket0 = dbIn.FindId(42);
+        Console.WriteLine(ticket0.ToString());
 
-            //TicketingContext db = new TicketingContext();
-
-            //ArrayList watching = new ArrayList();
-            //watching.Add("this");
-            //watching.Add("that");
-            //watching.Add("another");
-
-            ////TicketEntity ticketEntity = new TicketEntity { TicketId = "1", Summary = "none", Status = Status.OPEN, Priority = Priority.LOW, Submitter = "me", Assigned = "you", Watching = watching };
-
-            //TicketEntity ticketEntity = new TicketEntity { TicketId = "1", Summary = "none", Submitter = "me", Assigned = "you"};
-
-            //db.Tickets.Add(ticketEntity);
-
-            //var query = from b in db.Tickets
-            //            orderby b.TicketId
-            //            select b;
-
-            //Console.WriteLine("All tickets in the database:");
-            //foreach (var item in query)
-            //{
-            //    //Console.WriteLine(item.TicketId + ",\"" + item.Summary + "\"," + item.Status + "," + item.Priority + "," + item.Submitter + "," + item.Assigned + "," + item.Watching);
-            //    Console.WriteLine(item.TicketId + ",\"" + item.Summary + "\"," + item.Submitter + "," + item.Assigned + ",");
-            //}
-
-            //Console.WriteLine("Press any key to exit...");
-            //Console.ReadKey();
-
-            //using (var db = new TicketingContext())
-            //{
-            //    Create and save a new Ticket
-            //    Console.Write("Enter a new ticket ID: ");
-            //    var ticketId = Console.ReadLine();
-
-            //    var ticketEntity = new TicketEntity { TicketId = ticketId };
-            //    db.Tickets.Add(ticketEntity);
-            //    db.SaveChanges();
-
-            //    Display all Tickets from the database
-            //    var query = from b in db.Tickets
-            //                orderby b.TicketId
-            //                select b;
-
-            //    Console.WriteLine("All tickets in the database:");
-            //    foreach (var item in query)
-            //    {
-            //        //Console.WriteLine(item.TicketId);
-            //        db.Tickets.Remove(item);
-            //    }
-
-
-
-            IInput csvIn = new CSVIn("support_tickets.csv");
-            IOutput dbOut = new DbOut();
-            IInput dbIn = new DbIn();
-            List<Ticket> allTickets = csvIn.GetStoredTickets();
-
-            foreach (Ticket ticket in allTickets)
-            {
-                Console.WriteLine(ticket.ToString());
-            }
-
-            dbOut.WriteAll(allTickets);
-            Ticket ticket0 = dbIn.FindId(1);
-            Console.WriteLine(ticket0.ToString());
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-            //}
+        Console.WriteLine("Press any key to exit...");
+        Console.ReadKey();
         }
     }
 }
