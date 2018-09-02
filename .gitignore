@@ -3,4 +3,4 @@ packages
 *.config
 *.csproj
 *.sln
-program.cs
+Program.cs
