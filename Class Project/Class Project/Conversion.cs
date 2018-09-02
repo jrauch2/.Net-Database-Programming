@@ -43,20 +43,33 @@ namespace Conversion_Class_Project
             return i;
         }
 
+        /// <summary>
+        /// Parse a <c>string</c> to a <c>Status</c>.
+        /// </summary>
+        /// <param name="statusString">The <c>string</c> to be parsed.</param>
+        /// <returns>A <c>Status</c>.</returns>
+        /// <exception cref="System.ArgumentException">Thrown when the <c>statusString</c> argument cannot be parsed into a Status.</exception>
         public static Status StringToStatus(string statusString)
         {
             Status status = Status.OPEN;
             foreach (Status s in Enum.GetValues(typeof(Status)))
             {
-                if (statusString.Equals(s.ToString()))
+                if (!statusString.Equals(s.ToString()))
                 {
-                    status = s;
+                    throw new System.ArgumentException("string argument does not match a Status.", "statusString");
                 }
+                status = s;
             }
 
             return status;
         }
 
+        /// <summary>
+        /// Parse a <c>string</c> to a <c>Priority</c>.
+        /// </summary>
+        /// <param name="priorityString">The <c>string</c> to be parsed.</param>
+        /// <returns>A <c>Priority</c>.</returns>
+        /// <exception cref="System.ArgumentException">Thrown when the <c>priorityString</c> argument cannot be parsed into a Priority.</exception>
         public static Priority StringToPriority(string priorityString)
         {
             Priority priority = Priority.LOW;
