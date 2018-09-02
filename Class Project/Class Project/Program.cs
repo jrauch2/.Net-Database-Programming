@@ -65,6 +65,7 @@ namespace Class_Project
 
             IInput csvIn = new CSVIn("support_tickets.csv");
             IOutput dbOut = new DbOut();
+            IInput dbIn = new DbIn();
             List<Ticket> allTickets = csvIn.GetStoredTickets();
 
             foreach (Ticket ticket in allTickets)
@@ -73,8 +74,8 @@ namespace Class_Project
             }
 
             dbOut.WriteAll(allTickets);
-
-             
+            Ticket ticket0 = dbIn.FindId(1);
+            Console.WriteLine(ticket0.ToString());
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();

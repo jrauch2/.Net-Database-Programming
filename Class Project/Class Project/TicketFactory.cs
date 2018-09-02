@@ -128,6 +128,11 @@ namespace Class_Project
 
             List<string> watching = new List<string>(subs[6].Split('|'));
 
+            for (int i = 0; i < subs.Length; i++)
+            {
+                subs[i] = subs[i].Replace("\"", "");
+            }
+
             Ticket ticket = new Ticket(Conversion.StringToInt(subs[0]), subs[1], Conversion.StringToStatus(subs[2]), Conversion.StringToPriority(subs[3]), subs[4], subs[5], watching);
 
             return ticket;

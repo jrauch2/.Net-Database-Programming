@@ -15,10 +15,10 @@ namespace Class_Project
         private string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
         /// <summary>
-        /// 
+        /// FInd ticke tby Id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The ID of the ticket to be found</param>
+        /// <returns><c>Ticket</c></returns>
         public Ticket FindId(int id)
         {
             TicketEntity ticketEntity = db.Tickets.Find(id);

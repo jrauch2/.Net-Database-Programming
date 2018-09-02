@@ -56,11 +56,9 @@ namespace Conversion_Class_Project
             {
                 if (!statusString.Equals(s.ToString()))
                 {
-                    throw new System.ArgumentException("string argument does not match a Status.", "statusString");
-                }
-                status = s;
+                    status = s;
+                }   
             }
-
             return status;
         }
 
@@ -80,7 +78,6 @@ namespace Conversion_Class_Project
                     priority = p;
                 }
             }
-
             return priority;
         }
     }

@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database_Functions
 {
     [Table("Tickets")]
     public class TicketEntity
     {
+        [Key]
         public int TicketId { get; set; }
         public string Summary { get; set; }
         public string Status { get; set; }
