@@ -34,23 +34,6 @@ namespace Conversion_Class_Project
         }
 
         /// <summary>
-        /// Parses a formatted <c>string</c> into a <c>Ticket</c> object.
-        /// </summary>
-        /// <param name="ticketString">THe formatted <c>string</c> to be parsed.</param>
-        /// <param name="regex">The regular expression needed to parse the formatted <c></c>string</c>, as a <c>string</c>.</param>
-        /// <returns>A <c>Ticket</c> object, parsed from a formatted <c>string</c>.</returns>
-        public static Ticket StringToTicket(string ticketString, string regex)
-        {
-            string[] subs = Regex.Split(ticketString, regex);
-
-            List<string> watching = new List<string>(subs[6].Split('|'));
-
-            Ticket ticket = new Ticket(StringToInt(subs[0]), subs[1], StringToStatus(subs[2]), StringToPriority(subs[3]), subs[4], subs[5], watching);
-
-            return ticket;
-        }
-
-        /// <summary>
         /// Parse a <c>string</c> to an <c>int</c>. 
         /// </summary>
         /// <param name="s">The <c>string</c> to be parsed into and <c>int</c>.</param>
