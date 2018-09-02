@@ -4,12 +4,21 @@ using System.IO;
 
 namespace Class_Project
 {
+    /// <summary>
+    /// The <c>CSVIn</c> class.
+    /// Implements the <c>IInput</c> interface.
+    /// </summary>
     class CSVIn : IInput
     {
         private List<Ticket> storedTickets = new List<Ticket>();
-        private string rx = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        private string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private string fileName;
 
+        /// <summary>
+        /// Constructor for <c>CSVIn</c>.
+        /// Requires the name of the file to be opened as an argument.
+        /// </summary>
+        /// <param name="fileName">The name of the file to be opened.</param>
         public CSVIn(string fileName)
         {
             SetFileName(fileName);
@@ -18,20 +27,33 @@ namespace Class_Project
             while (!file.EndOfStream)
             {
                 string line = file.ReadLine();
-                storedTickets.Add(TicketFactory.StringToTicket(line, rx));
+                storedTickets.Add(TicketFactory.StringToTicket(line, regex));
             }
         }
 
+
+        /// <summary>
+        /// Set <c>fileName</c>.
+        /// </summary>
+        /// <param name="fileName">The name of the file to be opened.</param>
         private void SetFileName(string fileName)
         {
             this.fileName = fileName;
         }
 
+        /// <summary>
+        /// Get a <c>List<Ticket></c> of stored tickets.
+        /// </summary>
+        /// <returns>A <c>List<Ticket></c></returns>
         public List<Ticket> GetStoredTickets()
         {
             return storedTickets;
         }
                 
+        /// <summary>
+        /// Get the highest ID stored.
+        /// </summary>
+        /// <returns><c>int</c> of the highest ID stored.</returns>
         public int GetMaxID()
         {
             int maxId = 0;
@@ -45,7 +67,11 @@ namespace Class_Project
             }
             return maxId;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Ticket findId(int id)
         {
             //TODO
