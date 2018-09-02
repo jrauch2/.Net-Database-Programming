@@ -70,7 +70,8 @@ namespace Class_Project
             {
                 Console.WriteLine(ticket.ToString());
             }
-            
+
+            IOutput dbOut = new DbOut();
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
