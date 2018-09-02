@@ -33,7 +33,7 @@ namespace Class_Project
             }
         
             //Test ToString on null
-            //Fix parse of enums
+            
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
