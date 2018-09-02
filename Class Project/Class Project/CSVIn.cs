@@ -73,7 +73,7 @@ namespace Class_Project
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Ticket findId(int id)
+        public Ticket FindId(int id)
         {
             //TODO
             throw new NotImplementedException();

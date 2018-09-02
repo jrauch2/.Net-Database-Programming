@@ -27,6 +27,6 @@ namespace Class_Project
         /// </summary>
         /// <param name="id">The id of the desired <c>Ticket</c> as an <c></c>int</c>.</param>
         /// <returns>The desired <c>Ticket</c>, if found.</returns>
-        Ticket findId(int id);
+        Ticket FindId(int id);
     }
 }

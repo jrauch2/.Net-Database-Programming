@@ -74,7 +74,7 @@ namespace Class_Project
 
             dbOut.WriteAll(allTickets);
 
-            DbIn dbIn = 
+             
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
