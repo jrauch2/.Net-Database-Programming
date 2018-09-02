@@ -31,9 +31,10 @@ namespace Class_Project
             {
                 Console.WriteLine(ticket.ToString());
             }
-        
+
             //Test ToString on null
-            
+            Console.WriteLine(dbIn.FindId(42));
+
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();

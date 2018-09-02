@@ -12,7 +12,7 @@ namespace Class_Project
     /// </summary>
     class DbIn : IInput
     {
-        TicketingContext db = new TicketingContext();
+        TicketingContext db;
         private string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
         /// <summary>
@@ -25,8 +25,11 @@ namespace Class_Project
             Ticket ticket = null;
             try
             {
-                TicketEntity ticketEntity = db.Tickets.Find(id);
-                ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), regex);
+                using (db = new TicketingContext())
+                {
+                    TicketEntity ticketEntity = db.Tickets.Find(id);
+                    ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), regex);
+                }
             }
             catch (NullReferenceException)
             {
@@ -43,7 +46,7 @@ namespace Class_Project
         public int GetMaxID()
         {
             int maxId = -1;
-            using (db)
+            using (db = new TicketingContext())
             {
                 var query = from t in db.Tickets
                             select t;
@@ -62,7 +65,7 @@ namespace Class_Project
         public List<Ticket> GetStoredTickets()
         {
             List<Ticket> storedTickets = new List<Ticket>();
-            using (db)
+            using (db = new TicketingContext())
             {
                 var query = from t in db.Tickets
                             orderby t.TicketId

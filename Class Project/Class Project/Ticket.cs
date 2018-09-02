@@ -124,7 +124,7 @@ namespace Class_Project
 
         public override string ToString()
         {
-            return ticketId + ",\"" + summary + "\"," + status + "," + priority + "," + submitter + "," + assigned + "," + GetWatchingString();
+            return (this == null) ? null: ticketId + ",\"" + summary + "\"," + status + "," + priority + "," + submitter + "," + assigned + "," + GetWatchingString();
         }
     }
 }
