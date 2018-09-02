@@ -10,9 +10,7 @@ namespace Class_Project
         /// <summary>
         /// Get a <c>List<Ticket></c> of all stored tickets. 
         /// </summary>
-        /// <returns>
-        /// A <c>List<Ticket></c> of all stored tickets.
-        /// </returns>
+        /// <returns>A <c>List<Ticket></c> of all stored tickets.</returns>
         List<Ticket> GetStoredTickets();
         /// <summary>
         /// Gets the highest ID stored.

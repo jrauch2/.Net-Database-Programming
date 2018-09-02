@@ -11,15 +11,32 @@ namespace Class_Project
     {
         static void Main(string[] args)
         {
-        IInput csvIn = new CSVIn("support_tickets.csv");
-        IOutput dbOut = new DbOut();
-        IInput dbIn = new DbIn();
-        
-        Ticket ticket0 = dbIn.FindId(42);
-        Console.WriteLine(ticket0.ToString());
+            IInput csvIn = new CSVIn("support_tickets.csv");
+            IOutput dbOut = new DbOut();
+            IInput dbIn = new DbIn();
 
-        Console.WriteLine("Press any key to exit...");
-        Console.ReadKey();
+            List<Ticket> tickets = csvIn.GetStoredTickets();
+            dbOut.WriteAll(tickets);
+
+            Console.WriteLine("CSV");
+            foreach (Ticket ticket in tickets)
+            {
+                Console.WriteLine(ticket.ToString());
+            }
+
+            List<Ticket> dbTickets = dbIn.GetStoredTickets();
+
+            Console.WriteLine("DB");
+            foreach (Ticket ticket in dbTickets)
+            {
+                Console.WriteLine(ticket.ToString());
+            }
+        
+            //Test ToString on null
+            //Fix parse of enums
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
         }
     }
 }

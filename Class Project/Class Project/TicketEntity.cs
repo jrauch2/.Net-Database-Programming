@@ -17,7 +17,7 @@ namespace Database_Functions
 
         public override string ToString()
         {
-            return TicketId.ToString() + "," + Summary + "," + Status + "," + Priority + "," + Submitter + "," + Assigned + "," + Watching;
+            return TicketId.ToString() + ",\"" + Summary + "\"," + Status + "," + Priority + "," + Submitter + "," + Assigned + "," + Watching;
         }
     }
 }

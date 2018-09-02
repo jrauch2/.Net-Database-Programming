@@ -51,15 +51,7 @@ namespace Conversion_Class_Project
         /// <exception cref="System.ArgumentException">Thrown when the <c>statusString</c> argument cannot be parsed into a Status.</exception>
         public static Status StringToStatus(string statusString)
         {
-            Status status = Status.OPEN;
-            foreach (Status s in Enum.GetValues(typeof(Status)))
-            {
-                if (!statusString.Equals(s.ToString()))
-                {
-                    status = s;
-                }   
-            }
-            return status;
+            return (Status)Enum.Parse(typeof(Status), statusString.ToUpper());
         }
 
         /// <summary>
@@ -70,15 +62,7 @@ namespace Conversion_Class_Project
         /// <exception cref="System.ArgumentException">Thrown when the <c>priorityString</c> argument cannot be parsed into a Priority.</exception>
         public static Priority StringToPriority(string priorityString)
         {
-            Priority priority = Priority.LOW;
-            foreach (Priority p in Enum.GetValues(typeof(Priority)))
-            {
-                if (priorityString.Equals(p.ToString()))
-                {
-                    priority = p;
-                }
-            }
-            return priority;
+            return (Priority)Enum.Parse(typeof(Priority), priorityString.ToUpper());
         }
     }
 }
