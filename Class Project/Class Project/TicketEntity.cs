@@ -12,5 +12,10 @@ namespace Database_Functions
         public string Submitter { get; set; }
         public string Assigned { get; set; }
         public string Watching { get; set; }
+
+        public override string ToString()
+        {
+            return TicketId.ToString() + "," + Summary + "," + Status + "," + Priority + "," + Submitter + "," + Assigned + "," + Watching;
+        }
     }
 }
