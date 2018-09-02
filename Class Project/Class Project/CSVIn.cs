@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Conversion_Class_Project;
 
 namespace Class_Project
 {
@@ -19,7 +18,7 @@ namespace Class_Project
             while (!file.EndOfStream)
             {
                 string line = file.ReadLine();
-                storedTickets.Add(Conversion.StringToTicket(line, rx));
+                storedTickets.Add(TicketFactory.StringToTicket(line, rx));
             }
         }
 
@@ -45,6 +44,12 @@ namespace Class_Project
                 }
             }
             return maxId;
+        }
+
+        public Ticket findId(int id)
+        {
+            //TODO
+            throw new NotImplementedException();
         }
     }
 }

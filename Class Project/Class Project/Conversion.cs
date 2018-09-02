@@ -1,8 +1,6 @@
 ﻿using Class_Project;
 using Database_Functions;
 using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Conversion_Class_Project
 {
