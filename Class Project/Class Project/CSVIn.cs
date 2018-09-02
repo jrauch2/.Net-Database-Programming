@@ -7,6 +7,7 @@ namespace Class_Project
     /// <summary>
     /// The <c>CSVIn</c> class.
     /// Implements the <c>IInput</c> interface.
+    /// Used to load stored tickets from a CSV file.
     /// </summary>
     class CSVIn : IInput
     {
