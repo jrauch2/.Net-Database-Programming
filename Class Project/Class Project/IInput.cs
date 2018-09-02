@@ -19,7 +19,7 @@ namespace Class_Project
         /// <returns>
         /// The highest ID as an <c>int</c>.
         /// </returns>
-        int GetMaxID();
+        int GetMaxId();
         /// <summary>
         /// Get a <c>Ticket</c> by ID.
         /// </summary>

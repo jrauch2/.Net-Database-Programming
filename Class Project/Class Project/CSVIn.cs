@@ -55,7 +55,7 @@ namespace Class_Project
         /// Get the highest ID stored.
         /// </summary>
         /// <returns><c>int</c> of the highest ID stored.</returns>
-        public int GetMaxID()
+        public int GetMaxId()
         {
             int maxId = 0;
             foreach (Ticket ticket in storedTickets)

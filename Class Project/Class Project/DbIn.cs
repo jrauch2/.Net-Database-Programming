@@ -33,6 +33,7 @@ namespace Class_Project
             }
             catch (NullReferenceException)
             {
+                //TODO
                 //make this generic
                 Console.WriteLine("Ticket not found");
             }
@@ -40,10 +41,10 @@ namespace Class_Project
         }
 
         /// <summary>
-        /// 
+        /// Get the max ID stored.
         /// </summary>
-        /// <returns></returns>
-        public int GetMaxID()
+        /// <returns><c>int</c> of maxId</returns>
+        public int GetMaxId()
         {
             int maxId = -1;
             using (db = new TicketingContext())
