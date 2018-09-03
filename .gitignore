@@ -1,5 +1,3 @@
 .vs
 packages
-*.config
-*.csproj
 *.sln
