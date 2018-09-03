@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversion.cs" />
+    <Compile Include="CsvTickets.cs" />
     <Compile Include="CSVIn.cs" />
     <Compile Include="CSVOut.cs" />
     <Compile Include="DbIn.cs" />

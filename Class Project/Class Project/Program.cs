@@ -8,7 +8,7 @@ namespace Class_Project
     {
         public static void Main(string[] args)
         {
-            IInput csvIn = new CSVIn("support_tickets.csv");
+            IInput csvIn = new CsvIn("support_tickets.csv");
             IOutput dbOut = new DbOut();
             IInput dbIn = new DbIn();
 
@@ -32,6 +32,7 @@ namespace Class_Project
             //Test ToString on null
             Console.WriteLine(dbIn.FindId(42));
 
+            CsvTickets csvTickets =
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();

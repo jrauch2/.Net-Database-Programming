@@ -1,35 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Class_Project
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IInput" />
     /// <summary>
     /// The <c>CSVIn</c> class.
     /// Implements the <c>IInput</c> interface.
     /// Used to load stored tickets from a CSV file.
     /// </summary>
-    class CSVIn : IInput
+    internal class CsvIn : CsvTickets, IInput
     {
-        private List<Ticket> storedTickets = new List<Ticket>();
-        private string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        private string fileName;
+        private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        private string _fileName;
 
         /// <summary>
         /// Constructor for <c>CSVIn</c>.
         /// Requires the name of the file to be opened as an argument.
         /// </summary>
         /// <param name="fileName">The name of the file to be opened.</param>
-        public CSVIn(string fileName)
+        public CsvIn(string fileName)
         {
             SetFileName(fileName);
-            StreamReader file = new StreamReader(fileName);
-
-            while (!file.EndOfStream)
+            using (var file = new StreamReader(fileName))
             {
-                string line = file.ReadLine();
-                storedTickets.Add(TicketFactory.StringToTicket(line, regex));
+                try
+                {
+                    while (!file.EndOfStream)
+                    {
+                        string line = file.ReadLine();
+                        StoredTickets.Add(TicketFactory.StringToTicket(line, Regex));
+                    }
+                }
+                catch (Exception)
+                {
+                    //TODO
+                }
             }
         }
 
@@ -40,33 +48,19 @@ namespace Class_Project
         /// <param name="fileName">The name of the file to be opened.</param>
         private void SetFileName(string fileName)
         {
-            this.fileName = fileName;
+            this._fileName = fileName;
         }
 
-        /// <summary>
-        /// Get a <c>List<Ticket></c> of stored tickets.
-        /// </summary>
-        /// <returns>A <c>List<Ticket></c></returns>
+        //Get a List of all stored tickets.
         public List<Ticket> GetStoredTickets()
         {
-            return storedTickets;
+            return StoredTickets;
         }
-                
-        /// <summary>
-        /// Get the highest ID stored.
-        /// </summary>
-        /// <returns><c>int</c> of the highest ID stored.</returns>
+
+        //Get the highest used ID.
         public int GetMaxId()
         {
-            int maxId = 0;
-            foreach (Ticket ticket in storedTickets)
-            {
-                int ticketId = ticket.GetTicketId();
-                if (ticketId > maxId)
-                {
-                    maxId = ticketId;
-                }
-            }
+            int maxId = StoredTickets.Max(ticket => ticket.GetTicketId());
             return maxId;
         }
         /// <summary>
