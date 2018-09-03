@@ -13,67 +13,71 @@ namespace Class_Project
     /// </summary>
     internal class DbIn : IInput
     {
-        TicketingContext db;
         private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        private const string TicketNotFoundMessage = "Ticket not found.";
 
+        //Find Ticket by ID.
         public Ticket FindId(int id)
         {
             Ticket ticket = null;
-            try
+            using (var db = new TicketingContext())
             {
-                using (db = new TicketingContext())
+                try
                 {
                     TicketEntity ticketEntity = db.Tickets.Find(id);
-                    ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
+                    if (ticketEntity != null)
+                    {
+                        ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
+                    }
+                    else
+                    {
+                        //TODO
+                        //Make generic
+                        Console.WriteLine(TicketNotFoundMessage);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    //TODO
+                }
+                return ticket;
             }
-            catch (NullReferenceException)
-            {
-                //TODO
-                //make this generic
-                Console.WriteLine("Ticket not found");
-            }
-            return ticket;
         }
 
-        /// <summary>
-        /// Get the max ID stored.
-        /// </summary>
-        /// <returns><c>int</c> of maxId</returns>
+        //Get the highest used ID.
         public int GetMaxId()
         {
-            int maxId = -1;
-            using (db = new TicketingContext())
+            using (var db = new TicketingContext())
             {
-                var query = from t in db.Tickets
-                            select t;
-                if (query.Any())
+                var maxId = -1;
+                try
                 {
-                    maxId = db.Tickets.Max(t => t.TicketId);
+                    var query = from t in db.Tickets
+                        select t;
+                    if (query.Any())
+                    {
+                        maxId = db.Tickets.Max(t => t.TicketId);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    //TODO
+                }
+                return maxId;
             }
-            return maxId;
         }
 
-        /// <summary>
-        /// Get a list of all tickets stored in the database.
-        /// </summary>
-        /// <returns><c>List<Ticket></c></returns>
+        //Get a List of all stored tickets.
+        //CAUTION! This will be expensive with a large database!
         public List<Ticket> GetStoredTickets()
         {
-            List<Ticket> storedTickets = new List<Ticket>();
-            using (db = new TicketingContext())
+            using (var db = new TicketingContext())
             {
                 var query = from t in db.Tickets
                             orderby t.TicketId
                             select t;
-                foreach (TicketEntity ticketEntity in query)
-                {
-                    Ticket ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
-                    storedTickets.Add(ticket);
-                }
+                return query.Select(ticketEntity => TicketFactory.StringToTicket(ticketEntity.ToString(), Regex)).ToList();
             }
-            return storedTickets;
         }
     }
 }
