@@ -77,7 +77,7 @@ namespace Class_Project
         {
             using (var db = new TicketingContext())
             {
-                List<Ticket> list = null;
+                var list = new List<Ticket>();
                 try
                 {
                     var query = from t in db.Tickets
