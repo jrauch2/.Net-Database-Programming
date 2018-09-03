@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Class_Project
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             IInput csvIn = new CSVIn("support_tickets.csv");
             IOutput dbOut = new DbOut();
@@ -19,7 +16,7 @@ namespace Class_Project
             dbOut.WriteAll(tickets);
 
             Console.WriteLine("CSV");
-            foreach (Ticket ticket in tickets)
+            foreach (var ticket in tickets)
             {
                 Console.WriteLine(ticket.ToString());
             }
@@ -27,7 +24,7 @@ namespace Class_Project
             List<Ticket> dbTickets = dbIn.GetStoredTickets();
 
             Console.WriteLine("DB");
-            foreach (Ticket ticket in dbTickets)
+            foreach (var ticket in dbTickets)
             {
                 Console.WriteLine(ticket.ToString());
             }
