@@ -5,14 +5,17 @@
     </assembly>
     <members>
         <member name="T:Class_Project.Conversion">
-            <!-- Failed to insert some or all of included XML --><include file="docs/Conversion.xml" path="docs/members[@name=&quot;conversion&quot;]/Conversion/*" />
+            <summary>
+            The <c>Conversion</c> class.
+            Contains all methods for parsing stored data into a <c>Ticket</c> object.
+            </summary>
         </member>
         <member name="M:Class_Project.Conversion.ToTicketEntity(Class_Project.Ticket)">
             <summary>
             Converts a <c>Ticket</c> to a <c>TicketEntity</c> to be stored in a database.
             </summary>
             <param name="ticket">The <c>Ticket</c> to be stored.</param>
-            <returns>The storable <c>TicketEntity</c></returns>
+            <returns>The store-able <c>TicketEntity</c></returns>
         </member>
         <member name="M:Class_Project.Conversion.StringToInt(System.String)">
             <summary>
@@ -62,12 +65,14 @@
             </summary>
             <param name="fileName">The name of the file to be opened.</param>
         </member>
+        <member name="M:Class_Project.CsvIn.GetStoredTickets">
+            <inheritdoc />
+        </member>
+        <member name="M:Class_Project.CsvIn.GetMaxId">
+            <inheritdoc />
+        </member>
         <member name="M:Class_Project.CsvIn.FindId(System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
+            <inheritdoc />
         </member>
         <member name="T:Class_Project.CSVOut">
             <summary>
