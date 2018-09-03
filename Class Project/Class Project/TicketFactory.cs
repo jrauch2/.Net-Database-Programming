@@ -6,14 +6,14 @@ namespace Class_Project
 {
     /// <summary>
     /// The <c>TicketFactory</c> class.
-    /// This class follows a thread-safe singlton pattern.
+    /// This class follows a thread-safe singleton pattern.
     /// To access <c>TicketFactory</c>, call <c>GetTicketFactory(int id)</c>.
     /// </summary>
-    sealed class TicketFactory
+    internal sealed class TicketFactory
     {
-        private static readonly TicketFactory _instance = new TicketFactory();
-        private static int lastId;
-        private static readonly int _ticketIdFloor = 1;
+        private static readonly TicketFactory Instance = new TicketFactory();
+        private static int _lastId;
+        private const int TicketIdFloor = 1;
 
         private TicketFactory()
         {
@@ -22,27 +22,26 @@ namespace Class_Project
         
         /// <summary>
         /// Get the <c>TicketFactory</c> instance.
-        /// When called, the last used <c>ticketId</c> must be passed for new <c>Tickets</c> to be generated without conflicting IDs.
+        /// When called, the last used <c>ticketId</c> must be passed for a new <c>Ticket</c> object to be generated without conflicting IDs.
         /// </summary>
-        /// <param name="id">THe last used ID.</param>
-        /// <returns>THe <c>TicketFactory</c> instance.</returns>
+        /// <param name="id">The last used ID.</param>
+        /// <returns>The <c>TicketFactory</c> instance.</returns>
         public static TicketFactory GetTicketFactory(int id)
         {
             SetLastId(id);
-            return _instance;
+            return Instance;
         }
-
-
+        
         /// <summary>
         /// Set the last used ID.
-        /// If the current value of <c>lastId</c> is greater than the argument passed, the argument passed is ignored.
+        /// If the current value of <c>_lastId</c> is greater than the argument passed, the argument passed is ignored.
         /// </summary>
         /// <param name="id">The last ID used to generate a ticket.</param>
         private static void SetLastId(int id)
         {
-            if (lastId < id)
+            if (_lastId < id)
             {
-                lastId = id;
+                _lastId = id;
             }
         }
 
@@ -60,9 +59,9 @@ namespace Class_Project
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
         public static Ticket NewTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
-            Ticket ticket = new Ticket(ticketId, summary, status, priority, submitter, assigned, watching);
+            var ticket = new Ticket(ticketId, summary, status, priority, submitter, assigned, watching);
 
-            if (ticket.GetTicketId() < _ticketIdFloor)
+            if (ticket.GetTicketId() < TicketIdFloor)
             {
                 throw new System.ArgumentException("Invalid ticket ID", "ticketId");
             }
@@ -82,9 +81,9 @@ namespace Class_Project
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
         public static Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
-            Ticket ticket = new Ticket(++lastId, summary, status, priority, submitter, assigned, watching);
+            var ticket = new Ticket(++_lastId, summary, status, priority, submitter, assigned, watching);
 
-            if (ticket.GetTicketId() < 1)
+            if (ticket.GetTicketId() < TicketIdFloor)
             {
                 throw new System.ArgumentException("Invalid ticket ID", "ticketId");
             }
@@ -104,12 +103,11 @@ namespace Class_Project
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
         public static Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned)
         {
-            List<string> watching = new List<string>();
-            watching.Add(submitter);
+            var watching = new List<string> {submitter};
 
-            Ticket ticket = new Ticket(++lastId, summary, status, priority, submitter, assigned, watching);
+            var ticket = new Ticket(++_lastId, summary, status, priority, submitter, assigned, watching);
 
-            if (ticket.GetTicketId() < 1)
+            if (ticket.GetTicketId() < TicketIdFloor)
             {
                 throw new System.ArgumentException("Invalid ticket ID", "ticketId");
             }
@@ -126,14 +124,14 @@ namespace Class_Project
         {
             string[] subs = Regex.Split(ticketString, regex);
 
-            List<string> watching = new List<string>(subs[6].Split('|'));
+            var watching = new List<string>(subs[6].Split('|'));
 
-            for (int i = 0; i < subs.Length; i++)
+            for (var i = 0; i < subs.Length; i++)
             {
                 subs[i] = subs[i].Replace("\"", "");
             }
 
-            Ticket ticket = new Ticket(Conversion.StringToInt(subs[0]), subs[1], Conversion.StringToStatus(subs[2]), Conversion.StringToPriority(subs[3]), subs[4], subs[5], watching);
+            var ticket = new Ticket(Conversion.StringToInt(subs[0]), subs[1], Conversion.StringToStatus(subs[2]), Conversion.StringToPriority(subs[3]), subs[4], subs[5], watching);
 
             return ticket;
         }
