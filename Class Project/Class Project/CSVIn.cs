@@ -31,12 +31,14 @@ namespace Class_Project
                     while (!file.EndOfStream)
                     {
                         string line = file.ReadLine();
+                        Console.WriteLine(line);
                         StoredTickets.Add(TicketFactory.StringToTicket(line, Regex));
                     }
                 }
                 catch (Exception)
                 {
                     //TODO
+                    Console.WriteLine("There was an Exception in CsvIn constructor.");
                 }
             }
         }

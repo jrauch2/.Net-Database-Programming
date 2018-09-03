@@ -15,6 +15,7 @@ namespace Class_Project
     {
         private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private const string TicketNotFoundMessage = "Ticket not found.";
+        private const string ExceptionMessage = "There was an Exception in ";
 
         //Find Ticket by ID.
         public Ticket FindId(int id)
@@ -59,9 +60,12 @@ namespace Class_Project
                         maxId = db.Tickets.Max(t => t.TicketId);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //TODO
+                    //Make generic
+                    Console.WriteLine(ExceptionMessage + nameof(GetMaxId));
+                    Console.WriteLine(ex.Message);
                 }
                 return maxId;
             }
@@ -73,10 +77,26 @@ namespace Class_Project
         {
             using (var db = new TicketingContext())
             {
-                var query = from t in db.Tickets
-                            orderby t.TicketId
-                            select t;
-                return query.Select(ticketEntity => TicketFactory.StringToTicket(ticketEntity.ToString(), Regex)).ToList();
+                List<Ticket> list = null;
+                try
+                {
+                    var query = from t in db.Tickets
+                        orderby t.TicketId
+                        select t;
+                    foreach (TicketEntity ticketEntity in query)
+                    {
+                        Ticket ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
+                        list.Add(ticket);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //TODO
+                    //Make generic
+                    Console.WriteLine(ExceptionMessage + nameof(GetStoredTickets));
+                    Console.WriteLine(ex.Message);
+                }
+                return list;
             }
         }
     }

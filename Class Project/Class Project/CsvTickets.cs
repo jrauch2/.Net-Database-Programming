@@ -9,6 +9,6 @@ namespace Class_Project
     /// </summary>
     internal abstract class CsvTickets
     {
-        protected static List<Ticket> StoredTickets;
+        protected static List<Ticket> StoredTickets = new List<Ticket>();
     }
 }

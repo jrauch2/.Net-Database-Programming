@@ -29,10 +29,11 @@ namespace Class_Project
                 Console.WriteLine(ticket.ToString());
             }
 
-            //Test ToString on null
+//            Test ToString on null
             Console.WriteLine(dbIn.FindId(42));
 
-            CsvTickets csvTickets =
+
+            Console.WriteLine(csvIn.GetMaxId());
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
