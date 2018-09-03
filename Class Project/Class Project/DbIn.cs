@@ -36,7 +36,7 @@ namespace Class_Project
                         Console.WriteLine(TicketNotFoundMessage);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //TODO
                 }
@@ -59,7 +59,7 @@ namespace Class_Project
                         maxId = db.Tickets.Max(t => t.TicketId);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //TODO
                 }
