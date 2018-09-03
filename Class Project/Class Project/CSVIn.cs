@@ -15,6 +15,8 @@ namespace Class_Project
     {
         private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private string _fileName;
+        private const string TicketNotFoundMessage = "Ticket not found.";
+        private const string ExceptionMessage = "There was an Exception in ";
 
         /// <summary>
         /// Constructor for <c>CSVIn</c>.
@@ -24,7 +26,7 @@ namespace Class_Project
         public CsvIn(string fileName)
         {
             SetFileName(fileName);
-            using (var file = new StreamReader(fileName))
+            using (var file = new StreamReader(_fileName))
             {
                 try
                 {
@@ -35,15 +37,15 @@ namespace Class_Project
                         StoredTickets.Add(TicketFactory.StringToTicket(line, Regex));
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     //TODO
-                    Console.WriteLine("There was an Exception in CsvIn constructor.");
+                    Console.WriteLine(ExceptionMessage + nameof(CsvIn));
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
-
-
+        
         /// <summary>
         /// Set <c>fileName</c>.
         /// </summary>
@@ -54,26 +56,32 @@ namespace Class_Project
         }
 
         //Get a List of all stored tickets.
+        /// <inheritdoc />
         public List<Ticket> GetStoredTickets()
         {
             return StoredTickets;
         }
 
         //Get the highest used ID.
+        /// <inheritdoc />
         public int GetMaxId()
         {
             int maxId = StoredTickets.Max(ticket => ticket.GetTicketId());
             return maxId;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
+        // Get the ticket with matching id
+        /// <inheritdoc />
         public Ticket FindId(int id)
         {
-            //TODO
-            throw new NotImplementedException();
+           Ticket ticket = StoredTickets.Find(t => t.GetTicketId() == id);
+            if (ticket == null)
+            {
+                //TODO
+                //Make generic
+                Console.WriteLine(TicketNotFoundMessage);
+            }
+            return ticket;
         }
     }
 }

@@ -1,23 +1,22 @@
-﻿using Class_Project;
+﻿using System;
 using Database_Functions;
-using System;
 
-namespace Conversion_Class_Project
+namespace Class_Project
 {
     /// <summary>
     /// The <c>Conversion</c> class.
     /// Contains all methods for parsing stored data into a <c>Ticket</c> object.
     /// </summary>
-    class Conversion
+    internal class Conversion
     {
         /// <summary>
         /// Converts a <c>Ticket</c> to a <c>TicketEntity</c> to be stored in a database.
         /// </summary>
         /// <param name="ticket">The <c>Ticket</c> to be stored.</param>
-        /// <returns>The storable <c>TicketEntity</c></returns>
+        /// <returns>The store-able <c>TicketEntity</c></returns>
         public static TicketEntity ToTicketEntity(Ticket ticket)
         {
-            TicketEntity ticketEntity = new TicketEntity
+            var ticketEntity = new TicketEntity
             {
                 TicketId = ticket.GetTicketId(),
                 Summary = ticket.GetSummary(),
@@ -38,8 +37,7 @@ namespace Conversion_Class_Project
         /// <returns>An <c>int</c> parsed from a <c>string</c>.</returns>
         public static int StringToInt(string s)
         {
-            int i;
-            int.TryParse(s, out i);
+            int.TryParse(s, out var i);
             return i;
         }
 
@@ -48,7 +46,6 @@ namespace Conversion_Class_Project
         /// </summary>
         /// <param name="statusString">The <c>string</c> to be parsed.</param>
         /// <returns>A <c>Status</c>.</returns>
-        /// <exception cref="System.ArgumentException">Thrown when the <c>statusString</c> argument cannot be parsed into a Status.</exception>
         public static Status StringToStatus(string statusString)
         {
             return (Status)Enum.Parse(typeof(Status), statusString.ToUpper());
@@ -59,7 +56,6 @@ namespace Conversion_Class_Project
         /// </summary>
         /// <param name="priorityString">The <c>string</c> to be parsed.</param>
         /// <returns>A <c>Priority</c>.</returns>
-        /// <exception cref="System.ArgumentException">Thrown when the <c>priorityString</c> argument cannot be parsed into a Priority.</exception>
         public static Priority StringToPriority(string priorityString)
         {
             return (Priority)Enum.Parse(typeof(Priority), priorityString.ToUpper());
