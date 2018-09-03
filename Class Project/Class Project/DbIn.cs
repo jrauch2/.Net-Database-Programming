@@ -5,21 +5,17 @@ using System;
 
 namespace Class_Project
 {
+    /// <inheritdoc />
     /// <summary>
     /// The <c>DbIn</c> class.
     /// Implements the <c>IInput</c> interface.
     /// Used to read records from a database.
     /// </summary>
-    class DbIn : IInput
+    internal class DbIn : IInput
     {
         TicketingContext db;
-        private string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
-        /// <summary>
-        /// Find ticket by Id.
-        /// </summary>
-        /// <param name="id">The ID of the ticket to be found</param>
-        /// <returns><c>Ticket</c></returns>
         public Ticket FindId(int id)
         {
             Ticket ticket = null;
@@ -28,7 +24,7 @@ namespace Class_Project
                 using (db = new TicketingContext())
                 {
                     TicketEntity ticketEntity = db.Tickets.Find(id);
-                    ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), regex);
+                    ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
                 }
             }
             catch (NullReferenceException)
@@ -73,7 +69,7 @@ namespace Class_Project
                             select t;
                 foreach (TicketEntity ticketEntity in query)
                 {
-                    Ticket ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), regex);
+                    Ticket ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
                     storedTickets.Add(ticket);
                 }
             }

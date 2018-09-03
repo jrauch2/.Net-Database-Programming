@@ -4,6 +4,7 @@ using System.IO;
 
 namespace Class_Project
 {
+    /// <inheritdoc />
     /// <summary>
     /// The <c>CSVIn</c> class.
     /// Implements the <c>IInput</c> interface.

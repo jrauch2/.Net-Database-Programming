@@ -5,12 +5,12 @@ namespace Class_Project
 /// The <c>IInput</c> interface.
 /// provides signatures for methods to query stored tickets.
 /// </summary>
-    interface IInput
+    internal interface IInput
     {
         /// <summary>
-        /// Get a <c>List<Ticket></c> of all stored tickets. 
+        /// Get a <c>List</c> of all stored tickets. 
         /// </summary>
-        /// <returns>A <c>List<Ticket></c> of all stored tickets.</returns>
+        /// <returns>A <c>List</c> of all stored tickets.</returns>
         List<Ticket> GetStoredTickets();
         /// <summary>
         /// Gets the highest ID stored.
@@ -23,7 +23,7 @@ namespace Class_Project
         /// <summary>
         /// Get a <c>Ticket</c> by ID.
         /// </summary>
-        /// <param name="id">The id of the desired <c>Ticket</c> as an <c></c>int</c>.</param>
+        /// <param name="id">The id of the desired <c>Ticket</c> as an <c>int</c>.</param>
         /// <returns>The desired <c>Ticket</c>, if found.</returns>
         Ticket FindId(int id);
     }
