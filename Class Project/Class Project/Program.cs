@@ -1,42 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 
 namespace Class_Project
 {
     internal class Program
     {
+        private const string fileName = "support_tickets.csv";
+        private static IInput csvIn = new CsvIn(fileName);
+        private static IOutput csvOut = new CsvOut(fileName);
+        private static 
+        private const string FiftyStarLine = "**************************************************";
+
         public static void Main(string[] args)
         {
-            IInput csvIn = new CsvIn("support_tickets.csv");
-            IOutput dbOut = new DbOut();
-            IInput dbIn = new DbIn();
+            Menu();
+        }
 
-            List<Ticket> tickets = csvIn.GetStoredTickets();
-            dbOut.WriteAll(tickets);
+        public static void Menu()
+        {
+            Console.WriteLine(FiftyStarLine);
+            Console.WriteLine("*              Support Ticket System             *");
+            Console.WriteLine(FiftyStarLine);
+            Console.WriteLine("* 1) New Ticket                                  *");
+            Console.WriteLine("* 2) Update Ticket                               *");
+            Console.WriteLine("* 3) Print All Tickets                           *");
+            Console.WriteLine("* 4) Exit                                        *");
+            Console.WriteLine(FiftyStarLine);
+            Console.Write("Select an option: ");
 
-            Console.WriteLine("CSV");
-            foreach (var ticket in tickets)
+            string input = Console.ReadLine();
+            Console.Clear();
+            switch (input)
             {
-                Console.WriteLine(ticket.ToString());
+                case "1":
+                    NewTicket();
+                    break;
+                case "2":
+                    UpdateTicket();
+                    break;
+                case "3":
+                    PrintAllTickets();
+                    break;
+                case "4":
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Not a valid option, try again.");
+                    break;
             }
+        }
 
-            List<Ticket> dbTickets = dbIn.GetStoredTickets();
+        public static void NewTicket()
+        {
+            //TODO
+        }
 
-            Console.WriteLine("DB");
-            foreach (var ticket in dbTickets)
-            {
-                Console.WriteLine(ticket.ToString());
-            }
+        public static void UpdateTicket()
+        {
+            //TODO
+        }
 
-//            Test ToString on null
-            Console.WriteLine(dbIn.FindId(42));
-
-
-            Console.WriteLine(csvIn.GetMaxId());
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+        public static void PrintAllTickets()
+        {
+            //TODO
         }
     }
 }

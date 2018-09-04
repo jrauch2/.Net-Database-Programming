@@ -41,8 +41,15 @@
         <member name="T:Class_Project.CsvTickets">
             <summary>
             The abstract <c>CsvTickets</c> class.
-            Contains a List 
+            Contains a <c>List</c> of stored tickets in <c>StoredTickets</c>.
             </summary>
+        </member>
+        <member name="M:Class_Project.CsvTickets.UpdateStoredTickets(System.Collections.Generic.List{Class_Project.Ticket})">
+            <summary>
+            Takes a <c>List</c> of <c>Ticket</c> objects and adds them to the <c>StoredTickets</c> list.
+            Will replace matching IDs in <c>StoredTickets</c> before appending new <c>Ticket</c> objects.
+            </summary>
+            <param name="tickets"></param>
         </member>
         <member name="T:Class_Project.CsvIn">
             <inheritdoc cref="T:Class_Project.IInput" />
@@ -74,18 +81,35 @@
         <member name="M:Class_Project.CsvIn.FindId(System.Int32)">
             <inheritdoc />
         </member>
-        <member name="T:Class_Project.CSVOut">
+        <member name="T:Class_Project.CsvOut">
+            <inheritdoc cref="T:Class_Project.IOutput" />
             <summary>
             The <c>CSVOut</c> class.
+            Extends the <c>CsvTickets</c> class.
             Implements the <c>IOutput</c> interface.
             Used to store tickets in a CSV file.
             </summary>
+            <see cref="T:Class_Project.CsvTickets"/>
+            <seealso cref="T:Class_Project.IOutput"/>
         </member>
-        <member name="M:Class_Project.CSVOut.WriteAll(System.Collections.Generic.List{Class_Project.Ticket})">
+        <member name="M:Class_Project.CsvOut.#ctor(System.String)">
+            <summary>
+            Output <c>List</c> of <c>Ticket</c> objects to a csv file.
+            </summary>
+            <param name="fileName">The name of the file to be written to.</param>
+        </member>
+        <member name="M:Class_Project.CsvOut.SetFileName(System.String)">
+            <summary>
+            Set <c>fileName</c>.
+            </summary>
+            <param name="fileName">The name of the file to be opened.</param>
+        </member>
+        <member name="M:Class_Project.CsvOut.WriteAll(System.Collections.Generic.List{Class_Project.Ticket})">
+            <inheritdoc />
             <summary>
             Write all <c>Ticket</c> objects to the CSV file.
             </summary>
-            <param name="tickets">List of all <c>Tickets</c></param>
+            <param name="tickets">List of all active <c>Ticket</c> objects to be added.</param>
         </member>
         <member name="T:Class_Project.DbIn">
             <inheritdoc />
@@ -133,6 +157,12 @@
             </summary>
             <param name="id">The id of the desired <c>Ticket</c> as an <c>int</c>.</param>
             <returns>The desired <c>Ticket</c>, if found.</returns>
+        </member>
+        <member name="M:Class_Project.IOutput.WriteAll(System.Collections.Generic.List{Class_Project.Ticket})">
+            <summary>
+            Write out <c>List</c> of <c>Ticket</c> objects to storage medium.
+            </summary>
+            <param name="tickets">A <c>List</c> of <c>Ticket</c> objects</param>
         </member>
         <member name="T:Class_Project.TicketFactory">
             <summary>
