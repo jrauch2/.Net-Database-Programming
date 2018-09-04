@@ -103,10 +103,8 @@ namespace Class_Project
         /// The <c>watching</c> property is populated with the submitter.
         /// </summary>
         /// <param name="summary">The <c>summary</c> of the ticket.</param>
-        /// <param name="status">The <c>status</c> of the ticket.</param>
         /// <param name="priority">The <c>priority</c> of the ticket.</param>
         /// <param name="submitter">The <c>submitter</c> of the ticket.</param>
-        /// <param name="assigned">The <c>assigned</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
         public Ticket NewTicket(string summary, Priority priority, string submitter)
@@ -128,7 +126,7 @@ namespace Class_Project
         /// Parses a formatted <c>string</c> into a <c>Ticket</c> object.
         /// </summary>
         /// <param name="ticketString">THe formatted <c>string</c> to be parsed.</param>
-        /// <param name="regex">The regular expression needed to parse the formatted <c></c>string</c>, as a <c>string</c>.</param>
+        /// <param name="regex">The regular expression needed to parse the formatted <c>string</c>, as a <c>string</c>.</param>
         /// <returns>A <c>Ticket</c> object, parsed from a formatted <c>string</c>.</returns>
         public Ticket StringToTicket(string ticketString, string regex)
         {

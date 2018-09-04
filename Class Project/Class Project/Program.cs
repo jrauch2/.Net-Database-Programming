@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 
 
 namespace Class_Project
 {
     internal class Program
     {
-        private const string fileName = "support_tickets.csv";
-        private static IInput csvIn = new CsvIn(fileName);
-        private static IOutput csvOut = new CsvOut(fileName);
-        private static TicketFactory ticketFactory = TicketFactory.GetTicketFactoryForNewTickets(csvIn.GetMaxId());
+        private const string FileName = "support_tickets.csv";
+        private static readonly IInput CsvIn = new CsvIn(FileName);
+        private static readonly IOutput CsvOut = new CsvOut(FileName);
+        private static readonly TicketFactory TicketFactory = TicketFactory.GetTicketFactoryForNewTickets(CsvIn.GetMaxId());
         private const string FiftyStarLine = " ************************************************** ";
         private const string Header = " *              Support Ticket System             * ";
         private const string NewTicketHeader = " *                   New Ticket                   * ";
@@ -18,7 +16,7 @@ namespace Class_Project
 
         public static void Main(string[] args)
         {
-            Program program = new Program(); 
+            var program = new Program(); 
             program.Menu();
         }
 
@@ -39,7 +37,7 @@ namespace Class_Project
                 Console.WriteLine(FiftyStarLine);
                 Console.Write("Select an option: ");
 
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
                 Console.Clear();
                 switch (input)
                 {
@@ -107,11 +105,10 @@ namespace Class_Project
         //Ask user for Priority.
         private Priority GetPriorityInput()
         {
-            bool correct = false;
-            Priority priority = Priority.LOW;
+            var correct = false;
+            var priority = Priority.LOW;
             do
             {
-                correct = false;
                 Console.WriteLine(FiftyStarLine);
                 Console.WriteLine(Header);
                 Console.WriteLine(NewTicketHeader);
@@ -119,8 +116,8 @@ namespace Class_Project
                 Console.WriteLine(" * Set a priority (LOW, MEDIUM, HIGH, SEVERE):    * ");
                 Console.WriteLine(FiftyStarLine);
                 var priorityInput = Console.ReadLine();
-                if (priorityInput.ToUpper().Equals("LOW") || priorityInput.ToUpper().Equals("MEDIUM") || 
-                    priorityInput.ToUpper().Equals("HIGH") || priorityInput.ToUpper().Equals("SEVERE"))
+                if (priorityInput != null && (priorityInput.ToUpper().Equals("LOW") || priorityInput.ToUpper().Equals("MEDIUM") || 
+                                              priorityInput.ToUpper().Equals("HIGH") || priorityInput.ToUpper().Equals("SEVERE")))
                 {
                     priority = Conversion.StringToPriority(priorityInput);
                     correct = true;
@@ -152,7 +149,7 @@ namespace Class_Project
         //Ask the user to confirm that the information is correct
         private void GetCorrectInput(string summary, Priority priority, string submitter)
         {
-            bool correct = false;
+            var correct = false;
 
             do
             {
@@ -176,18 +173,20 @@ namespace Class_Project
                 {
                     case "0":
                         correct = true;
-                        ticketFactory.NewTicket(summary, priority, submitter);
+                        //TODO
+                        //Save ticket
+                        TicketFactory.NewTicket(summary, priority, submitter);
                         break;
                     case "1":
-                        correct = true;
+                        Console.Clear();
                         summary = GetSummaryInput();
                         break;
                     case "2":
-                        correct = true;
+                        Console.Clear();
                         priority = GetPriorityInput();
                         break;
                     case "3":
-                        correct = true;
+                        Console.Clear();
                         submitter = GetSubmitterInput();
                         break;
                     default:

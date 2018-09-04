@@ -13,6 +13,7 @@ namespace Class_Project
     /// </summary>
     internal class DbIn : IInput
     {
+        private TicketFactory ticketFactory = TicketFactory.GetTicketFactory();
         private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private const string TicketNotFoundMessage = "Ticket not found.";
         private const string ExceptionMessage = "There was an Exception in ";
@@ -28,7 +29,7 @@ namespace Class_Project
                     TicketEntity ticketEntity = db.Tickets.Find(id);
                     if (ticketEntity != null)
                     {
-                        ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
+                        ticket = ticketFactory.StringToTicket(ticketEntity.ToString(), Regex);
                     }
                     else
                     {
@@ -85,7 +86,7 @@ namespace Class_Project
                         select t;
                     foreach (TicketEntity ticketEntity in query)
                     {
-                        Ticket ticket = TicketFactory.StringToTicket(ticketEntity.ToString(), Regex);
+                        Ticket ticket = ticketFactory.StringToTicket(ticketEntity.ToString(), Regex);
                         list.Add(ticket);
                     }
                 }
