@@ -5,8 +5,8 @@ namespace Class_Project
 {
     /// <summary>
     /// The <c>TicketFactory</c> class.
-    /// This class follows a thread-safe singleton pattern.
-    /// To access <c>TicketFactory</c>, call <c>GetTicketFactory(int id)</c>.
+    /// To access <c>TicketFactory</c> and make new tickets, call <c>GetTicketFactoryForNewTickets(int id)</c>.
+    /// TO access <c>TicketFactory</c> to build stored tickets, call <c>GetTicketFactory</c>.
     /// </summary>
     internal sealed class TicketFactory
     {
@@ -25,9 +25,18 @@ namespace Class_Project
         /// </summary>
         /// <param name="id">The last used ID.</param>
         /// <returns>The <c>TicketFactory</c> instance.</returns>
-        public static TicketFactory GetTicketFactory(int id)
+        public static TicketFactory GetTicketFactoryForNewTickets(int id)
         {
             SetLastId(id);
+            return Instance;
+        }
+
+        /// <summary>
+        /// Get the <c>TicketFactory</c> instance.
+        /// </summary>
+        /// <returns>The <c>TicketFactory</c> instance.</returns>
+        public static TicketFactory GetTicketFactory()
+        {
             return Instance;
         }
         
@@ -56,7 +65,7 @@ namespace Class_Project
         /// <param name="watching">The <c>watching</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        private Ticket NewTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
+        public Ticket NewTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
             var ticket = new Ticket(ticketId, summary, status, priority, submitter, assigned, watching);
 
@@ -78,7 +87,7 @@ namespace Class_Project
         /// <param name="watching">The <c>watching</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        private Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
+        public Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
             var ticket = new Ticket(++_lastId, summary, status, priority, submitter, assigned, watching);
 
@@ -100,7 +109,7 @@ namespace Class_Project
         /// <param name="assigned">The <c>assigned</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        private Ticket NewTicket(string summary, Priority priority, string submitter)
+        public Ticket NewTicket(string summary, Priority priority, string submitter)
         {
             var watching = new List<string> {submitter};
             //TODO
@@ -121,7 +130,7 @@ namespace Class_Project
         /// <param name="ticketString">THe formatted <c>string</c> to be parsed.</param>
         /// <param name="regex">The regular expression needed to parse the formatted <c></c>string</c>, as a <c>string</c>.</param>
         /// <returns>A <c>Ticket</c> object, parsed from a formatted <c>string</c>.</returns>
-        private Ticket StringToTicket(string ticketString, string regex)
+        public Ticket StringToTicket(string ticketString, string regex)
         {
             string[] subs = Regex.Split(ticketString, regex);
 

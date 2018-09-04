@@ -13,6 +13,7 @@ namespace Class_Project
     /// </summary>
     internal class CsvIn : CsvTickets, IInput
     {
+        private static readonly TicketFactory ticketFactory = TicketFactory.GetTicketFactory();
         private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private string _fileName;
         private const string TicketNotFoundMessage = "Ticket not found.";
@@ -26,6 +27,7 @@ namespace Class_Project
         public CsvIn(string fileName)
         {
             SetFileName(fileName);
+
             using (var file = new StreamReader(_fileName))
             {
                 try
@@ -33,7 +35,7 @@ namespace Class_Project
                     while (!file.EndOfStream)
                     {
                         string line = file.ReadLine();
-                        StoredTickets.Add(TicketFactory.StringToTicket(line, Regex));
+                        StoredTickets.Add(ticketFactory.StringToTicket(line, Regex));
                     }
                 }
                 catch (Exception ex)

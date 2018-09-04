@@ -10,7 +10,7 @@ namespace Class_Project
         private const string fileName = "support_tickets.csv";
         private static IInput csvIn = new CsvIn(fileName);
         private static IOutput csvOut = new CsvOut(fileName);
-        private static TicketFactory ticketFactory = TicketFactory.GetTicketFactory(csvIn.GetMaxId());
+        private static TicketFactory ticketFactory = TicketFactory.GetTicketFactoryForNewTickets(csvIn.GetMaxId());
         private const string FiftyStarLine = " ************************************************** ";
         private const string Header = " *              Support Ticket System             * ";
         private const string NewTicketHeader = " *                   New Ticket                   * ";
@@ -18,10 +18,11 @@ namespace Class_Project
 
         public static void Main(string[] args)
         {
-            Menu();
+            Program program = new Program(); 
+            program.Menu();
         }
 
-        private static void Menu()
+        private void Menu()
         {
             bool correct = false;
 
@@ -67,7 +68,7 @@ namespace Class_Project
         }
 
         //Ask the user for input to generate a new ticket.
-        private static void NewTicket()
+        private void NewTicket()
         {
             string summary = GetSummaryInput();
             Console.Clear();
@@ -81,18 +82,18 @@ namespace Class_Project
             GetCorrectInput(summary, priority, submitter);
         }
 
-        private static void UpdateTicket()
+        private void UpdateTicket()
         {
             //TODO
         }
 
-        private static void PrintAllTickets()
+        private void PrintAllTickets()
         {
             //TODO
         }
 
         //Ask user for summary.
-        private static string GetSummaryInput()
+        private string GetSummaryInput()
         {
             Console.WriteLine(FiftyStarLine);
             Console.WriteLine(Header);
@@ -104,7 +105,7 @@ namespace Class_Project
         }
 
         //Ask user for Priority.
-        private static Priority GetPriorityInput()
+        private Priority GetPriorityInput()
         {
             bool correct = false;
             Priority priority = Priority.LOW;
@@ -137,7 +138,7 @@ namespace Class_Project
         }
 
         //Ask user for name (submitter).
-        private static string GetSubmitterInput()
+        private string GetSubmitterInput()
         {   
             Console.WriteLine(FiftyStarLine);
             Console.WriteLine(Header);
@@ -149,7 +150,7 @@ namespace Class_Project
         }
 
         //Ask the user to confirm that the information is correct
-        private static void GetCorrectInput(string summary, Priority priority, string submitter)
+        private void GetCorrectInput(string summary, Priority priority, string submitter)
         {
             bool correct = false;
 
@@ -175,7 +176,7 @@ namespace Class_Project
                 {
                     case "0":
                         correct = true;
-                        ticketFactory
+                        ticketFactory.NewTicket(summary, priority, submitter);
                         break;
                     case "1":
                         correct = true;
@@ -201,7 +202,7 @@ namespace Class_Project
         }
 
         //Write the summary within the formatted area.
-        private static void WriteSummary(string summary, int lineLength)
+        private void WriteSummary(string summary, int lineLength)
         {
             string[] stringArray = WordWrap.Wrap(summary, lineLength - 4).Split('|');
             for (var i = 0; i < stringArray.Length; i++)
