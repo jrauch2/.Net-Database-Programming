@@ -33,7 +33,7 @@ namespace Class_Project
         /// <param name="fileName">The name of the file to be opened.</param>
         private void SetFileName(string fileName)
         {
-            this._fileName = fileName;
+            _fileName = fileName;
         }
 
         /// <inheritdoc />
