@@ -227,5 +227,24 @@
             <exception cref="T:System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Class_Project.TicketFactory.StringToTicket(System.String,System.String)" -->
+        <member name="M:Class_Project.WordWrap.Wrap(System.String,System.Int32)">
+            <summary>
+            Word wraps the given text to fit within the specified width.
+            </summary>
+            <param name="text">Text to be word wrapped</param>
+            <param name="width">Width, in characters, to which the text
+            should be word wrapped</param>
+            <returns>The modified text</returns>
+        </member>
+        <member name="M:Class_Project.WordWrap.BreakLine(System.String,System.Int32,System.Int32)">
+            <summary>
+            Locates position to break the given line so as to avoid
+            breaking words.
+            </summary>
+            <param name="text">String that contains line of text</param>
+            <param name="pos">Index where line of text starts</param>
+            <param name="max">Maximum line length</param>
+            <returns>The modified line length</returns>
+        </member>
     </members>
 </doc>

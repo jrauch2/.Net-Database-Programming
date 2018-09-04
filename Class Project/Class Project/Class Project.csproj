@@ -88,6 +88,7 @@
     <Compile Include="TicketEntity.cs" />
     <Compile Include="TicketFactory.cs" />
     <Compile Include="TicketingContext.cs" />
+    <Compile Include="WordWrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

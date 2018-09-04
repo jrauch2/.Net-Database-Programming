@@ -100,11 +100,13 @@ namespace Class_Project
         /// <param name="assigned">The <c>assigned</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        public static Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned)
+        public static Ticket NewTicket(string summary, Priority priority, string submitter)
         {
             var watching = new List<string> {submitter};
-
-            var ticket = new Ticket(++_lastId, summary, status, priority, submitter, assigned, watching);
+            //TODO
+            // Implement a way to pull a support desk employee.
+            var assigned = "Jane Doe";
+            var ticket = new Ticket(++_lastId, summary, Status.OPEN, priority, submitter, assigned, watching);
 
             if (ticket.GetTicketId() < TicketIdFloor)
             {
