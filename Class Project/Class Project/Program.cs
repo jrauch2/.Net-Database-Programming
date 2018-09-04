@@ -175,6 +175,7 @@ namespace Class_Project
                 {
                     case "0":
                         correct = true;
+                        ticketFactory
                         break;
                     case "1":
                         correct = true;

@@ -56,7 +56,7 @@ namespace Class_Project
         /// <param name="watching">The <c>watching</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        public static Ticket NewTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
+        private Ticket NewTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
             var ticket = new Ticket(ticketId, summary, status, priority, submitter, assigned, watching);
 
@@ -78,7 +78,7 @@ namespace Class_Project
         /// <param name="watching">The <c>watching</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        public static Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
+        private Ticket NewTicket(string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
             var ticket = new Ticket(++_lastId, summary, status, priority, submitter, assigned, watching);
 
@@ -100,7 +100,7 @@ namespace Class_Project
         /// <param name="assigned">The <c>assigned</c> of the ticket.</param>
         /// <returns>the <c>Ticket</c> object.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the <c>ticketId</c> is less than the <c>ticketIdFloor</c>.</exception>
-        public static Ticket NewTicket(string summary, Priority priority, string submitter)
+        private Ticket NewTicket(string summary, Priority priority, string submitter)
         {
             var watching = new List<string> {submitter};
             //TODO
@@ -121,7 +121,7 @@ namespace Class_Project
         /// <param name="ticketString">THe formatted <c>string</c> to be parsed.</param>
         /// <param name="regex">The regular expression needed to parse the formatted <c></c>string</c>, as a <c>string</c>.</param>
         /// <returns>A <c>Ticket</c> object, parsed from a formatted <c>string</c>.</returns>
-        public static Ticket StringToTicket(string ticketString, string regex)
+        private Ticket StringToTicket(string ticketString, string regex)
         {
             string[] subs = Regex.Split(ticketString, regex);
 
