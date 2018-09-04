@@ -13,7 +13,7 @@ namespace Class_Project
     /// </summary>
     internal class CsvIn : CsvTickets, IInput
     {
-        private static readonly TicketFactory ticketFactory = TicketFactory.GetTicketFactory();
+        private static readonly TicketFactory TicketFactory = TicketFactory.GetTicketFactory();
         private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private string _fileName;
         private const string TicketNotFoundMessage = "Ticket not found.";
@@ -27,24 +27,32 @@ namespace Class_Project
         public CsvIn(string fileName)
         {
             SetFileName(fileName);
-
-            using (var file = new StreamReader(_fileName))
+            if (File.Exists(fileName))
             {
-                try
+                using (var file = new StreamReader(_fileName))
                 {
-                    while (!file.EndOfStream)
+                    try
                     {
-                        string line = file.ReadLine();
-                        StoredTickets.Add(ticketFactory.StringToTicket(line, Regex));
+                        while (!file.EndOfStream)
+                        {
+                            string line = file.ReadLine();
+                            StoredTickets.Add(TicketFactory.StringToTicket(line, Regex));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //TODO
+                        Console.WriteLine(ExceptionMessage + nameof(CsvIn));
+                        Console.WriteLine(ex.Message);
                     }
                 }
-                catch (Exception ex)
-                {
-                    //TODO
-                    Console.WriteLine(ExceptionMessage + nameof(CsvIn));
-                    Console.WriteLine(ex.Message);
-                }
             }
+            else
+            {
+                //TODO
+                Console.WriteLine("File does not exist.");
+            }
+            
         }
         
         /// <summary>
@@ -53,7 +61,7 @@ namespace Class_Project
         /// <param name="fileName">The name of the file to be opened.</param>
         private void SetFileName(string fileName)
         {
-            this._fileName = fileName;
+            _fileName = fileName;
         }
 
         //Get a List of all stored tickets.
@@ -67,8 +75,16 @@ namespace Class_Project
         /// <inheritdoc />
         public int GetMaxId()
         {
-            int maxId = StoredTickets.Max(ticket => ticket.GetTicketId());
-            return maxId;
+            if (StoredTickets.Any())
+            {
+                int maxId = StoredTickets.Max(ticket => ticket.GetTicketId());
+                return maxId;
+            }
+            else
+            {
+                return 0;
+            }
+            
         }
 
         // Get the ticket with matching id
