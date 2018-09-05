@@ -1,0 +1,7 @@
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\obj\Debug\Suppport Ticket System.csprojAssemblyReference.cache
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\obj\Debug\Suppport Ticket System.csproj.CoreCompileInputs.cache
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\bin\Debug\Suppport Ticket System.exe.config
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\bin\Debug\Suppport Ticket System.exe
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\bin\Debug\Suppport Ticket System.pdb
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\obj\Debug\Suppport Ticket System.exe
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Suppport Ticket System\Suppport Ticket System\obj\Debug\Suppport Ticket System.pdb
