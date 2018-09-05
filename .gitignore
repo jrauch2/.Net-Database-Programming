@@ -1,7 +1,3 @@
 .vs
-bin
-obj
-Properties
-*.config
-*.csproj
+packages
 *.sln
