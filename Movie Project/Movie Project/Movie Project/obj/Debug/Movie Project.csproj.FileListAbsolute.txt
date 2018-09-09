@@ -13,3 +13,6 @@ C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie Project\Movie Project\obj\Debug\Movie Project.csproj.CopyComplete
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie Project\Movie Project\obj\Debug\Movie_Project.exe
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie Project\Movie Project\obj\Debug\Movie_Project.pdb
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie Project\Movie Project\bin\Debug\NLog.config
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie Project\Movie Project\bin\Debug\NLog.dll
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Movie Project\Movie Project\Movie Project\bin\Debug\NLog.xml

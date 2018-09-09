@@ -1,15 +1,31 @@
 ﻿using System;
 using System.Linq;
 
-public static class StringExtensions
+namespace Movie_Project
 {
-    public static string FirstCharToUpper(this string input)
+    /// <summary>
+    /// The <c>StringExtensions</c> class.
+    /// Add methods here to extend the <c>String</c> class.
+    /// </summary>
+    public static class StringExtensions
     {
-        switch (input)
+        /// <summary>
+        /// Make the first character in a string uppercase.
+        /// </summary>
+        /// <param name="input">The string to capitalize.</param>
+        /// <returns>A capitalized string.</returns>
+        // Make the first character in a string uppercase.
+        public static string FirstCharToUpper(this string input)
         {
-            case null: throw new ArgumentNullException(nameof(input));
-            case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
-            default: return input.First().ToString().ToUpper() + input.Substring(1);
+            switch (input)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(input));
+                case "":
+                    throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                default:
+                    return input.First().ToString().ToUpper() + input.Substring(1);
+            }
         }
     }
 }
