@@ -16,6 +16,13 @@ namespace Movie_Project
         private string _title;
         private List<string> _movieGenres;
 
+        public Movie(int id, string title, List<string> movieGenres)
+        {
+            SetId(id);
+            SetTitle(title);
+            SetMovieGenres(movieGenres);
+        }
+
         public int GetId()
         {
             return _id;
@@ -36,15 +43,16 @@ namespace Movie_Project
             this._title = title;
         }
 
-        public void SetMovieGenres(string genreString)
+        public List<string> GetMovieGenres()
         {
-            _movieGenres = new List<string>();
-            if (genreString != null)
-            {
-                //TODO
-            }
+            return _movieGenres;
         }
 
+        private void SetMovieGenres(List<string> genres)
+        {
+            _movieGenres = genres;
+        }
+        
         /// <summary>
         /// Checks if the <c>List</c> already contains the genre, then adds it if it does not.
         /// </summary>
@@ -54,6 +62,11 @@ namespace Movie_Project
         {
             if (_movieGenres.Contains(movieGenre))
                 _movieGenres.Add(movieGenre);
+        }
+
+        public void RemoveGenre(string genre)
+        {
+            //TODO
         }
     }
 }
