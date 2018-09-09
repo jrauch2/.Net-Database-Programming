@@ -9,12 +9,12 @@ namespace Movie_Project
     /// A <c>Movie</c> consists of an ID, title, and a <c>List</c> of genres.
     /// </summary>
     // The Movie class.
-    // A Movie consists of an ID, title, and a List<MovieGenre>.
+    // A Movie consists of an ID, title, and a List<GenreTracker>.
     internal class Movie
     {
         private int _id;
         private string _title;
-        private List<MovieGenre> _movieGenres;
+        private List<GenreTracker> _movieGenres;
 
         public int GetId()
         {
@@ -36,12 +36,21 @@ namespace Movie_Project
             this._title = title;
         }
 
+        public void SetMovieGenres(string genreString)
+        {
+            _movieGenres = new List<GenreTracker>();
+            if (genreString != null)
+            {
+                //TODO
+            }
+        }
+
         /// <summary>
         /// Checks if the <c>List</c> already contains the genre, then adds it if it does not.
         /// </summary>
-        /// <param name="movieGenre"><c>MovieGenre</c> to be added.</param>
-        // Checks if the List<MovieGenre> already contains the genre, then adds it if it does not.
-        public void AddGenre(MovieGenre movieGenre)
+        /// <param name="movieGenre"><c>GenreTracker</c> to be added.</param>
+        // Checks if the List<GenreTracker> already contains the genre, then adds it if it does not.
+        public void AddGenre(GenreTracker movieGenre)
         {
             if (_movieGenres.Contains(movieGenre))
                 _movieGenres.Add(movieGenre);
