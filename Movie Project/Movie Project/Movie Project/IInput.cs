@@ -5,12 +5,6 @@
     /// </summary>
     internal interface IInput
     {
-//        /// <summary>
-//        /// Get a <c>List</c> of all stored movies. 
-//        /// </summary>
-//        /// <returns>A <c>List</c> of all stored movies.</returns>
-//        List<Movie> GetStoredMovies();
-        
         /// <summary>
         /// Gets the highest ID stored.
         /// Used to generate new movies without reusing IDs.
