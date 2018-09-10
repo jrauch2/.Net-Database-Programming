@@ -46,9 +46,15 @@ namespace Movie_Project
         /// <returns>The <c>List</c> of genres</returns>
         // Get the list of genres.
         // Returns List<string> of genres.
-        public List<string> GetAllMovieGenres()
+//        public List<string> GetAllMovieGenres()
+//        {
+//            _movieGenres.Sort();
+//            return _movieGenres;
+//        }
+
+        public bool Contains(string s)
         {
-            return _movieGenres;
+            return _movieGenres.Contains(s);
         }
 
         /// <summary>
@@ -60,7 +66,7 @@ namespace Movie_Project
         {
             try
             {
-                if (_movieGenres.Contains(genre.FirstCharToUpper()))
+                if (_movieGenres.Contains(genre))
                 {
                     _logger.Debug("Genre not added. Genre already exists in list.");
                     return;
@@ -71,7 +77,7 @@ namespace Movie_Project
                     return;
                 }
 
-                _movieGenres.Add(genre.FirstCharToUpper());
+                _movieGenres.Add(genre);
                 _logger.Trace("Genre added successfully.");
             }
             catch (ArgumentNullException ane)
@@ -86,6 +92,16 @@ namespace Movie_Project
             {
                 _logger.Error(e.Source + "\n" + e.Message);
             }
+        }
+
+        public string ToDelimitedString(char delimiter)
+        {
+            return _movieGenres.ToDelimitedString(delimiter);
+        }
+
+        public string ToFormattedString()
+        {
+            return _movieGenres.ToFormattedString();
         }
     }
 }
