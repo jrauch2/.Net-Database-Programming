@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NUnit.Framework.Api;
 
 namespace Movie_Project
 {
@@ -25,9 +23,9 @@ namespace Movie_Project
         private static readonly MovieFactory MovieFactoryInstance = MovieFactory.GetMovieFactoryInstance();
         private const string RegularExpression = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         private static string _fileName;
-        private const string MovieNotFoundMessage = "Movie not found.";
         private const string ExceptionMessage = "There was an Exception in ";
         private const string FileNotExistMessage = "The file does not exist.";
+        private const string MovieExistsMessage = "Movie not added, {0} already exists";
 
         /// <summary>
         /// Private constructor for <c>CsvInput</c>.
@@ -40,6 +38,7 @@ namespace Movie_Project
         public static CsvInput GetCsvInputInstance(string fileName)
         {
             SetFileName(fileName);
+            StartCsvInput();
             return Instance;
         }
 
@@ -100,14 +99,10 @@ namespace Movie_Project
         }
 
         // Get the movie with matching ID.
-        public Movie FindMovieById(int id)
+        public bool FindMovieById(int id, out Movie movie)
         {
-            var movie = StoredMovies.Find(m => m.GetId() == id);
-            if (movie == null)
-            {
-                throw new KeyNotFoundException(MovieNotFoundMessage);
-            }
-            return movie;
+            movie = StoredMovies.Find(m => m.GetId() == id);
+            return movie != null;
         }
 
         public bool FindMovieByTitle(string title, out Movie movie)
@@ -128,6 +123,31 @@ namespace Movie_Project
 
             movie = null;
             return false;
+        }
+
+        public bool Contains(Movie movie)
+        {
+            return StoredMovies.Contains(movie);
+        }
+
+        public void AddMovie(Movie movie)
+        {
+            if (movie is null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (StoredMovies.Contains(movie))
+            {
+                throw new ArgumentException(MovieExistsMessage, nameof(movie));
+            }
+            else if (FindMovieByTitle(movie.GetTitle(), out _))
+            {
+                throw new ArgumentException(MovieExistsMessage, nameof(movie.GetTitle));
+            }
+            else if (FindMovieById(movie.GetId(), out _))
+            {
+                throw new ArgumentException(MovieExistsMessage, nameof(movie.GetId));
+            }
         }
     }
 }
