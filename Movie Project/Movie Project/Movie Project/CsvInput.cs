@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
+using NUnit.Framework.Api;
 
 namespace Movie_Project
 {
@@ -16,75 +18,78 @@ namespace Movie_Project
     // Implements the IInput interface.
     // Extends the CsvStore class.
     // Used to oad stored movies from a CSV file.
-    internal class CsvInput : CsvStore, IInput
+    internal sealed class CsvInput : CsvStore, IInput
     {
-        private static readonly MovieFactory MovieFactory = MovieFactory.GetMovieFactoryInstance();
-        private const string Regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        private string _fileName;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly CsvInput Instance = new CsvInput();
+        private static readonly MovieFactory MovieFactoryInstance = MovieFactory.GetMovieFactoryInstance();
+        private const string RegularExpression = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        private static string _fileName;
         private const string MovieNotFoundMessage = "Movie not found.";
         private const string ExceptionMessage = "There was an Exception in ";
+        private const string FileNotExistMessage = "The file does not exist.";
 
         /// <summary>
-        /// Constructor for <c>CsvInput</c>.
-        /// Requires the name of the file to be opened as an argument.
+        /// Private constructor for <c>CsvInput</c>.
         /// </summary>
-        /// <param name="fileName">The name of the file to be opened.</param>
-        // Constructor for CsvInput.
-        // Requires the name of the file to be opened as an argument.
-        public CsvInput(string fileName)
+        private CsvInput()
+        {
+            
+        }
+
+        public static CsvInput GetCsvInputInstance(string fileName)
         {
             SetFileName(fileName);
-            if (File.Exists(fileName))
+            return Instance;
+        }
+
+        private static void StartCsvInput()
+        {
+            SetFileName(_fileName);
+            if (File.Exists(_fileName))
             {
                 using (var file = new StreamReader(_fileName))
                 {
+                    var count = 0;
                     try
                     {
                         while (!file.EndOfStream)
                         {
-                            string line = file.ReadLine();
-                            StoredMovies.Add(MovieFactory.StringToTicket(line, Regex));
+                            if (count++ == 0)
+                            {
+                                file.ReadLine();
+                            }
+                            var line = file.ReadLine();
+                            StoredMovies.Add(MovieFactoryInstance.NewMovie(line, RegularExpression));
                         }
                     }
                     catch (Exception ex)
                     {
-                        //TODO
-                        Console.WriteLine(ExceptionMessage + nameof(CsvIn));
-                        Console.WriteLine(ex.Message);
+                        Logger.Error("{0} {1} {2} {3}", ExceptionMessage, ex.Source, ex.Message, ex.StackTrace);
                     }
                 }
             }
             else
             {
-                //TODO
-                Console.WriteLine("File does not exist.");
+                Logger.Warn(FileNotExistMessage);
             }
-
         }
 
         /// <summary>
         /// Set <c>fileName</c>.
         /// </summary>
         /// <param name="fileName">The name of the file to be opened.</param>
-        private void SetFileName(string fileName)
+        private static void SetFileName(string fileName)
         {
             _fileName = fileName;
         }
 
-        //Get a List of all stored tickets.
-        /// <inheritdoc />
-        public List<Ticket> GetStoredTickets()
-        {
-            return StoredMovies;
-        }
-
         //Get the highest used ID.
-        /// <inheritdoc />
         public int GetMaxId()
         {
             if (StoredMovies.Any())
             {
-                int maxId = StoredMovies.Max(ticket => ticket.GetTicketId());
+                var maxId = StoredMovies.Max(movie => movie.GetId());
                 return maxId;
             }
             else
@@ -94,32 +99,35 @@ namespace Movie_Project
 
         }
 
-        // Get the ticket with matching id
-        /// <inheritdoc />
-        public Ticket FindId(int id)
+        // Get the movie with matching ID.
+        public Movie FindMovieById(int id)
         {
-            Ticket ticket = StoredMovies.Find(t => t.GetTicketId() == id);
-            if (ticket == null)
+            var movie = StoredMovies.Find(m => m.GetId() == id);
+            if (movie == null)
             {
-                //TODO
-                //Make generic
-                Console.WriteLine(MovieNotFoundMessage);
+                throw new KeyNotFoundException(MovieNotFoundMessage);
             }
-            return ticket;
+            return movie;
         }
 
-        public List<string> ParseMovieGenres(string genreString)
+        public bool FindMovieByTitle(string title, out Movie movie)
         {
-            var list = new List<string>();
-            if (genreString != null)
+            if (title != null)
             {
-                var sa = genreString.Split('|');
-
-                list.AddRange(sa);
+                if (title == "") throw new ArgumentException("Argument string cannot be empty");
             }
-            list.Sort();
+            else
+                throw new ArgumentNullException();
 
-            return list;
+            foreach (var storedMovie in StoredMovies)
+            {
+                if (!title.ToUpper().Equals(storedMovie.GetTitle().ToUpper())) continue;
+                movie = storedMovie;
+                return true;
+            }
+
+            movie = null;
+            return false;
         }
     }
 }
