@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity.Migrations.Model;
-using NUnit.Framework;
+using System.Linq;
 
 namespace Movie_Project
 {
@@ -30,7 +29,7 @@ namespace Movie_Project
 
         private void SetId(int id)
         {
-            this._id = id;
+            _id = id;
         }
 
         public string GetTitle()
@@ -40,7 +39,7 @@ namespace Movie_Project
 
         public void SetTitle(string title)
         {
-            this._title = title;
+            _title = title;
         }
 
         public List<string> GetMovieGenres()
@@ -50,6 +49,10 @@ namespace Movie_Project
 
         private void SetMovieGenres(List<string> genres)
         {
+            for (var i = 0; i < genres.Count; i++)
+            {
+                genres[i] = genres[i].FirstCharToUpper();
+            }
             _movieGenres = genres;
         }
         
@@ -60,13 +63,43 @@ namespace Movie_Project
         // Checks if the List<string> already contains the genre, then adds it if it does not.
         public void AddGenre(string movieGenre)
         {
-            if (_movieGenres.Contains(movieGenre))
-                _movieGenres.Add(movieGenre);
+            if (_movieGenres.Contains(movieGenre.FirstCharToUpper()))
+                _movieGenres.Add(movieGenre.FirstCharToUpper());
         }
 
         public void RemoveGenre(string genre)
         {
             //TODO
+        }
+
+        public override string ToString()
+        {
+            return _id.ToString() + "," +  _title + "," + GenresToString();
+        }
+
+        private string GenresToString()
+        {
+            if (_movieGenres.Any())
+            {
+                var s = "";
+                for (var i = 0; i < _movieGenres.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        s += _movieGenres[i];
+                    }
+                    else
+                    {
+                        s += '|' + _movieGenres[i];
+                    }
+                }
+
+                return s;
+            }
+            else
+            {
+                return "(no genres listed)";
+            }
         }
     }
 }
