@@ -93,5 +93,10 @@ namespace Movie_Project
                 _logger.Error(e.Source + "\n" + e.Message);
             }
         }
+
+        public string ToFormattedString()
+        {
+            return _movieGenres.ToFormattedString();
+        }
     }
 }
