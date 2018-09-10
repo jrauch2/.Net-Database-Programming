@@ -93,15 +93,5 @@ namespace Movie_Project
                 _logger.Error(e.Source + "\n" + e.Message);
             }
         }
-
-        public string ToDelimitedString(char delimiter)
-        {
-            return _movieGenres.ToDelimitedString(delimiter);
-        }
-
-        public string ToFormattedString()
-        {
-            return _movieGenres.ToFormattedString();
-        }
     }
 }
