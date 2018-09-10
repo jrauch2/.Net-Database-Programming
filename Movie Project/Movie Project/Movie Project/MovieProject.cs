@@ -83,7 +83,7 @@ namespace Movie_Project
 
         private void ViewMovieDetails()
         {
-            var correct = false;
+            var done = false;
             do
             {
                 Console.Clear();
@@ -93,6 +93,7 @@ namespace Movie_Project
                 Console.WriteLine(FiftyTwoStarLine);
                 Console.WriteLine(" * 1) Get Movie by ID.".PadRight(ConsoleWidth - 2) + "* ");
                 Console.WriteLine(" * 2) Get Movie by title. [Movie Title (YEAR)]".PadRight(ConsoleWidth - 2) + "* ");
+                Console.WriteLine(" * 3) Main Menu.");
                 var input = Console.ReadLine();
                 switch (input)
                 {
@@ -100,11 +101,29 @@ namespace Movie_Project
                         GetMovieById();
                         break;
                     case "2":
+                        GetMovieByTitle();
+                        break;
+                    case "3":
+                        done = true;
                         break;
                     default:
+                        Console.WriteLine(InvalidOptionMessage);
+                        Logger.Warn(InvalidOptionMessage);
+                        Console.WriteLine(ContinueMessage);
+                        Console.ReadLine();
                         break;
                 }
-            } while (!correct);
+            } while (!done);
+        }
+
+        private void GetMovieByTitle()
+        {
+            Console.Clear();
+            Console.WriteLine(FiftyTwoStarLine);
+            Console.WriteLine(Header);
+            Console.WriteLine(ViewMovieHeader);
+            Console.WriteLine(FiftyTwoStarLine);
+            //TODO
         }
 
         private void GetMovieById()
@@ -114,7 +133,7 @@ namespace Movie_Project
             Console.WriteLine(Header);
             Console.WriteLine(ViewMovieHeader);
             Console.WriteLine(FiftyTwoStarLine);
-            
+            //TODO
         }
 
         private void NewMovieBuilder()
