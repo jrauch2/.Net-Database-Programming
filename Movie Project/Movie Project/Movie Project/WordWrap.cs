@@ -42,7 +42,6 @@ namespace Movie_Project
                         var len = eol - pos;
                         if (len > width)
                             len = BreakLine(text, pos, width);
-                        sb.Append(" * ");
                         sb.Append(text, pos, len);
                         sb.Append('|');
 
