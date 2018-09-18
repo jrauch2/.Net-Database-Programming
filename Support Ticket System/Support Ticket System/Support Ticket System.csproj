@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4AD5F9CB-2665-4359-A555-7E499DFBC3C7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Class_Project</RootNamespace>
-    <AssemblyName>Class Project</AssemblyName>
+    <RootNamespace>Support_Ticket_System</RootNamespace>
+    <AssemblyName>Support_Ticket_System</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

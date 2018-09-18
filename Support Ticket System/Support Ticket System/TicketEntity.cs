@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Database_Functions
+namespace Support_Ticket_System
 {
     [Table("Tickets")]
     public class TicketEntity

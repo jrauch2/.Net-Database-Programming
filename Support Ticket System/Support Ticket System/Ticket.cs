@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using Class_Project;
 
-namespace Class_Project
+namespace Support_Ticket_System
 {
     public class Ticket
     {
-        private int ticketId;
-        private string summary;
-        private Status status;
-        private Priority priority;
-        private string submitter;
-        private string assigned;
-        private List<string> watching;
+        private int _ticketId;
+        private string _summary;
+        private Status _status;
+        private Priority _priority;
+        private string _submitter;
+        private string _assigned;
+        private List<string> _watching;
 
         public Ticket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching)
         {
@@ -25,106 +26,106 @@ namespace Class_Project
 
         public int GetTicketId()
         {
-            return ticketId;
+            return _ticketId;
         }
 
         private void SetTicketId(int ticketId)
         {
-            this.ticketId = ticketId;
+            _ticketId = ticketId;
         }
 
         public string GetSummary()
         {
-            return summary;
+            return _summary;
         }
 
         private void SetSummary(string summary)
         {
-            this.summary = summary;
+            _summary = summary;
         }
 
         public Status GetStatus()
         {
-            return status;
+            return _status;
         }
 
         public void SetStatus(Status status)
         {
-            this.status = status;
+            _status = status;
         }
 
         public Priority GetPriority()
         {
-            return priority;
+            return _priority;
         }
 
         public void SetPriority(Priority priority)
         {
-            this.priority = priority;
+            _priority = priority;
         }
 
         public string GetSubmitter()
         {
-            return submitter;
+            return _submitter;
         }
 
         private void SetSubmitter(string submitter)
         {
-            this.submitter = submitter;
+            _submitter = submitter;
         }
 
         public string GetAssigned()
         {
-            return assigned;
+            return _assigned;
         }
 
         public void SetAssigned(string assigned)
         {
-            this.assigned = assigned;
+            _assigned = assigned;
         }
 
         public List<string> GetWatching()
         {
-            return watching;
+            return _watching;
         }
 
         private void SetWatching(List<string> watching)
         {
-            this.watching = watching;
+            _watching = watching;
         }
 
         public void AppendSummary(string newSummary)
         {
-            summary += "\n" + newSummary;
+            _summary += "\n" + newSummary;
         }
 
         public void AddWatching(string watcher)
         {
-            watching.Add(watcher);
+            _watching.Add(watcher);
         }
 
         public string GetWatchingString()
         {
-            string watchers = "";
+            var watchers = "";
 
-            for (int i = 0; i < watching.Count; i++)
+            for (var i = 0; i < _watching.Count; i++)
             {
-                if (i == watching.Count - 1)
+                if (i == _watching.Count - 1)
                 {
-                    watchers += watching[i];
+                    watchers += _watching[i];
                 }
                 else
                 {
-                    watchers += watching[i] + "|";
+                    watchers += _watching[i] + "|";
                 }
             }
 
             return watchers;
-        }       
+        }
 
         public override string ToString()
         {
-            return (this == null) ? null: ticketId + ",\"" + summary + "\"," + status + "," + priority + "," + submitter + "," + assigned + "," + GetWatchingString();
+            return $"{_ticketId},\"{_summary}\",{_status},{_priority},{_submitter},{_assigned},{GetWatchingString()}";
         }
     }
 }
