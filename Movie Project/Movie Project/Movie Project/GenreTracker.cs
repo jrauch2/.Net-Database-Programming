@@ -98,5 +98,13 @@ namespace Movie_Project
         {
             return _movieGenres.ToFormattedString();
         }
+
+        public string[] GetGenres()
+        {
+            var genres = new string[_movieGenres.Count];
+            _movieGenres.Sort();
+            _movieGenres.CopyTo(genres);
+            return genres;
+        }
     }
 }
