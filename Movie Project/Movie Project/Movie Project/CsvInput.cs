@@ -25,7 +25,6 @@ namespace Movie_Project
         private static string _fileName;
         private const string ExceptionMessage = "There was an Exception in ";
         private const string FileNotExistMessage = "The file does not exist.";
-        private const string MovieExistsMessage = "Movie not added, {0} already exists";
 
         /// <summary>
         /// Private constructor for <c>CsvInput</c>.
@@ -81,73 +80,6 @@ namespace Movie_Project
         private static void SetFileName(string fileName)
         {
             _fileName = fileName;
-        }
-
-        //Get the highest used ID.
-        public int GetMaxId()
-        {
-            if (StoredMovies.Any())
-            {
-                var maxId = StoredMovies.Max(movie => movie.GetId());
-                return maxId;
-            }
-            else
-            {
-                return 0;
-            }
-
-        }
-
-        // Get the movie with matching ID.
-        public bool FindMovieById(int id, out Movie movie)
-        {
-            movie = StoredMovies.Find(m => m.GetId() == id);
-            return movie != null;
-        }
-
-        public bool FindMovieByTitle(string title, out Movie movie)
-        {
-            if (title != null)
-            {
-                if (title == "") throw new ArgumentException("Argument string cannot be empty");
-            }
-            else
-                throw new ArgumentNullException();
-
-            foreach (var storedMovie in StoredMovies)
-            {
-                if (!title.ToUpper().Equals(storedMovie.GetTitle().ToUpper())) continue;
-                movie = storedMovie;
-                return true;
-            }
-
-            movie = null;
-            return false;
-        }
-
-        public bool Contains(Movie movie)
-        {
-            return StoredMovies.Contains(movie);
-        }
-
-        public void AddMovie(Movie movie)
-        {
-            if (movie is null)
-            {
-                throw new ArgumentNullException();
-            }
-            else if (StoredMovies.Contains(movie))
-            {
-                throw new ArgumentException(MovieExistsMessage, nameof(movie));
-            }
-            else if (FindMovieByTitle(movie.GetTitle(), out _))
-            {
-                throw new ArgumentException(MovieExistsMessage, nameof(movie.GetTitle));
-            }
-            else if (FindMovieById(movie.GetId(), out _))
-            {
-                throw new ArgumentException(MovieExistsMessage, nameof(movie.GetId));
-            }
         }
     }
 }

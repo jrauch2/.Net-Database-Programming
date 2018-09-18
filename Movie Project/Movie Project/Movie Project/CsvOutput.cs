@@ -15,6 +15,7 @@ namespace Movie_Project
     internal class CsvOutput : CsvStore, IOutput
     {
         private string _fileName;
+        private const string MovieExistsMessage = "Movie not added, {0} already exists";
 
         /// <summary>
         /// Output <c>List</c> of <c>Movie</c> objects to a csv file.
@@ -34,23 +35,55 @@ namespace Movie_Project
             _fileName = fileName;
         }
 
-        public void StoreMovies()
+        public void AddMovie(Movie movie)
         {
-            using (var output = new StreamWriter(_fileName))
+            if (movie is null)
             {
-                try
+                throw new ArgumentNullException();
+            }
+            else if (StoredMovies.Contains(movie))
+            {
+                throw new ArgumentException(MovieExistsMessage, nameof(movie));
+            }
+            else if (FindMovieByTitle(movie.GetTitle(), out _))
+            {
+                throw new ArgumentException(MovieExistsMessage, nameof(movie.GetTitle));
+            }
+            else if (FindMovieById(movie.GetId(), out _))
+            {
+                throw new ArgumentException(MovieExistsMessage, nameof(movie.GetId));
+            }
+            else
+            {
+                StoredMovies.Add(movie);
+                if (File.Exists(_fileName))
                 {
-                    StoredMovies.Sort();
-                    foreach (var storedMovie in StoredMovies)
-                    {
-                        output.WriteLine(storedMovie.ToString());
-                    }
+                    File.Copy(_fileName, _fileName + ".bak", true);
                 }
-                catch (Exception e)
+                using (var output = new StreamWriter(_fileName, true))
                 {
-                    if (e.InnerException != null) throw e.InnerException;
+                    output.WriteLine(movie.ToString());
                 }
             }
         }
+
+//        /// <summary>
+//        /// Write out <c>List</c> of <c>Movie</c> objects to storage medium.
+//        /// </summary>
+//        // Write out a List<Movie> to storage medium.
+//        public void StoreMovies()
+//        {
+//            if (File.Exists(_fileName))
+//            {
+//                File.Copy(_fileName, _fileName + ".bak",true);
+//            }
+//            using (var output = new StreamWriter(_fileName))
+//            {
+//                foreach (var storedMovie in StoredMovies)
+//                {
+//                    output.WriteLine(storedMovie.ToString());
+//                }
+//            }
+//        }
     }
 }
