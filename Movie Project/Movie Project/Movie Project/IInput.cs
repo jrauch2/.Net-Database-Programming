@@ -1,4 +1,6 @@
-﻿namespace Movie_Project
+﻿using System.Data.Entity.Migrations.Model;
+
+namespace Movie_Project
 {/// <summary>
     /// The <c>IInput</c> interface.
     /// provides signatures for methods to query stored movies.
@@ -30,8 +32,6 @@
         /// <returns><c>true</c> if movie is found, <c>false</c> if not.</returns>
         bool FindMovieByTitle(string title, out Movie movie);
 
-        bool Contains(Movie movie);
-
-        void AddMovie(Movie movie);
+        Movie[] GetAllMovies();
     }
 }
