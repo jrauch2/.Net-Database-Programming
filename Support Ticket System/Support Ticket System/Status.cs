@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Class_Project
+﻿namespace Support_Ticket_System
 {
     public enum Status
     {
-        OPEN, CLOSED
+        Open, Closed
     }
 }

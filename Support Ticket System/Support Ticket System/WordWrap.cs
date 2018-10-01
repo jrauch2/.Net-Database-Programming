@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace Class_Project
+namespace Support_Ticket_System
 {
-    // @author Jonathan Wood, Joshua Rauch
+    // @author Jonathan Wood
     // https://www.codeproject.com/Articles/51488/Implementing-Word-Wrap-in-C
     // 4 Jul 2012
     internal static class WordWrap
@@ -18,7 +18,7 @@ namespace Class_Project
         public static string Wrap(string text, int width)
         {
             int pos, next;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Lucidity check
             if (width < 1)
@@ -28,7 +28,7 @@ namespace Class_Project
             for (pos = 0; pos < text.Length; pos = next)
             {
                 // Find end of line
-                int eol = text.IndexOf(Environment.NewLine, pos);
+                var eol = text.IndexOf(Environment.NewLine, pos, StringComparison.Ordinal);
                 if (eol == -1)
                     next = eol = text.Length;
                 else
@@ -39,16 +39,15 @@ namespace Class_Project
                 {
                     do
                     {
-                        int len = eol - pos;
+                        var len = eol - pos;
                         if (len > width)
                             len = BreakLine(text, pos, width);
-                        sb.Append(" * ");
                         sb.Append(text, pos, len);
-                        sb.Append('|');
+                        sb.Append(Environment.NewLine);
 
                         // Trim whitespace following break
                         pos += len;
-                        while (pos < eol && Char.IsWhiteSpace(text[pos]))
+                        while (pos < eol && char.IsWhiteSpace(text[pos]))
                             pos++;
                     } while (eol > pos);
                 }
@@ -68,8 +67,8 @@ namespace Class_Project
         private static int BreakLine(string text, int pos, int max)
         {
             // Find last whitespace in line
-            int i = max;
-            while (i >= 0 && !Char.IsWhiteSpace(text[pos + i]))
+            var i = max;
+            while (i >= 0 && !char.IsWhiteSpace(text[pos + i]))
                 i--;
 
             // If no whitespace found, break at maximum length
@@ -77,7 +76,7 @@ namespace Class_Project
                 return max;
 
             // Find start of whitespace
-            while (i >= 0 && Char.IsWhiteSpace(text[pos + i]))
+            while (i >= 0 && char.IsWhiteSpace(text[pos + i]))
                 i--;
 
             // Return length of text before whitespace
