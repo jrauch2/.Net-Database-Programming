@@ -7,19 +7,22 @@ using NLog;
 
 namespace Support_Ticket_System
 {
-    internal class CsvTaskTicketStore : IStore
+    internal class CsvTaskTicketStore : IStore, ITicketable
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private string FilePath { get; }
         private string RegexString { get; }
         private readonly TicketFactory _ticketFactory;
         private IDisplay _display;
+        public Type TicketType { get; set; }
 
         private const string TicketNotFoundMessage = "Ticket not found.";
-        private const string MovieExistsMessage = "Movie not added, {0} already exists";
+        private const string TicketExistsMessage = "Ticket already exists";
+        private const string WrongTypeMessage = "Not a TaskTicket. Check type before calling method.";
 
         public CsvTaskTicketStore(string filePath, ref IDisplay display, string regexString)
         {
+            TicketType = typeof(TaskTicket);
             _display = display;
             _ticketFactory = TicketFactory.GetTicketFactoryInstance();
             FilePath = filePath;
@@ -95,17 +98,20 @@ namespace Support_Ticket_System
                 throw new ArgumentNullException();
             }
 
-            if (tickets.Contains(ticket))
+            if (tickets.Contains(ticket) || FindId(ticket.Id, out _))
             {
-                throw new ArgumentException(MovieExistsMessage, nameof(ticket));
+                throw new ArgumentException(TicketExistsMessage, nameof(ticket));
             }
 
-            if (FindId(ticket.Id, out _))
+            if (ticket is TaskTicket)
             {
-                throw new ArgumentException(MovieExistsMessage, nameof(ticket.Id));
+                tickets.Add(ticket);
+                WriteToFile(ticket.ToString());
             }
-
-            WriteToFile(ticket.ToString());
+            else
+            {
+                _logger.Error(WrongTypeMessage);
+            }
         }
 
         /// <summary>
@@ -113,7 +119,7 @@ namespace Support_Ticket_System
         /// </summary>
         /// <param name="ticketString">The formatted <c>string</c> to be parsed.</param>
         /// <returns>A <c>SupportTicket</c> object, parsed from a formatted <c>string</c>.</returns>
-        private SupportTicket StringToTicket(string ticketString)
+        private TaskTicket StringToTicket(string ticketString)
         {
             var subs = Regex.Split(ticketString, RegexString);
 
@@ -124,7 +130,7 @@ namespace Support_Ticket_System
                 subs[i] = subs[i].Replace("\"", "");
             }
 
-            var ticket = _ticketFactory.NewTicket(subs[0].ToInt(), subs[1], subs[2].ToStatus(), subs[3].ToPriority(), subs[4], subs[5], watching, subs[7].ToSeverity(), ref _display);
+            var ticket = _ticketFactory.NewTicket(subs[0].ToInt(), subs[1], subs[2].ToStatus(), subs[3].ToPriority(), subs[4], subs[5], watching, subs[7], subs[8].ToDateTime(), ref _display);
 
             return ticket;
         }

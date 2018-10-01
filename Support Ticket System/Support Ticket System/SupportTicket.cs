@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Support_Ticket_System
 {
@@ -6,7 +8,7 @@ namespace Support_Ticket_System
     {
         private Severity Severity { get; }
 
-        public SupportTicket(int id, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, Severity severity, ref IDisplay display)
+        public SupportTicket(int id, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, Severity severity, ref IDisplay displayProgram)
         {
             Id = id;
             Summary = summary;
@@ -15,7 +17,7 @@ namespace Support_Ticket_System
             Submitter = submitter;
             Assigned = assigned;
             Watching = watching;
-            Display = display;
+            DisplayProgram = displayProgram;
             Severity = severity;
         }
 
@@ -37,13 +39,14 @@ namespace Support_Ticket_System
 
         public override void DisplayTicket()
         {
-            Display.WriteLine("ID: " + Id);
-            Display.WriteLine("Summary: " + Summary);
-            Display.WriteLine("Status: " + Status);
-            Display.WriteLine("Priority: " + Priority);
-            Display.WriteLine("Submitter: " + Submitter);
-            Display.WriteLine("Assigned: " + Assigned);
-            Display.WriteLine("Watching: " + Watching.ToFormattedString());
-            Display.WriteLine("Severity: " + Severity);}
+            DisplayProgram.WriteLine("ID: " + Id);
+            DisplayProgram.WriteLine("Summary: " + Summary);
+            DisplayProgram.WriteLine("Status: " + Status);
+            DisplayProgram.WriteLine("Priority: " + Priority);
+            DisplayProgram.WriteLine("Submitter: " + Submitter);
+            DisplayProgram.WriteLine("Assigned: " + Assigned);
+            DisplayProgram.WriteLine("Watching: " + Watching.ToFormattedString());
+            DisplayProgram.WriteLine("Severity: " + Severity.ToString().Insert(Severity.ToString().Length -1, " "));
+        }
     }
 }

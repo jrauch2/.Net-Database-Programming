@@ -69,6 +69,7 @@
     <Compile Include="ConsoleDisplay.cs" />
     <Compile Include="CsvEnhancementTicketStore.cs" />
     <Compile Include="CsvTaskTicketStore.cs" />
+    <Compile Include="ITicketable.cs" />
     <Compile Include="ListExtentions.cs" />
     <Compile Include="TicketStores.cs" />
     <Compile Include="CsvSupportTicketStore.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="TaskTicket.cs" />
     <Compile Include="Ticket.cs" />
     <Compile Include="TicketFactory.cs" />
-    <Compile Include="TicketType.cs" />
     <Compile Include="WordWrap.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />

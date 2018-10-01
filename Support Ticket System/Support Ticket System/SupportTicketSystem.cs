@@ -13,7 +13,7 @@ namespace Support_Ticket_System
         private IDisplay _display;                      // Display for the application.
 
         // Set of strings used throughout the SupportTicketSystem class.
-        private const string PaddedFiftyStarLine = " ************************************************** \n";
+        private const char SpecialCharacter = '*';
         private const string Header = "Support Desk Ticket System";
         private const string NewSupportTicketHeader = "New Support Ticket";
         private const string NewEnhancementTicketHeader = "New Enhancement Ticket";
@@ -29,8 +29,7 @@ namespace Support_Ticket_System
             _logger.Trace("Setting the display and display size...");
             _display = display;
             _display.SetWindowSize(52, 30);
-            _display.LeftPadding = " * ";
-            _display.RightPadding = "* ";
+            _display.SpecialCharacter = SpecialCharacter;
             _logger.Trace("... Display set.");
             _logger.Trace("Instantiating TicketStore...");
             _stores = new TicketStores();
@@ -69,41 +68,58 @@ namespace Support_Ticket_System
 
             do
             {
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine(Header);
-                _display.Write(PaddedFiftyStarLine);
-                _display.WriteLine("1) New Ticket (customer)");
-                _display.WriteLine("2) New Ticket (technician)");
-                _display.WriteLine("3) Update SupportTicket");
-                _display.WriteLine("4) Print All Tickets");
-                _display.WriteLine("5) Exit");
-                _display.Write(PaddedFiftyStarLine);
-                _display.Write("Select an option: ");
+                _display.WriteSpecialLine();
+                List<Type> types = new List<Type>();
+                foreach (ITicketable ticketStore in _stores)
+                {
+                    if (!types.Contains(ticketStore.TicketType))
+                        types.Add(ticketStore.TicketType);
+                }
 
+                for (var index = 0; index < types.Count; index++)
+                {
+                    var type = types[index];
+                    _display.WriteLine((index + 1) + ") New " + type.Name.Insert(type.Name.LastIndexOf("T", StringComparison.Ordinal), " "));
+                    if (index != types.Count - 1) continue;
+                    _display.WriteLine((index + 2) + ") Update Ticket");
+                    _display.WriteLine((index + 3) + ") Print All Tickets");
+                    _display.WriteLine((index + 4) + ") Exit");
+                }
+
+//                _display.WriteLine("1) New Ticket (customer)");
+//                _display.WriteLine("2) New Ticket (technician)");
+//                _display.WriteLine("3) Update Ticket");
+//                _display.WriteLine("4) Print All Tickets");
+//                _display.WriteLine("5) Exit");
+//                _display.WriteSpecialLine();
+//                _display.Write("Select an option: ");
+//
                 var input = _display.GetInput();
                 _display.Clear();
-                switch (input)
-                {
-                    case "1":
-                        NewTicketViaCustomer();
-                        break;
-                    case "2":
-                        NewTicketViaTechnician();
-                        break;
-                    case "3":
-                        UpdateTicket();
-                        break;
-                    case "4":
-                        PrintAllTickets();
-                        break;
-                    case "5":
-                        correct = true;
-                        CloseProgram();
-                        break;
-                    default:
-                        _display.Write(InvalidInput);
-                        break;
-                }
+//                switch (input)
+//                {
+//                    case "1":
+//                        NewTicketViaCustomer();
+//                        break;
+//                    case "2":
+//                        NewTicketViaTechnician();
+//                        break;
+//                    case "3":
+//                        UpdateTicket();
+//                        break;
+//                    case "4":
+//                        PrintAllTickets();
+//                        break;
+//                    case "5":
+//                        correct = true;
+//                        CloseProgram();
+//                        break;
+//                    default:
+//                        _display.Write(InvalidInput);
+//                        break;
+//                }
             } while (!correct);
 
         }
@@ -123,6 +139,11 @@ namespace Support_Ticket_System
             _display.Clear();
 
             GetCorrectInput(summary, priority, submitter);
+        }
+
+        private Type GetTicketTypeInput()
+        {
+            throw new NotImplementedException();
         }
 
         private void NewTicketViaTechnician()
@@ -155,67 +176,28 @@ namespace Support_Ticket_System
 
         private void PrintAllTickets()
         {
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine(Header);
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             foreach (var ticket in _stores.GetAllTickets())
             {
                 ticket.DisplayTicket();
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
             }
             _display.Write(PressToContinue);
             _display.GetInput();
             _display.Clear();
         }
 
-        private TicketType GetTicketTypeInput()
-        {
-            var correct = false;
-            var ticketType = TicketType.Support;
-            do
-            {
-                _display.Write(PaddedFiftyStarLine);
-                _display.WriteLine(Header);
-                _display.WriteLine(NewSupportTicketHeader);
-                _display.Write(PaddedFiftyStarLine);
-                _display.WriteLine("What do type of service do you require?");
-                foreach (var name in Enum.GetNames(typeof(TicketType)))
-                {
-                    _display.WriteLine(name);
-                }
-                _display.Write(PaddedFiftyStarLine);
-                var input = _display.GetInput();
-                if (input is null)
-                {
-                    _display.Write(InvalidInput);
-                    _display.Write(PressToContinue);
-                    _display.GetInput();
-                }
-                else
-                {
-                    var priorityInput = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input);
-                    foreach (var name in Enum.GetNames(typeof(TicketType)))
-                    {
-                        if (!priorityInput.Equals(name)) continue;
-                        ticketType = priorityInput.ToTicketType();
-                        correct = true;
-                    }
-                }
-                _display.Clear();
-            } while (!correct);
-
-            return ticketType;
-        }
-
         //Ask user for summary.
         private string GetSummaryInput()
         {
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine(NewSupportTicketHeader);
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine("Write a summary of the issue (254 Char Max):");
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             return _display.GetInput();
         }
 
@@ -226,12 +208,12 @@ namespace Support_Ticket_System
             var priority = Priority.Low;
             do
             {
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine(Header);
                 _display.WriteLine(NewSupportTicketHeader);
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine("Set a priority (Low, Medium, High, Severe):");
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 var input = _display.GetInput();
                 if (input is null)
                 {
@@ -260,34 +242,34 @@ namespace Support_Ticket_System
         //Ask user for name (submitter).
         private string GetSubmitterInput()
         {
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine(NewSupportTicketHeader);
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine("Enter submitter name:");
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             return _display.GetInput();
         }
 
         private string GetAssignedInput()
         {
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine(NewSupportTicketHeader);
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine("Enter assigned technician:");
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             return _display.GetInput();
         }
 
         private string GetWatchingInput()
         {
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine(NewSupportTicketHeader);
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             _display.WriteLine("Enter watching names, comma separated:");
-            _display.Write(PaddedFiftyStarLine);
+            _display.WriteSpecialLine();
             return _display.GetInput();
         }
 
@@ -304,14 +286,14 @@ namespace Support_Ticket_System
 
             do
             {
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine(Header);
                 _display.WriteLine(NewSupportTicketHeader);
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine("1) Summary: " + summary);
                 _display.WriteLine("2) Priority: " + priority);
                 _display.WriteLine("3) Submitter: " + submitter);
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
                 var input = _display.GetInput();
 
@@ -354,16 +336,16 @@ namespace Support_Ticket_System
 
             do
             {
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine(Header);
                 _display.WriteLine(NewSupportTicketHeader);
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.WriteLine("1) Summary: " + summary);
                 _display.WriteLine("2) Priority: " + priority);
                 _display.WriteLine("3) Submitter: " + submitter);
                 _display.WriteLine("4) Assigned: " + assigned);
                 _display.WriteLine("1) Watching: " + watching);
-                _display.Write(PaddedFiftyStarLine);
+                _display.WriteSpecialLine();
                 _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
                 var input = _display.GetInput();
 

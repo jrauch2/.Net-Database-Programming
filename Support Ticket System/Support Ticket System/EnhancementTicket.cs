@@ -10,7 +10,7 @@ namespace Support_Ticket_System
         public string Reason { get; set; }
         public string Estimate { get; set; }
 
-        public EnhancementTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, string software, double cost, string reason, string estimate, ref IDisplay display)
+        public EnhancementTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, string software, double cost, string reason, string estimate, ref IDisplay displayProgram)
         {
             Id = ticketId;
             Summary = summary;
@@ -23,24 +23,23 @@ namespace Support_Ticket_System
             Cost = cost;
             Reason = reason;
             Estimate = estimate;
-            Display = display;
+            DisplayProgram = displayProgram;
         }
 
         public override void DisplayTicket()
         {
 
-            Display.Write(WordWrap.Wrap(Id + "\n" +
-                                                 Summary + "\n" +
-                                                 Status + "\n" +
-                                                 Priority + "\n" +
-                                                 Submitter + "\n" +
-                                                 Assigned + "\n" +
-                                                 Watching.ToFormattedString() + "\n" +
-                                                 Software + "\n" +
-                                                 Cost + "\n" +
-                                                 Reason + "\n" +
-                                                 Estimate + "\n",
-                Display.DisplayWidth));
+            DisplayProgram.WriteLine("ID: " + Id);
+            DisplayProgram.WriteLine("Summary: " + Summary);
+            DisplayProgram.WriteLine("Status: " + Status);
+            DisplayProgram.WriteLine("Priority: " + Priority);
+            DisplayProgram.WriteLine("Submitter: " + Submitter);
+            DisplayProgram.WriteLine("Assigned: " + Assigned);
+            DisplayProgram.WriteLine("Watching: " + Watching.ToFormattedString());
+            DisplayProgram.WriteLine("Software: " + Software);
+            DisplayProgram.WriteLine("Cost: " + Cost);
+            DisplayProgram.WriteLine("Reason: " + Reason);
+            DisplayProgram.WriteLine("Estimate: " + Estimate);
         }
     }
 }

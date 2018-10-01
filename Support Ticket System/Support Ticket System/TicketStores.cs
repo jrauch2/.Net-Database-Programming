@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Support_Ticket_System
 {
-    internal class TicketStores : IStore
+    internal class TicketStores : IStore, IEnumerable
     {
         private readonly List<IStore> _stores = new List<IStore>();
+private const string TicketExistsMessage = "Ticket already exists";
 
         public List<Ticket> GetAllTickets()
         {
@@ -47,12 +49,29 @@ namespace Support_Ticket_System
 
         public void AddTicket(Ticket ticket)
         {
-            throw new NotImplementedException();
+            foreach (var store in _stores)
+            {
+                if (ticket.GetType() != ((ITicketable)store).TicketType) continue;
+                if (store.FindId(ticket.Id, out _))
+                {
+                    throw new ArgumentException(TicketExistsMessage, nameof(ticket));
+                }
+                else
+                {
+                    store.AddTicket(ticket);
+                }
+            }
         }
 
         public void AddTicketStore(IStore store)
         {
             _stores.Add(store);
         }
+
+        public IEnumerator GetEnumerator()
+        {
+            return _stores.GetEnumerator();
+        }
+
     }
 }

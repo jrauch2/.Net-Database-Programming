@@ -4,10 +4,21 @@ namespace Support_Ticket_System
 {
     class ConsoleDisplay : IDisplay
     {
+        private char _specialCharacter;
         public int DisplayHeight { get; set; }
         public int DisplayWidth { get; set; }
         public string LeftPadding { get; set; }
         public string RightPadding { get; set; }
+        public char SpecialCharacter {
+            get => _specialCharacter;
+            set
+            {
+                _specialCharacter = value;
+                LeftPadding = " " + value + " ";
+                RightPadding = value + " ";
+            }
+        }
+
 
         public void Write(string message)
         {
@@ -29,6 +40,22 @@ namespace Support_Ticket_System
                     Console.WriteLine(Format(s));
                 }
             }
+        }
+
+        public void WriteSpecialLine()
+        {
+            for (var i = 0; i < DisplayWidth; i++)
+            {
+                if (i == 0 || i == DisplayWidth - 1)
+                {
+                    Console.Write(" ");
+                }
+                else
+                {
+                    Console.Write(SpecialCharacter);
+                }
+            }
+            Console.WriteLine();
         }
 
         public void SetWindowSize(int displayWidth, int displayHeight)

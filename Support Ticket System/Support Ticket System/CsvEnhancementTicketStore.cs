@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text.RegularExpressions;
 using NLog;
 
 namespace Support_Ticket_System
 {
-    internal class CsvEnhancementTicketStore : IStore
+    internal class CsvEnhancementTicketStore : IStore, ITicketable
     {
 
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -15,19 +16,24 @@ namespace Support_Ticket_System
         private IDisplay _display;
         private string RegexString { get; }
         private readonly TicketFactory _ticketFactory;
+        public Type TicketType { get; set; }
+
 
         private const string TicketNotFoundMessage = "Ticket not found.";
-        private const string MovieExistsMessage = "Movie not added, {0} already exists";
+        private const string TicketExistsMessage = "Ticket already exists";
+        private const string WrongTypeMessage = "Not an EnhancementTicket. Check type before calling method.";
 
         public CsvEnhancementTicketStore(string filePath, ref IDisplay display, string regexString)
         {
+            TicketType = typeof(EnhancementTicket);
+            _display = display;
             _ticketFactory = TicketFactory.GetTicketFactoryInstance();
             FilePath = filePath;
-            _display = display;
             RegexString = regexString;
         }
 
         //Get all stored Tickets
+        
         public List<Ticket> GetAllTickets()
         {
             var tickets = new List<Ticket>();
@@ -97,18 +103,20 @@ namespace Support_Ticket_System
                 throw new ArgumentNullException();
             }
 
-            if (tickets.Contains(ticket))
+            if (tickets.Contains(ticket) || FindId(ticket.Id, out _))
             {
-                throw new ArgumentException(MovieExistsMessage, nameof(ticket));
+                throw new ArgumentException(TicketExistsMessage, nameof(ticket));
             }
 
-            if (FindId(ticket.Id, out _))
+            if (ticket is EnhancementTicket)
             {
-                throw new ArgumentException(MovieExistsMessage, nameof(ticket.Id));
+                tickets.Add(ticket);
+                WriteToFile(ticket.ToString());
             }
-
-            tickets.Add(ticket);
-            WriteToFile(ticket.ToString());
+            else
+            {
+                _logger.Error(WrongTypeMessage);
+            }
         }
 
         /// <summary>
@@ -138,6 +146,7 @@ namespace Support_Ticket_System
             {
                 File.Copy(FilePath, FilePath + ".bak", true);
             }
+
             using (var output = new StreamWriter(FilePath, true))
             {
                 output.WriteLine(s);

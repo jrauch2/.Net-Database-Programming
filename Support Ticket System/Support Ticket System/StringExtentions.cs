@@ -50,10 +50,10 @@ namespace Support_Ticket_System
             return severity;
         }
 
-        public static TicketType ToTicketType(this string ticketTypeString)
+        public static DateTime ToDateTime(this string dateTimeString)
         {
-            Enum.TryParse<TicketType>(ticketTypeString, true, out var ticketType);
-            return ticketType;
+            DateTime.TryParse(dateTimeString, out var dateTime);
+            return dateTime;
         }
 
         public static List<string> ToStringList(this string s)

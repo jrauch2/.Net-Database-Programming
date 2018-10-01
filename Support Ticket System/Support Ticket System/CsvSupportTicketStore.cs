@@ -11,19 +11,22 @@ namespace Support_Ticket_System
     /// The <c>CsvSupportTicketStore</c> class.
     /// Contains a <c>List</c> of stored tickets in <c>StoredTickets</c>.
     /// </summary>
-    internal class CsvSupportTicketStore : IStore
+    internal class CsvSupportTicketStore : IStore, ITicketable
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private string FilePath { get; }
         private string RegexString { get; }
         private readonly TicketFactory _ticketFactory;
         private IDisplay _display;
-        
+        public Type TicketType { get; set; }
+
         private const string TicketNotFoundMessage = "Ticket not found.";
-        private const string MovieExistsMessage = "Movie not added, {0} already exists";
-        
+        private const string TicketExistsMessage = "Ticket already exists";
+        private const string WrongTypeMessage = "Not a SupportTicket. Check type before calling method.";
+
         public CsvSupportTicketStore(string filePath, ref IDisplay display, string regexString)
         {
+            TicketType = typeof(SupportTicket);
             _display = display;
             _ticketFactory = TicketFactory.GetTicketFactoryInstance();
             FilePath = filePath;
@@ -100,17 +103,20 @@ namespace Support_Ticket_System
                 throw new ArgumentNullException();
             }
 
-            if (tickets.Contains(ticket))
+            if (tickets.Contains(ticket) || FindId(ticket.Id, out _))
             {
-                throw new ArgumentException(MovieExistsMessage, nameof(ticket));
+                throw new ArgumentException(TicketExistsMessage, nameof(ticket));
             }
 
-            if (FindId(ticket.Id, out _))
+            if (ticket is SupportTicket)
             {
-                throw new ArgumentException(MovieExistsMessage, nameof(ticket.Id));
+                tickets.Add(ticket);
+                WriteToFile(ticket.ToString());
             }
-
-            WriteToFile(ticket.ToString());
+            else
+            {
+                _logger.Error(WrongTypeMessage);
+            }
         }
 
         /// <summary>

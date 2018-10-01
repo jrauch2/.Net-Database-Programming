@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Support_Ticket_System
@@ -47,6 +48,12 @@ namespace Support_Ticket_System
             string assigned, List<string> watching, string software, double cost, string reason, string estimate, ref IDisplay display)
         {
             return new EnhancementTicket(ticketId, summary, status, priority, submitter, assigned, watching, software, cost, reason, estimate, ref display);
+        }
+
+        public TaskTicket NewTicket(int ticketId, string summary, Status status, Priority priority, string submitter,
+            string assigned, List<string> watching, string projectName, DateTime dueDate, ref IDisplay display)
+        {
+            return new TaskTicket(ticketId, summary, status, priority, submitter, assigned, watching, projectName, dueDate, ref display);
         }
     }
 }

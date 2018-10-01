@@ -2,6 +2,6 @@
 {
     public enum Severity
     {
-        Tier1, Tier2, Tier3
+        Tier1, Tier2,  Tier3
     }
 }

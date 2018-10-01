@@ -16,3 +16,11 @@
 2018-10-01 07:00:21.9855 DEBUG New file generated.
 2018-10-01 07:00:21.9905 DEBUG File not found.
 2018-10-01 07:00:25.6496 DEBUG New file generated.
+2018-10-01 15:11:59.3221 ERROR System.ArgumentOutOfRangeException: Specified argument was out of the range of valid values.
+Parameter name: startIndex
+   at System.String.Insert(Int32 startIndex, String value)
+   at Support_Ticket_System.SupportTicket.DisplayTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\SupportTicket.cs:line 49
+   at Support_Ticket_System.SupportTicketSystem.PrintAllTickets() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\SupportTicketSystem.cs:line 167
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\SupportTicketSystem.cs:line 96
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\SupportTicketSystem.cs:line 62
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\Program.cs:line 23
