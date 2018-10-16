@@ -7,7 +7,7 @@ using Support_Ticket_System.Utility;
 
 namespace Support_Ticket_System.Stores.DB_Stores
 {
-    internal class DbTicketStore : IStore, ITicketable
+    internal class DbTicketStore : IStore
     {
         private IDisplay _display;
         private const string InvalidTicketTypeMessage = "Invalid ticket type. Check for a ticket type and try again.";
@@ -155,7 +155,5 @@ namespace Support_Ticket_System.Stores.DB_Stores
         {
             throw new NotImplementedException();
         }
-
-        public Type TicketType { get; set; }
     }
 }

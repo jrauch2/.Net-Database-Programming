@@ -82,7 +82,7 @@
     <Compile Include="Interfaces\ITicketable.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utility\ListExtentions.cs" />
-    <Compile Include="Stores\FileStores.cs" />
+    <Compile Include="Stores\TicketStores.cs" />
     <Compile Include="Stores\File Stores\CsvBugTicketStore.cs" />
     <Compile Include="Tickets\Enhancement.cs" />
     <Compile Include="Interfaces\IDisplay.cs" />
@@ -97,7 +97,6 @@
     <Compile Include="Tickets\Bug.cs" />
     <Compile Include="Tickets\Task.cs" />
     <Compile Include="Tickets\Ticket.cs" />
-    <Compile Include="TicketFactory.cs" />
     <Compile Include="Utility\WordWrap.cs" />
   </ItemGroup>
   <ItemGroup />

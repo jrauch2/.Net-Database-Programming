@@ -6,7 +6,7 @@ using Support_Ticket_System.Tickets;
 
 namespace Support_Ticket_System.Stores
 {
-    internal class FileStores : IStore, IEnumerable
+    internal class TicketStores : IStore, IEnumerable
     {
         private readonly List<IStore> _stores = new List<IStore>();
 private const string TicketExistsMessage = "Ticket already exists";

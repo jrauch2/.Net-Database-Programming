@@ -15,8 +15,7 @@ namespace Support_Ticket_System
     internal class SupportTicketSystem
     {
         private readonly Logger _logger;                // Logger for the SupportTicketSystem class.
-        private readonly FileStores _stores;          // TicketStore instance.
-//        private readonly TicketFactory _ticketFactory;  // TicketFactory instance.
+        private readonly TicketStores _stores;          // TicketStore instance.
         private IDisplay _display;                      // Display for the application.
 
         // Set of strings used throughout the SupportTicketSystem class.
@@ -39,34 +38,31 @@ namespace Support_Ticket_System
             _display.SpecialCharacter = SpecialCharacter;
             _logger.Trace("... Display set.");
             _logger.Debug("Instantiating TicketStore...");
-            _stores = new FileStores();
+            _stores = new TicketStores();
             _logger.Trace("...TicketStore instantiated.");
-            //            _logger.Debug("Getting TicketFactory instance...");
-            //            _ticketFactory = TicketFactory.GetTicketFactoryInstance();  // TicketFactory is a Singleton, must retrieve the instance from the class.
-            //            _logger.Trace("... TicketFactory instance retreived.");
-
+            
             // DB Ticket Store
             _logger.Debug("Adding DbTicketStore to the TicketStore...");
             _stores.AddTicketStore(new DbTicketStore(ref _display));
             _logger.Trace("... CsvBugTicketStore added to TicketStore.");
 
-            // Bug Ticket Store
-            _logger.Debug("Adding CsvBugTicketStore to the TicketStore...");
-            const string bugFilePath = "..\\..\\support_tickets.csv";
-            _stores.AddTicketStore(new CsvBugTicketStore(bugFilePath, ref _display, regex));
-            _logger.Trace("... CsvBugTicketStore added to TicketStore.");
-
-            // Enhancement Ticket Store
-            _logger.Debug("Adding CsvEnhancementTicketStore to the TicketStore...");
-            const string enhancementFilePath = "..\\..\\enhancement_tickets.csv";
-            _stores.AddTicketStore(new CsvEnhancementTicketStore(enhancementFilePath, ref _display, regex));
-            _logger.Trace("... CsvEnhancementTicketStore added to TicketStore.");
-
-            // Task Ticket Store
-            _logger.Debug("Adding CsvTaskTicketStore to the TicketStore...");
-            const string taskFilePath = "..\\..\\task_tickets.csv";
-            _stores.AddTicketStore(new CsvTaskTicketStore(taskFilePath, ref _display, regex));
-            _logger.Trace("... CsvTaskTicketStore added to TicketStore.");
+//            // Bug Ticket Store
+//            _logger.Debug("Adding CsvBugTicketStore to the TicketStore...");
+//            const string bugFilePath = "..\\..\\support_tickets.csv";
+//            _stores.AddTicketStore(new CsvBugTicketStore(bugFilePath, ref _display, regex));
+//            _logger.Trace("... CsvBugTicketStore added to TicketStore.");
+//
+//            // Enhancement Ticket Store
+//            _logger.Debug("Adding CsvEnhancementTicketStore to the TicketStore...");
+//            const string enhancementFilePath = "..\\..\\enhancement_tickets.csv";
+//            _stores.AddTicketStore(new CsvEnhancementTicketStore(enhancementFilePath, ref _display, regex));
+//            _logger.Trace("... CsvEnhancementTicketStore added to TicketStore.");
+//
+//            // Task Ticket Store
+//            _logger.Debug("Adding CsvTaskTicketStore to the TicketStore...");
+//            const string taskFilePath = "..\\..\\task_tickets.csv";
+//            _stores.AddTicketStore(new CsvTaskTicketStore(taskFilePath, ref _display, regex));
+//            _logger.Trace("... CsvTaskTicketStore added to TicketStore.");
         }
 
         public void Start()
@@ -81,85 +77,57 @@ namespace Support_Ticket_System
                 _logger.Trace("Print Menu Header...");
                 _display.WriteSpecialLine();
                 _display.WriteLine(Header);
+                _display.WriteSpecialLine();                
+                _display.WriteLine("1) New Bug Ticket");
+                _display.WriteLine("2) New Enhancement Ticket");
+                _display.WriteLine("3) New Task Ticket");
+                _display.WriteLine("4) Update Ticket");
+                _display.WriteLine("5) Print All Tickets");
+                _display.WriteLine("6) Search Tickets");
+                _display.WriteLine("7) Exit");
                 _display.WriteSpecialLine();
-                var types = new List<Type>();
-                _logger.Debug("Get ticket Types from ticket stores...");
-                foreach (ITicketable ticketStore in _stores)
-                {
-                    if (!types.Contains(ticketStore.TicketType))
-                        types.Add(ticketStore.TicketType);
-                }
+                _display.Write("Select an option: ");
 
-                for (var index = 0; index < types.Count; index++)
-                {
-                    var type = types[index];
-                    var i = type.Name.LastIndexOf("T", StringComparison.Ordinal);
-                    _display.WriteLine((index + 1) + ") New " + type.Name + " Ticket");
-                    if (index != types.Count - 1) continue;
-                    _display.WriteLine((index + 2) + ") Update Ticket");
-                    _display.WriteLine((index + 3) + ") Print All Tickets");
-                    _display.WriteLine((index + 4) + ") Exit");
-                }
-
-//                _display.WriteLine("1) New Ticket (customer)");
-//                _display.WriteLine("2) New Ticket (technician)");
-//                _display.WriteLine("3) Update Ticket");
-//                _display.WriteLine("4) Print All Tickets");
-//                _display.WriteLine("5) Exit");
-//                _display.WriteSpecialLine();
-//                _display.Write("Select an option: ");
-//
                 var input = _display.GetInput();
-                _display.Clear();
-//                switch (input)
-//                {
-//                    case "1":
-//                        NewTicketViaCustomer();
-//                        break;
-//                    case "2":
-//                        NewTicketViaTechnician();
-//                        break;
-//                    case "3":
-//                        UpdateTicket();
-//                        break;
-//                    case "4":
-//                        PrintAllTickets();
-//                        break;
-//                    case "5":
-//                        correct = true;
-//                        CloseProgram();
-//                        break;
-//                    default:
-//                        _display.Write(InvalidInput);
-//                        break;
-//                }
+
+                switch (input)
+                {
+                    case "1":
+                        NewBugTicket();
+                        break;
+                    case "2":
+                        NewEnhancementTicket();
+                        break;
+                    case "3":
+                        NewTaskTicket();
+                        break;
+                    case "4":
+                        UpdateTicket();
+                        break;
+                    case "5":
+                        PrintAllTickets();
+                        break;
+                    case "6":
+                        SearchAllTickets();
+                        break;
+                    case "7":
+                        CloseProgram();
+                        break;
+                    default:
+                        _display.Write(InvalidInput);
+                        break;
+                }
             } while (true);
 
         }
 
-        //Ask the user for input to generate a new ticket.
-        private void NewTicketViaCustomer()
-        {
-            var ticketType = GetTicketTypeInput();
-
-            var summary = GetSummaryInput();
-            _display.Clear();
-
-            var priority = GetPriorityInput();
-            _display.Clear();
-
-            var submitter = GetSubmitterInput();
-            _display.Clear();
-
-            GetCorrectInput(summary, priority, submitter);
-        }
-
-        private Type GetTicketTypeInput()
+        private void SearchAllTickets()
         {
             throw new NotImplementedException();
         }
 
-        private void NewTicketViaTechnician()
+        //Ask the user for input to generate a new ticket.
+        private void NewBugTicket()
         {
             string summary = GetSummaryInput();
             _display.Clear();
@@ -179,6 +147,33 @@ namespace Support_Ticket_System
             Severity severity = GetSeverityInput();
 
             GetCorrectInput(summary, priority, submitter, assigned, watching, severity);
+        }
+
+        private void NewEnhancementTicket()
+        {
+            string summary = GetSummaryInput();
+            _display.Clear();
+
+            Priority priority = GetPriorityInput();
+            _display.Clear();
+
+            string submitter = GetSubmitterInput();
+            _display.Clear();
+
+            string assigned = GetAssignedInput();
+            _display.Clear();
+
+            string watching = GetWatchingInput();
+            _display.Clear();
+
+            Severity severity = GetSeverityInput();
+
+            GetCorrectInput(summary, priority, submitter, assigned, watching, severity);
+
+        }
+
+        private void NewTaskTicket()
+        {
 
         }
 
@@ -255,6 +250,7 @@ namespace Support_Ticket_System
         //Ask user for name (submitter).
         private string GetSubmitterInput()
         {
+            var submitter
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine(NewBugTicketHeader);
@@ -292,56 +288,6 @@ namespace Support_Ticket_System
             return Severity.Tier1;
         }
         
-        //Ask the user to confirm that the information is correct
-        private void GetCorrectInput(string summary, Priority priority, string submitter)
-        {
-            var correct = false;
-
-            do
-            {
-                _display.WriteSpecialLine();
-                _display.WriteLine(Header);
-                _display.WriteLine(NewBugTicketHeader);
-                _display.WriteSpecialLine();
-                _display.WriteLine("1) Summary: " + summary);
-                _display.WriteLine("2) Priority: " + priority);
-                _display.WriteLine("3) Submitter: " + submitter);
-                _display.WriteSpecialLine();
-                _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
-                var input = _display.GetInput();
-
-                switch (input)
-                {
-                    case "0":
-                        correct = true;
-                        var id = _stores.GetMaxId();
-                        //Save ticket
-                        _stores.AddTicket(new Bug(
-                            ++id, summary, Status.Open, priority, submitter, "", new List<string>() {submitter}, Severity.Tier1, ref _display));
-                        break;
-                    case "1":
-                        _display.Clear();
-                        summary = GetSummaryInput();
-                        break;
-                    case "2":
-                        _display.Clear();
-                        priority = GetPriorityInput();
-                        break;
-                    case "3":
-                        _display.Clear();
-                        submitter = GetSubmitterInput();
-                        break;
-                    default:
-                        _display.Write(InvalidInput);
-                        _display.Write(PressToContinue);
-                        _display.GetInput();
-                        break;
-                }
-
-                _display.Clear();
-            } while (!correct);
-        }
-
         //Ask the user to confirm that the information is correct
         private void GetCorrectInput(string summary, Priority priority, string submitter, string assigned, string watching, Severity severity)
         {
