@@ -4,9 +4,6 @@ C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket Syst
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\ConsoleApplication.exe.config
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\ConsoleApplication.exe
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\ConsoleApplication.pdb
-C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\EntityFramework.dll
-C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\NLog.dll
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\EntityFramework.xml
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\NLog.xml

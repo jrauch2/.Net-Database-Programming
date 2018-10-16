@@ -250,12 +250,11 @@ namespace Support_Ticket_System
         //Ask user for name (submitter).
         private string GetSubmitterInput()
         {
-            var submitter
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
-            _display.WriteLine("Enter submitter name:");
+            _display.WriteLine("Enter submitter name (First Last):");
             _display.WriteSpecialLine();
             return _display.GetInput();
         }
@@ -266,7 +265,7 @@ namespace Support_Ticket_System
             _display.WriteLine(Header);
             _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
-            _display.WriteLine("Enter assigned technician:");
+            _display.WriteLine("Enter assigned technician (First Last):");
             _display.WriteSpecialLine();
             return _display.GetInput();
         }
@@ -277,7 +276,7 @@ namespace Support_Ticket_System
             _display.WriteLine(Header);
             _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
-            _display.WriteLine("Enter watching names, comma separated:");
+            _display.WriteLine("Enter watching names, comma separated(First Last, First Last):");
             _display.WriteSpecialLine();
             return _display.GetInput();
         }
@@ -289,7 +288,7 @@ namespace Support_Ticket_System
         }
         
         //Ask the user to confirm that the information is correct
-        private void GetCorrectInput(string summary, Priority priority, string submitter, string assigned, string watching, Severity severity)
+        private void GetCorrectInput(string summary, Priority priority, string submitterString, string assignedString, string watchingString, Severity severity)
         {
             var correct = false;
 
@@ -301,9 +300,9 @@ namespace Support_Ticket_System
                 _display.WriteSpecialLine();
                 _display.WriteLine("1) Summary: " + summary);
                 _display.WriteLine("2) Priority: " + priority);
-                _display.WriteLine("3) Submitter: " + submitter);
-                _display.WriteLine("4) Assigned: " + assigned);
-                _display.WriteLine("1) Watching: " + watching);
+                _display.WriteLine("3) Submitter: " + submitterString);
+                _display.WriteLine("4) Assigned: " + assignedString);
+                _display.WriteLine("1) Watching: " + watchingString);
                 _display.WriteSpecialLine();
                 _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
                 var input = _display.GetInput();
@@ -313,9 +312,27 @@ namespace Support_Ticket_System
                     case "0":
                         correct = true;
                         var id = _stores.GetMaxId();
+
+                        var submitterName = submitterString.Split(' ');
+                        var submitter = new User();
+                        submitter.FName = submitterName[0];
+                        submitter.LName = submitterName[1];
+
+                        var assignedName = assignedString.Split(' ');
+                        var assigned = new User();
+                        assigned.FName = assignedName[0];
+                        assigned.LName = assignedName[1];
+
+                        var watching = new List<User>();
+                        var nameString = watchingString.Split(',');
+                        foreach (var s in nameString)
+                        {
+                            watching
+                        }
+
                         //Save ticket
                         _stores.AddTicket(new Bug(
-                            ++id, summary, Status.Open, priority, submitter, assigned, watching.ToStringList(), severity, ref _display));
+                            ++id, summary, Status.Open, priority, submitter, assigned, watchingString, severity, ref _display));
                         break;
                     case "1":
                         _display.Clear();
@@ -327,15 +344,15 @@ namespace Support_Ticket_System
                         break;
                     case "3":
                         _display.Clear();
-                        submitter = GetSubmitterInput();
+                        submitterString = GetSubmitterInput();
                         break;
                     case "4":
                         _display.Clear();
-                        assigned = GetAssignedInput();
+                        assignedString = GetAssignedInput();
                         break;
                     case "5":
                         _display.Clear();
-                        watching = GetWatchingInput();
+                        watchingString = GetWatchingInput();
                         break;
                     default:
                         _display.Write(InvalidInput);
