@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Utility
 {
     // @author Jonathan Wood
     // https://www.codeproject.com/Articles/51488/Implementing-Word-Wrap-in-C

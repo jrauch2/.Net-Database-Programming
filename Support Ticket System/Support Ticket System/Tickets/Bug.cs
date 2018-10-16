@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using Support_Ticket_System.Enums;
+using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Utility;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Tickets
 {
-    internal class SupportTicket : Ticket
+    internal class Bug : Ticket
     {
         private Severity Severity { get; }
 
-        public SupportTicket(int id, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, Severity severity, ref IDisplay displayProgram)
+        public Bug(int id, string summary, Status status, Priority priority, User submitter, User assigned, List<User> watching, Severity severity, ref IDisplay displayProgram)
         {
             Id = id;
             Summary = summary;
@@ -25,13 +26,7 @@ namespace Support_Ticket_System
         {
             Summary += "\n" + newSummary;
         }
-
-        public void AddWatching(string watcher)
-        {
-            Watching.Add(watcher);
-        }
-
-
+        
         public override string ToString()
         {
             return $"{Id},\"{Summary}\",{Status},{Priority},{Submitter},{Assigned},{Watching.ToDelimitedString('|')},{Severity}";

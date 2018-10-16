@@ -1,4 +1,4 @@
-﻿namespace Support_Ticket_System
+﻿namespace Support_Ticket_System.Interfaces
 {
     internal interface IDisplay
     {

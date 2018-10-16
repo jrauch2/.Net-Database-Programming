@@ -1,5 +1,6 @@
 ﻿using System;
 using NLog;
+using Support_Ticket_System.Interfaces;
 
 namespace Support_Ticket_System
 {

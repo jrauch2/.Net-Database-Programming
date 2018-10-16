@@ -4,32 +4,38 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Tickets;
+using Support_Ticket_System.Utility;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Stores.File_Stores
 {
-    internal class CsvTaskTicketStore : IStore, ITicketable
+    internal class CsvEnhancementTicketStore : IStore, ITicketable
     {
+
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private string FilePath { get; }
-        private string RegexString { get; }
-        private readonly TicketFactory _ticketFactory;
         private IDisplay _display;
+        private string RegexString { get; }
+//        private readonly TicketFactory _ticketFactory;
         public Type TicketType { get; set; }
+
 
         private const string TicketNotFoundMessage = "Ticket not found.";
         private const string TicketExistsMessage = "Ticket already exists";
-        private const string WrongTypeMessage = "Not a TaskTicket. Check type before calling method.";
+        private const string WrongTypeMessage = "Not an Enhancement ticket. Check type before calling method.";
 
-        public CsvTaskTicketStore(string filePath, ref IDisplay display, string regexString)
+        public CsvEnhancementTicketStore(string filePath, ref IDisplay display, string regexString)
         {
-            TicketType = typeof(TaskTicket);
+            TicketType = typeof(Enhancement);
             _display = display;
-            _ticketFactory = TicketFactory.GetTicketFactoryInstance();
+//            _ticketFactory = TicketFactory.GetTicketFactoryInstance();
             FilePath = filePath;
             RegexString = regexString;
         }
 
         //Get all stored Tickets
+        
         public List<Ticket> GetAllTickets()
         {
             var tickets = new List<Ticket>();
@@ -40,7 +46,7 @@ namespace Support_Ticket_System
                 var input = _display.GetInput();
                 if (!input.Equals("Y") && !input.Equals("y")) return tickets;
                 _logger.Trace("Generating new file...");
-                WriteToFile("TicketId,Summary,Status,Priority,Submitter,Assigned,Watching,ProjectName,DueDate");
+                WriteToFile("TicketId,Summary,Status,Priority,Submitter,Assigned,Watching,Software,Cost,Reason,Estimate");
                 _logger.Debug("New file generated.");
                 return tickets;
             }
@@ -53,7 +59,7 @@ namespace Support_Ticket_System
                         var line = file.ReadLine();
                         if (line == null) continue;
                         if (!int.TryParse(line[0].ToString(), out _)) continue;
-                        tickets.Add(StringToTicket(line));
+//                        tickets.Add(StringToTicket(line));
                     }
                 }
                 catch (Exception ex)
@@ -63,6 +69,11 @@ namespace Support_Ticket_System
             }
 
             return tickets;
+        }
+
+        public List<Ticket> Search()
+        {
+            throw new NotImplementedException();
         }
 
         //Get the highest used ID.
@@ -84,6 +95,7 @@ namespace Support_Ticket_System
                 t = ticket;
                 return true;
             }
+
             t = null;
             _logger.Info(TicketNotFoundMessage);
             return false;
@@ -103,7 +115,7 @@ namespace Support_Ticket_System
                 throw new ArgumentException(TicketExistsMessage, nameof(ticket));
             }
 
-            if (ticket is TaskTicket)
+            if (ticket is Enhancement)
             {
                 tickets.Add(ticket);
                 WriteToFile(ticket.ToString());
@@ -115,25 +127,25 @@ namespace Support_Ticket_System
         }
 
         /// <summary>
-        /// Parses a formatted <c>string</c> into a <c>SupportTicket</c> object.
+        /// Parses a formatted <c>string</c> into an <c>Enhancement</c> ticket object.
         /// </summary>
         /// <param name="ticketString">The formatted <c>string</c> to be parsed.</param>
-        /// <returns>A <c>SupportTicket</c> object, parsed from a formatted <c>string</c>.</returns>
-        private TaskTicket StringToTicket(string ticketString)
-        {
-            var subs = Regex.Split(ticketString, RegexString);
-
-            var watching = new List<string>(subs[6].Split('|'));
-
-            for (var i = 0; i < subs.Length; i++)
-            {
-                subs[i] = subs[i].Replace("\"", "");
-            }
-
-            var ticket = _ticketFactory.NewTicket(subs[0].ToInt(), subs[1], subs[2].ToStatus(), subs[3].ToPriority(), subs[4], subs[5], watching, subs[7], subs[8].ToDateTime(), ref _display);
-
-            return ticket;
-        }
+        /// <returns>An <c>Enhancement</c> ticket object, parsed from a formatted <c>string</c>.</returns>
+//        private Enhancement StringToTicket(string ticketString)
+//        {
+//            var subs = Regex.Split(ticketString, RegexString);
+//
+//            var watching = new List<string>(subs[6].Split('|'));
+//
+//            for (var i = 0; i < subs.Length; i++)
+//            {
+//                subs[i] = subs[i].Replace("\"", "");
+//            }
+//
+////            var ticket = _ticketFactory.NewTicket(subs[0].ToInt(), subs[1], subs[2].ToStatus(), subs[3].ToPriority(), subs[4], subs[5], watching, subs[7], subs[8].ToDouble(), subs[9], subs[10], ref _display);
+//
+//            return ticket;
+//        }
 
         private void WriteToFile(string s)
         {
@@ -141,6 +153,7 @@ namespace Support_Ticket_System
             {
                 File.Copy(FilePath, FilePath + ".bak", true);
             }
+
             using (var output = new StreamWriter(FilePath, true))
             {
                 output.WriteLine(s);

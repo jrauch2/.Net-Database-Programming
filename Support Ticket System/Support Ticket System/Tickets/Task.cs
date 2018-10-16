@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Support_Ticket_System.Enums;
+using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Utility;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Tickets
 {
-    internal class TaskTicket : Ticket
+    internal class Task : Ticket
     {
         private string ProjectName { get; set; }
-        private DateTime DueDate { get; set; }
+        private string DueDate { get; set; }
 
-        public TaskTicket(int id, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, string projectName, DateTime dueDate, ref IDisplay displayProgram)
+        public Task(int id, string summary, Status status, Priority priority, User submitter, User assigned, List<User> watching, string projectName, string dueDate, ref IDisplay displayProgram)
         {
             Id = id;
             Summary = summary;

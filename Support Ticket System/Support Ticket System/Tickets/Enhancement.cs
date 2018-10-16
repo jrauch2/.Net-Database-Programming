@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Support_Ticket_System.Enums;
+using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Utility;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Tickets
 {
-    class EnhancementTicket : Ticket
+    internal class Enhancement : Ticket
     {
-        public string Software { get; set; }
-        public double Cost { get; set; }
-        public string Reason { get; set; }
-        public string Estimate { get; set; }
+        private string Software { get; set; }
+        private string Cost { get; set; }
+        private string Reason { get; set; }
+        private string Estimate { get; set; }
 
-        public EnhancementTicket(int ticketId, string summary, Status status, Priority priority, string submitter, string assigned, List<string> watching, string software, double cost, string reason, string estimate, ref IDisplay displayProgram)
+        public Enhancement(int ticketId, string summary, Status status, Priority priority, User submitter, User assigned, List<User> watching, string software, string cost, string reason, string estimate, ref IDisplay displayProgram)
         {
             Id = ticketId;
             Summary = summary;

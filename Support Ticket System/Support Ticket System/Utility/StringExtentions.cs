@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Support_Ticket_System.Enums;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Utility
 {
     /// <summary>
     /// The <c>StringExtensions</c> class.

@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using NLog;
 using System.Globalization;
+using Support_Ticket_System.Enums;
+using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Stores;
+using Support_Ticket_System.Stores.DB_Stores;
+using Support_Ticket_System.Stores.File_Stores;
+using Support_Ticket_System.Tickets;
+using Support_Ticket_System.Utility;
 
 namespace Support_Ticket_System
 {
     internal class SupportTicketSystem
     {
         private readonly Logger _logger;                // Logger for the SupportTicketSystem class.
-        private readonly TicketStores _stores;          // TicketStore instance.
-        private readonly TicketFactory _ticketFactory;  // TicketFactory instance.
+        private readonly FileStores _stores;          // TicketStore instance.
+//        private readonly TicketFactory _ticketFactory;  // TicketFactory instance.
         private IDisplay _display;                      // Display for the application.
 
         // Set of strings used throughout the SupportTicketSystem class.
         private const char SpecialCharacter = '*';
         private const string Header = "Support Desk Ticket System";
-        private const string NewSupportTicketHeader = "New Support Ticket";
+        private const string NewBugTicketHeader = "New Bug Ticket";
         private const string NewEnhancementTicketHeader = "New Enhancement Ticket";
         private const string NewTaskTicketHeader = "New Task Ticket";
         private const string PressToContinue = "Press any key to continue...\n";
@@ -26,32 +33,37 @@ namespace Support_Ticket_System
             const string regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";   // Regular Expression for selecting commas that are not between double quotes.
             _logger = LogManager.GetCurrentClassLogger();               // Instantiate _logger.
             
-            _logger.Trace("Setting the display and display size...");
+            _logger.Debug("Setting the display and display size...");
             _display = display;
             _display.SetWindowSize(52, 30);
             _display.SpecialCharacter = SpecialCharacter;
             _logger.Trace("... Display set.");
-            _logger.Trace("Instantiating TicketStore...");
-            _stores = new TicketStores();
+            _logger.Debug("Instantiating TicketStore...");
+            _stores = new FileStores();
             _logger.Trace("...TicketStore instantiated.");
-            _logger.Trace("Getting TicketFactory instance...");
-            _ticketFactory = TicketFactory.GetTicketFactoryInstance();  // TicketFactory is a Singleton, must retrieve the instance from the class.
-            _logger.Trace("... TicketFactory instance retreived.");
-            
-            // Support Ticket Store
-            _logger.Trace("Adding CsvSupportTicketStore to the TicketStore...");
-            const string supportFilePath = "..\\..\\support_tickets.csv";
-            _stores.AddTicketStore(new CsvSupportTicketStore(supportFilePath, ref _display, regex));
-            _logger.Trace("... CsvSupportTicketStore added to TicketStore.");
+            //            _logger.Debug("Getting TicketFactory instance...");
+            //            _ticketFactory = TicketFactory.GetTicketFactoryInstance();  // TicketFactory is a Singleton, must retrieve the instance from the class.
+            //            _logger.Trace("... TicketFactory instance retreived.");
+
+            // DB Ticket Store
+            _logger.Debug("Adding DbTicketStore to the TicketStore...");
+            _stores.AddTicketStore(new DbTicketStore(ref _display));
+            _logger.Trace("... CsvBugTicketStore added to TicketStore.");
+
+            // Bug Ticket Store
+            _logger.Debug("Adding CsvBugTicketStore to the TicketStore...");
+            const string bugFilePath = "..\\..\\support_tickets.csv";
+            _stores.AddTicketStore(new CsvBugTicketStore(bugFilePath, ref _display, regex));
+            _logger.Trace("... CsvBugTicketStore added to TicketStore.");
 
             // Enhancement Ticket Store
-            _logger.Trace("Adding CsvEnhancementTicketStore to the TicketStore...");
+            _logger.Debug("Adding CsvEnhancementTicketStore to the TicketStore...");
             const string enhancementFilePath = "..\\..\\enhancement_tickets.csv";
             _stores.AddTicketStore(new CsvEnhancementTicketStore(enhancementFilePath, ref _display, regex));
             _logger.Trace("... CsvEnhancementTicketStore added to TicketStore.");
 
             // Task Ticket Store
-            _logger.Trace("Adding CsvTaskTicketStore to the TicketStore...");
+            _logger.Debug("Adding CsvTaskTicketStore to the TicketStore...");
             const string taskFilePath = "..\\..\\task_tickets.csv";
             _stores.AddTicketStore(new CsvTaskTicketStore(taskFilePath, ref _display, regex));
             _logger.Trace("... CsvTaskTicketStore added to TicketStore.");
@@ -64,14 +76,14 @@ namespace Support_Ticket_System
 
         private void Menu()
         {
-            var correct = false;
-
             do
             {
+                _logger.Trace("Print Menu Header...");
                 _display.WriteSpecialLine();
                 _display.WriteLine(Header);
                 _display.WriteSpecialLine();
-                List<Type> types = new List<Type>();
+                var types = new List<Type>();
+                _logger.Debug("Get ticket Types from ticket stores...");
                 foreach (ITicketable ticketStore in _stores)
                 {
                     if (!types.Contains(ticketStore.TicketType))
@@ -81,7 +93,8 @@ namespace Support_Ticket_System
                 for (var index = 0; index < types.Count; index++)
                 {
                     var type = types[index];
-                    _display.WriteLine((index + 1) + ") New " + type.Name.Insert(type.Name.LastIndexOf("T", StringComparison.Ordinal), " "));
+                    var i = type.Name.LastIndexOf("T", StringComparison.Ordinal);
+                    _display.WriteLine((index + 1) + ") New " + type.Name + " Ticket");
                     if (index != types.Count - 1) continue;
                     _display.WriteLine((index + 2) + ") Update Ticket");
                     _display.WriteLine((index + 3) + ") Print All Tickets");
@@ -120,7 +133,7 @@ namespace Support_Ticket_System
 //                        _display.Write(InvalidInput);
 //                        break;
 //                }
-            } while (!correct);
+            } while (true);
 
         }
 
@@ -194,7 +207,7 @@ namespace Support_Ticket_System
         {
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
-            _display.WriteLine(NewSupportTicketHeader);
+            _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
             _display.WriteLine("Write a summary of the issue (254 Char Max):");
             _display.WriteSpecialLine();
@@ -210,7 +223,7 @@ namespace Support_Ticket_System
             {
                 _display.WriteSpecialLine();
                 _display.WriteLine(Header);
-                _display.WriteLine(NewSupportTicketHeader);
+                _display.WriteLine(NewBugTicketHeader);
                 _display.WriteSpecialLine();
                 _display.WriteLine("Set a priority (Low, Medium, High, Severe):");
                 _display.WriteSpecialLine();
@@ -244,7 +257,7 @@ namespace Support_Ticket_System
         {
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
-            _display.WriteLine(NewSupportTicketHeader);
+            _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
             _display.WriteLine("Enter submitter name:");
             _display.WriteSpecialLine();
@@ -255,7 +268,7 @@ namespace Support_Ticket_System
         {
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
-            _display.WriteLine(NewSupportTicketHeader);
+            _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
             _display.WriteLine("Enter assigned technician:");
             _display.WriteSpecialLine();
@@ -266,7 +279,7 @@ namespace Support_Ticket_System
         {
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
-            _display.WriteLine(NewSupportTicketHeader);
+            _display.WriteLine(NewBugTicketHeader);
             _display.WriteSpecialLine();
             _display.WriteLine("Enter watching names, comma separated:");
             _display.WriteSpecialLine();
@@ -288,7 +301,7 @@ namespace Support_Ticket_System
             {
                 _display.WriteSpecialLine();
                 _display.WriteLine(Header);
-                _display.WriteLine(NewSupportTicketHeader);
+                _display.WriteLine(NewBugTicketHeader);
                 _display.WriteSpecialLine();
                 _display.WriteLine("1) Summary: " + summary);
                 _display.WriteLine("2) Priority: " + priority);
@@ -303,7 +316,7 @@ namespace Support_Ticket_System
                         correct = true;
                         var id = _stores.GetMaxId();
                         //Save ticket
-                        _stores.AddTicket(_ticketFactory.NewTicket(
+                        _stores.AddTicket(new Bug(
                             ++id, summary, Status.Open, priority, submitter, "", new List<string>() {submitter}, Severity.Tier1, ref _display));
                         break;
                     case "1":
@@ -338,7 +351,7 @@ namespace Support_Ticket_System
             {
                 _display.WriteSpecialLine();
                 _display.WriteLine(Header);
-                _display.WriteLine(NewSupportTicketHeader);
+                _display.WriteLine(NewBugTicketHeader);
                 _display.WriteSpecialLine();
                 _display.WriteLine("1) Summary: " + summary);
                 _display.WriteLine("2) Priority: " + priority);
@@ -355,7 +368,7 @@ namespace Support_Ticket_System
                         correct = true;
                         var id = _stores.GetMaxId();
                         //Save ticket
-                        _stores.AddTicket(_ticketFactory.NewTicket(
+                        _stores.AddTicket(new Bug(
                             ++id, summary, Status.Open, priority, submitter, assigned, watching.ToStringList(), severity, ref _display));
                         break;
                     case "1":

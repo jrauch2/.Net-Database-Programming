@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Tickets;
 
-namespace Support_Ticket_System
+namespace Support_Ticket_System.Stores
 {
-    internal class TicketStores : IStore, IEnumerable
+    internal class FileStores : IStore, IEnumerable
     {
         private readonly List<IStore> _stores = new List<IStore>();
 private const string TicketExistsMessage = "Ticket already exists";
@@ -18,6 +20,11 @@ private const string TicketExistsMessage = "Ticket already exists";
             }
 
             return allTickets;
+        }
+
+        public List<Ticket> Search()
+        {
+            throw new NotImplementedException();
         }
 
         //Get the highest used ID.
