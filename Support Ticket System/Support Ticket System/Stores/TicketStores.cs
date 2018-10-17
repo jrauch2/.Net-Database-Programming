@@ -22,6 +22,17 @@ private const string TicketExistsMessage = "Ticket already exists";
             return allTickets;
         }
 
+        public List<Ticket> Search(string searchString)
+        {
+            var tickets = new List<Ticket>();
+            foreach (var store in _stores)
+            {
+                tickets.AddRange(store.Search(searchString));
+            }
+
+            return tickets;
+        }
+
         public List<Ticket> Search()
         {
             throw new NotImplementedException();
@@ -68,6 +79,16 @@ private const string TicketExistsMessage = "Ticket already exists";
                     store.AddTicket(ticket);
                 }
             }
+        }
+        // TODO fix this
+        public User GetUserByName(string fName, string lName)
+        {
+            foreach (var store in _stores)
+            {
+                return store.GetUserByName(fName, lName);
+            }
+
+            return null;
         }
 
         public void AddTicketStore(IStore store)

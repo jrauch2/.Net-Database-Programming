@@ -72,6 +72,11 @@ namespace Support_Ticket_System.Stores.File_Stores
             return tickets;
         }
 
+        public List<Ticket> Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Ticket> Search()
         {
             throw new NotImplementedException();
@@ -125,6 +130,11 @@ namespace Support_Ticket_System.Stores.File_Stores
             {
                 _logger.Error(WrongTypeMessage);
             }
+        }
+
+        public User GetUserByName(string fName, string lName)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

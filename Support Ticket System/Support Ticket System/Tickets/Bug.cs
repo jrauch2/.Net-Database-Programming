@@ -7,7 +7,7 @@ namespace Support_Ticket_System.Tickets
 {
     internal class Bug : Ticket
     {
-        private Severity Severity { get; }
+        public Severity Severity { get; }
 
         public Bug(int id, string summary, Status status, Priority priority, User submitter, User assigned, List<User> watching, Severity severity, ref IDisplay displayProgram)
         {
@@ -20,6 +20,7 @@ namespace Support_Ticket_System.Tickets
             Watching = watching;
             DisplayProgram = displayProgram;
             Severity = severity;
+            TicketType = typeof(Bug);
         }
 
         public void AppendSummary(string newSummary)

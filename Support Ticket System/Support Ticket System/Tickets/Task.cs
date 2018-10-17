@@ -7,8 +7,8 @@ namespace Support_Ticket_System.Tickets
 {
     internal class Task : Ticket
     {
-        private string ProjectName { get; set; }
-        private string DueDate { get; set; }
+        public string ProjectName { get; set; }
+        public string DueDate { get; set; }
 
         public Task(int id, string summary, Status status, Priority priority, User submitter, User assigned, List<User> watching, string projectName, string dueDate, ref IDisplay displayProgram)
         {
@@ -22,6 +22,7 @@ namespace Support_Ticket_System.Tickets
             ProjectName = projectName;
             DueDate = dueDate;
             DisplayProgram = displayProgram;
+            TicketType = typeof(Task);
         }
         
         public override void DisplayTicket()

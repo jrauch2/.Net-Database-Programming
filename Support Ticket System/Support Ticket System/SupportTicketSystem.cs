@@ -78,13 +78,11 @@ namespace Support_Ticket_System
                 _display.WriteSpecialLine();
                 _display.WriteLine(Header);
                 _display.WriteSpecialLine();                
-                _display.WriteLine("1) New Bug Ticket");
-                _display.WriteLine("2) New Enhancement Ticket");
-                _display.WriteLine("3) New Task Ticket");
-                _display.WriteLine("4) Update Ticket");
-                _display.WriteLine("5) Print All Tickets");
-                _display.WriteLine("6) Search Tickets");
-                _display.WriteLine("7) Exit");
+                _display.WriteLine("1) New Ticket");
+                _display.WriteLine("2) Update Ticket");
+                _display.WriteLine("3) Print All Tickets");
+                _display.WriteLine("4) Search Tickets");
+                _display.WriteLine("5) Exit");
                 _display.WriteSpecialLine();
                 _display.Write("Select an option: ");
 
@@ -93,24 +91,18 @@ namespace Support_Ticket_System
                 switch (input)
                 {
                     case "1":
-                        NewBugTicket();
-                        break;
+                        NewTicket();
+                        break;              
                     case "2":
-                        NewEnhancementTicket();
-                        break;
-                    case "3":
-                        NewTaskTicket();
-                        break;
-                    case "4":
                         UpdateTicket();
                         break;
-                    case "5":
+                    case "3":
                         PrintAllTickets();
                         break;
-                    case "6":
+                    case "4":
                         SearchAllTickets();
                         break;
-                    case "7":
+                    case "5":
                         CloseProgram();
                         break;
                     default:
@@ -121,6 +113,35 @@ namespace Support_Ticket_System
 
         }
 
+        private void NewTicket()
+        {
+            _display.Clear();
+            _display.WriteSpecialLine();
+            _display.WriteLine(Header);
+            _display.WriteSpecialLine();
+            _display.WriteLine("1) New Bug Ticket");
+            _display.WriteLine("2) New Enhancement Ticket");
+            _display.WriteLine("3) New Task Ticket");
+
+            var input = _display.GetInput();
+
+            switch (input)
+            {
+                case "1":
+                    NewBugTicket();
+                    break;
+                case "2":
+                    NewEnhancementTicket();
+                    break;
+                case "3":
+                    NewTaskTicket();
+                    break;                
+                default:
+                    _display.Write(InvalidInput);
+                    break;
+            }
+        }
+
         private void SearchAllTickets()
         {
             throw new NotImplementedException();
@@ -129,6 +150,7 @@ namespace Support_Ticket_System
         //Ask the user for input to generate a new ticket.
         private void NewBugTicket()
         {
+            _display.Clear();
             string summary = GetSummaryInput();
             _display.Clear();
 
@@ -166,15 +188,80 @@ namespace Support_Ticket_System
             string watching = GetWatchingInput();
             _display.Clear();
 
-            Severity severity = GetSeverityInput();
+            string software = GetSoftwareInput();
 
-            GetCorrectInput(summary, priority, submitter, assigned, watching, severity);
+            string cost = GetCostInput();
 
+            string reason = GetReasonInput();
+
+            string estimate = GetEstimateInput();
+
+            GetCorrectInput(summary, priority, submitter, assigned, watching, cost, reason, estimate);
+
+        }
+
+        private string GetEstimateInput()
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetReasonInput()
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetCostInput()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GetCorrectInput(string summary, Priority priority, string submitterString, string assignedString, string watchingString, string severity, string reason, string estimate)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetSoftwareInput()
+        {
+            throw new NotImplementedException();
         }
 
         private void NewTaskTicket()
         {
+            string summary = GetSummaryInput();
+            _display.Clear();
 
+            Priority priority = GetPriorityInput();
+            _display.Clear();
+
+            string submitter = GetSubmitterInput();
+            _display.Clear();
+
+            string assigned = GetAssignedInput();
+            _display.Clear();
+
+            string watching = GetWatchingInput();
+            _display.Clear();
+
+            string projectName = GetProjectNameInput();
+
+            string dueDate = GetDueDateInput();
+
+            GetCorrectInput(summary, priority, submitter, assigned, watching, projectName, dueDate);
+        }
+
+        private string GetDueDateInput()
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetProjectNameInput()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GetCorrectInput(string summary, Priority priority, string submitterString, string assignedString, string watchingString, string projectName, string dueDate)
+        {
+            throw new NotImplementedException();
         }
 
         private void UpdateTicket()
@@ -314,25 +401,23 @@ namespace Support_Ticket_System
                         var id = _stores.GetMaxId();
 
                         var submitterName = submitterString.Split(' ');
-                        var submitter = new User();
-                        submitter.FName = submitterName[0];
-                        submitter.LName = submitterName[1];
 
+                        var submitter = _stores.GetUserByName(submitterName[0], submitterName[1]);
+                        
                         var assignedName = assignedString.Split(' ');
-                        var assigned = new User();
-                        assigned.FName = assignedName[0];
-                        assigned.LName = assignedName[1];
-
+                        var assigned = _stores.GetUserByName(assignedName[0], assignedName[1]);
+                        
                         var watching = new List<User>();
                         var nameString = watchingString.Split(',');
-                        foreach (var s in nameString)
+                        foreach (var name in nameString)
                         {
-                            watching
+                            var n = name.Split(' ');
+                            var user = _stores.GetUserByName(n[0], n[1]);
                         }
 
                         //Save ticket
                         _stores.AddTicket(new Bug(
-                            ++id, summary, Status.Open, priority, submitter, assigned, watchingString, severity, ref _display));
+                            ++id, summary, Status.Open, priority, submitter, assigned, watching, severity, ref _display));
                         break;
                     case "1":
                         _display.Clear();

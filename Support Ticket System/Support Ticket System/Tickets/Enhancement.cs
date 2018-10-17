@@ -7,10 +7,10 @@ namespace Support_Ticket_System.Tickets
 {
     internal class Enhancement : Ticket
     {
-        private string Software { get; set; }
-        private string Cost { get; set; }
-        private string Reason { get; set; }
-        private string Estimate { get; set; }
+        public string Software { get; set; }
+        public string Cost { get; set; }
+        public string Reason { get; set; }
+        public string Estimate { get; set; }
 
         public Enhancement(int ticketId, string summary, Status status, Priority priority, User submitter, User assigned, List<User> watching, string software, string cost, string reason, string estimate, ref IDisplay displayProgram)
         {
@@ -26,6 +26,7 @@ namespace Support_Ticket_System.Tickets
             Reason = reason;
             Estimate = estimate;
             DisplayProgram = displayProgram;
+            TicketType = typeof(Enhancement);
         }
 
         public override void DisplayTicket()

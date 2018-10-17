@@ -10,3 +10,6 @@ C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket Syst
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\obj\x86\Debug\Support Ticket System.csproj.CopyComplete
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\obj\x86\Debug\ConsoleApplication.exe
 C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\obj\x86\Debug\ConsoleApplication.pdb
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\EntityFramework.dll
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Support Ticket System\bin\Debug\NLog.dll
