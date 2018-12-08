@@ -1,0 +1,129 @@
+2018-11-25 00:03:14.2553 DEBUG Setting the display and display size...
+2018-11-25 00:03:52.7567 DEBUG Setting the display and display size...
+2018-11-25 00:05:26.2564 DEBUG Setting the display and display size...
+2018-11-25 00:14:41.1578 DEBUG Setting the display and display size...
+2018-11-25 00:20:48.5805 DEBUG Setting the display and display size...
+2018-11-25 00:21:33.7699 DEBUG Setting the display and display size...
+2018-11-25 00:22:35.9282 DEBUG Setting the display and display size...
+2018-11-25 00:30:41.1376 DEBUG Setting the display and display size...
+2018-11-25 00:52:57.2842 DEBUG Setting the display and display size...
+2018-11-25 00:53:19.5704 ERROR System.NotSupportedException: The LINQ expression node type 'ArrayIndex' is not supported in LINQ to Entities.
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.NotSupportedTranslator.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.BinaryTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.FirstPredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SinglePredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.Convert()
+   at System.Data.Entity.Core.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass3.<GetResults>b__2()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass3.<GetResults>b__1()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 129
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-25 00:57:11.0833 DEBUG Setting the display and display size...
+2018-11-25 00:57:29.7573 ERROR System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__2[TResult](IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 131
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-25 00:58:33.4919 DEBUG Setting the display and display size...
+2018-11-25 01:32:32.8149 DEBUG Setting the display and display size...
+2018-11-25 01:36:26.1415 DEBUG Setting the display and display size...
+2018-11-25 01:43:02.1646 DEBUG Setting the display and display size...
+2018-11-25 01:46:10.8789 DEBUG Setting the display and display size...
+2018-11-25 02:02:38.7401 DEBUG Setting the display and display size...
+2018-11-25 02:14:05.7072 DEBUG Setting the display and display size...
+2018-11-25 02:14:36.6604 DEBUG Setting the display and display size...
+2018-11-25 02:39:14.0223 DEBUG Setting the display and display size...
+2018-11-25 02:40:08.1414 ERROR System.NotSupportedException: The LINQ expression node type 'ArrayIndex' is not supported in LINQ to Entities.
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.NotSupportedTranslator.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.BinaryTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.FirstPredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
+   at System.Data.Entity.Core.Objects.ELinq.ExpressionConverter.Convert()
+   at System.Data.Entity.Core.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass3.<GetResults>b__2()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass3.<GetResults>b__1()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__1[TResult](IEnumerable`1 sequence)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Entity.Core.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[TResult](Expression expression)
+   at System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 236
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-25 02:43:40.2474 DEBUG Setting the display and display size...
+2018-11-25 02:58:14.2872 DEBUG Setting the display and display size...
+2018-11-25 03:02:03.6885 DEBUG Setting the display and display size...
+2018-11-25 03:02:22.5038 ERROR System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 196
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-25 03:02:58.3122 DEBUG Setting the display and display size...
+2018-11-25 03:03:15.0504 ERROR System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 196
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-25 03:04:33.4588 DEBUG Setting the display and display size...
+2018-11-25 03:39:59.0763 DEBUG Setting the display and display size...
+2018-11-25 03:50:58.2368 DEBUG Setting the display and display size...
+2018-11-25 03:52:47.9691 DEBUG Setting the display and display size...
+2018-11-25 03:53:18.1532 DEBUG Setting the display and display size...
+2018-11-25 04:02:49.9043 DEBUG Setting the display and display size...
+2018-11-25 08:05:44.6838 DEBUG Setting the display and display size...
+2018-11-25 16:34:45.5127 DEBUG Setting the display and display size...
+2018-11-25 20:20:59.0376 DEBUG Setting the display and display size...
+2018-11-25 20:22:37.1018 DEBUG Setting the display and display size...
+2018-11-25 20:36:58.1344 DEBUG Setting the display and display size...
+2018-11-25 20:37:51.0378 DEBUG Setting the display and display size...

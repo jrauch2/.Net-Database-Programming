@@ -37,8 +37,8 @@ namespace Support_Ticket_System
         public virtual ICollection<EnhancementAttribute> EnhancementAttributes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaskAttribute> TaskAttributes { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual User AssignedUser { get; set; }
+        public virtual User SubmitterUser { get; set; }
         public virtual TicketType TicketType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WatchingUser> WatchingUsers { get; set; }

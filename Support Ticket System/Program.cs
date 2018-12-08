@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using NLog;
 using Support_Ticket_System.Interfaces;
+using Support_Ticket_System.Utility;
 
 namespace Support_Ticket_System
 {
@@ -26,7 +28,8 @@ namespace Support_Ticket_System
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                Logger.Error(e.GetBaseException());
+                
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Support_Ticket_System.Interfaces
 {
-    internal interface IDisplay
+    public interface IDisplay
     {
         int DisplayHeight { get; set; }
         int DisplayWidth { get; set; }
@@ -8,13 +8,14 @@
         string RightPadding { get; set; }
         char SpecialCharacter { get; set; }
 
-        void Write(string message);
-        void WriteLine(string message);
+        void Write<T>(T message);
+        void WriteLine();
+        void WriteLine<T>(T message);
         void WriteSpecialLine();
         void SetWindowSize(int displayWidth, int displayHeight);
         string GetInput();
         void Clear();
-        string Format(string s);
-        void SendWait(string s);
+        string Format<T>(T s);
+        void SendWait<T>(T s);
     }
 }

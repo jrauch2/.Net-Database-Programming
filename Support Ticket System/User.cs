@@ -17,8 +17,8 @@ namespace Support_Ticket_System
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Tickets = new HashSet<Ticket>();
-            this.Tickets1 = new HashSet<Ticket>();
+            this.AssignedTickets = new HashSet<Ticket>();
+            this.SubmitterTickets = new HashSet<Ticket>();
             this.WatchingUsers = new HashSet<WatchingUser>();
         }
     
@@ -26,12 +26,12 @@ namespace Support_Ticket_System
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Department { get; set; }
-        public Nullable<int> Enabled { get; set; }
+        public int Enabled { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Ticket> AssignedTickets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ticket> Tickets1 { get; set; }
+        public virtual ICollection<Ticket> SubmitterTickets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WatchingUser> WatchingUsers { get; set; }
     }

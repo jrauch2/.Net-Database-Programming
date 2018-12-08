@@ -23,20 +23,25 @@ namespace Support_Ticket_System
         }
 
 
-        public void Write(string message)
+        public void Write<T>(T message)
         {
             Console.Write(message);
         }
 
-        public void WriteLine(string message)
+        public void WriteLine()
         {
-            if (message.Length < DisplayWidth - (LeftPadding.Length + RightPadding.Length))
+            Console.WriteLine(Format(""));
+        }
+
+        public void WriteLine<T>(T message)
+        {
+            if (message.ToString().Length < DisplayWidth - (LeftPadding.Length + RightPadding.Length))
             {
                 Console.WriteLine(Format(message));
             }
             else
             {
-                var stringArray = WordWrap.Wrap(message, DisplayWidth - (LeftPadding.Length + RightPadding.Length))
+                var stringArray = WordWrap.Wrap(message.ToString(), DisplayWidth - (LeftPadding.Length + RightPadding.Length))
                     .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var s in stringArray)
                 {
@@ -78,14 +83,14 @@ namespace Support_Ticket_System
             Console.Clear();
         }
 
-        public string Format(string s)
+        public string Format<T>(T s)
         {
-            return LeftPadding + s.PadRight(DisplayWidth - (LeftPadding.Length + RightPadding.Length)) + RightPadding;
+            return LeftPadding + s.ToString().PadRight(DisplayWidth - (LeftPadding.Length + RightPadding.Length)) + RightPadding;
         }
 
-        public void SendWait(string s)
+        public void SendWait<T>(T s)
         {
-            SendKeys.SendWait(s);
+            SendKeys.SendWait(s == null ? "" : s.ToString());
         }
     }
 }

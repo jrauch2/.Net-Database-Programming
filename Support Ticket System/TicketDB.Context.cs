@@ -13,10 +13,10 @@ namespace Support_Ticket_System
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TicketContext : DbContext
+    public partial class TicketDBContext : DbContext
     {
-        public TicketContext()
-            : base("name=TicketContext")
+        public TicketDBContext()
+            : base("name=TicketDBContext")
         {
         }
     

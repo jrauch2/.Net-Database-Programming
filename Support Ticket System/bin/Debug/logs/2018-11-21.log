@@ -1,0 +1,202 @@
+2018-11-21 04:02:17.3030 DEBUG Setting the display and display size...
+2018-11-21 04:04:52.0958 DEBUG Setting the display and display size...
+2018-11-21 04:05:18.9022 DEBUG Setting the display and display size...
+2018-11-21 04:07:10.3443 DEBUG Setting the display and display size...
+2018-11-21 04:08:53.8250 DEBUG Setting the display and display size...
+2018-11-21 04:09:20.4844 DEBUG Setting the display and display size...
+2018-11-21 04:10:07.9165 DEBUG Setting the display and display size...
+2018-11-21 04:10:38.1313 ERROR System.Data.Entity.Core.MetadataException: Unable to load the specified metadata resource.
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.LoadResources(String assemblyName, String resourceName, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.CreateResourceLoader(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoader.Create(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.SplitPaths(String paths)
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.<>c__DisplayClass2.<Evaluate>b__0()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Result.GetValue()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Evaluate(TArg arg)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetArtifactLoader(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetMetadataWorkspace(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.GetMetadataWorkspace()
+   at System.Data.Entity.Core.Objects.ObjectContext.RetrieveMetadataWorkspaceFromConnection()
+   at System.Data.Entity.Core.Objects.ObjectContext..ctor(EntityConnection connection, Boolean isConnectionConstructor, ObjectQueryExecutionPlanFactory objectQueryExecutionPlanFactory, Translator translator, ColumnMapFactory columnMapFactory)
+   at System.Data.Entity.Internal.InternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Where[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.TryGetUserByName(String fName, String lName, User& user) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 528
+   at Support_Ticket_System.SupportTicketSystem.GetUserFromInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 313
+   at Support_Ticket_System.SupportTicketSystem.GetSubmitterInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 287
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 144
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 24
+2018-11-21 04:13:54.3561 DEBUG Setting the display and display size...
+2018-11-21 04:14:14.1485 ERROR System.Data.Entity.Core.MetadataException: Unable to load the specified metadata resource.
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.LoadResources(String assemblyName, String resourceName, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.CreateResourceLoader(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoader.Create(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.SplitPaths(String paths)
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.<>c__DisplayClass2.<Evaluate>b__0()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Result.GetValue()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Evaluate(TArg arg)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetArtifactLoader(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetMetadataWorkspace(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.GetMetadataWorkspace()
+   at System.Data.Entity.Core.Objects.ObjectContext.RetrieveMetadataWorkspaceFromConnection()
+   at System.Data.Entity.Core.Objects.ObjectContext..ctor(EntityConnection connection, Boolean isConnectionConstructor, ObjectQueryExecutionPlanFactory objectQueryExecutionPlanFactory, Translator translator, ColumnMapFactory columnMapFactory)
+   at System.Data.Entity.Internal.InternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Where[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.TryGetUserByName(String fName, String lName, User& user) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 528
+   at Support_Ticket_System.SupportTicketSystem.GetUserFromInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 313
+   at Support_Ticket_System.SupportTicketSystem.GetSubmitterInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 287
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 144
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 24
+2018-11-21 04:46:41.0396 DEBUG Setting the display and display size...
+2018-11-21 04:46:58.2119 ERROR System.Data.Entity.Core.MetadataException: Unable to load the specified metadata resource.
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.LoadResources(String assemblyName, String resourceName, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.CreateResourceLoader(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoader.Create(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.SplitPaths(String paths)
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.<>c__DisplayClass2.<Evaluate>b__0()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Result.GetValue()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Evaluate(TArg arg)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetArtifactLoader(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetMetadataWorkspace(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.GetMetadataWorkspace()
+   at System.Data.Entity.Core.Objects.ObjectContext.RetrieveMetadataWorkspaceFromConnection()
+   at System.Data.Entity.Core.Objects.ObjectContext..ctor(EntityConnection connection, Boolean isConnectionConstructor, ObjectQueryExecutionPlanFactory objectQueryExecutionPlanFactory, Translator translator, ColumnMapFactory columnMapFactory)
+   at System.Data.Entity.Internal.InternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Where[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.TryGetUserByName(String fName, String lName, User& user) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 528
+   at Support_Ticket_System.SupportTicketSystem.GetUserFromInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 313
+   at Support_Ticket_System.SupportTicketSystem.GetSubmitterInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 287
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 144
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 24
+2018-11-21 04:48:44.3762 DEBUG Setting the display and display size...
+2018-11-21 04:48:55.8050 ERROR System.Data.Entity.Core.MetadataException: Unable to load the specified metadata resource.
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.LoadResources(String assemblyName, String resourceName, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoaderCompositeResource.CreateResourceLoader(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataArtifactLoader.Create(String path, ExtensionCheck extensionCheck, String validExtension, ICollection`1 uriRegistry, MetadataArtifactAssemblyResolver resolver)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.SplitPaths(String paths)
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.<>c__DisplayClass2.<Evaluate>b__0()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Result.GetValue()
+   at System.Data.Entity.Core.Common.Utils.Memoizer`2.Evaluate(TArg arg)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetArtifactLoader(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.Metadata.Edm.MetadataCache.GetMetadataWorkspace(DbConnectionOptions effectiveConnectionOptions)
+   at System.Data.Entity.Core.EntityClient.EntityConnection.GetMetadataWorkspace()
+   at System.Data.Entity.Core.Objects.ObjectContext.RetrieveMetadataWorkspaceFromConnection()
+   at System.Data.Entity.Core.Objects.ObjectContext..ctor(EntityConnection connection, Boolean isConnectionConstructor, ObjectQueryExecutionPlanFactory objectQueryExecutionPlanFactory, Translator translator, ColumnMapFactory columnMapFactory)
+   at System.Data.Entity.Internal.InternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalConnection.CreateObjectContextFromConnectionModel()
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   at System.Linq.Queryable.Where[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Support_Ticket_System.SupportTicketSystem.TryGetUserByName(String fName, String lName, User& user) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 528
+   at Support_Ticket_System.SupportTicketSystem.GetUserFromInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 313
+   at Support_Ticket_System.SupportTicketSystem.GetSubmitterInput() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 287
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 144
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 24
+2018-11-21 04:49:07.4089 DEBUG Setting the display and display size...
+2018-11-21 04:51:45.2373 DEBUG Setting the display and display size...
+2018-11-21 04:55:08.2991 DEBUG Setting the display and display size...
+2018-11-21 05:03:59.3293 DEBUG Setting the display and display size...
+2018-11-21 05:23:38.5019 DEBUG Setting the display and display size...
+2018-11-21 05:28:58.6446 DEBUG Setting the display and display size...
+2018-11-21 05:30:17.1983 DEBUG Setting the display and display size...
+2018-11-21 05:32:48.6805 DEBUG Setting the display and display size...
+2018-11-21 05:35:55.5528 ERROR System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 162
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 24
+2018-11-21 05:39:32.6086 DEBUG Setting the display and display size...
+2018-11-21 05:40:11.0985 ERROR System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 162
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 67
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 43
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 24
+2018-11-21 05:50:28.9095 DEBUG Setting the display and display size...
+2018-11-21 05:51:50.7477 DEBUG Setting the display and display size...
+2018-11-21 05:52:24.4383 DEBUG Setting the display and display size...
+2018-11-21 06:00:28.8994 DEBUG Setting the display and display size...
+2018-11-21 06:06:39.0712 DEBUG Setting the display and display size...
+2018-11-21 06:17:31.1319 DEBUG Setting the display and display size...
+2018-11-21 06:37:35.9521 DEBUG Setting the display and display size...
+2018-11-21 06:41:19.1107 DEBUG Setting the display and display size...
+2018-11-21 06:49:14.1415 DEBUG Setting the display and display size...
+2018-11-21 14:42:14.3526 DEBUG Setting the display and display size...
+2018-11-21 15:13:10.5640 DEBUG Setting the display and display size...
+2018-11-21 15:17:45.2366 DEBUG Setting the display and display size...
+2018-11-21 15:22:59.6886 DEBUG Setting the display and display size...
+2018-11-21 15:24:07.3216 DEBUG Setting the display and display size...
+2018-11-21 15:33:11.4872 DEBUG Setting the display and display size...
+2018-11-21 15:40:30.2073 DEBUG Setting the display and display size...
+2018-11-21 15:41:56.4768 DEBUG Setting the display and display size...
+2018-11-21 15:50:49.1565 DEBUG Setting the display and display size...
+2018-11-21 15:57:07.9232 DEBUG Setting the display and display size...
+2018-11-21 15:58:07.2486 DEBUG Setting the display and display size...
+2018-11-21 15:58:32.1648 DEBUG Setting the display and display size...
+2018-11-21 15:58:51.0759 ERROR System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.SZArrayHelper.get_Item[T](Int32 index)
+   at Support_Ticket_System.SupportTicketSystem.GetUserFromInput(IList`1 userNames) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 325
+   at Support_Ticket_System.SupportTicketSystem.<GetWatchingInput>b__33_0(String s) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 405
+   at System.Linq.Enumerable.<>c__DisplayClass7_0`3.<CombineSelectors>b__0(TSource x)
+   at System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Support_Ticket_System.SupportTicketSystem.GetWatchingInput(User submitter, User assigned) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 405
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 160
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 68
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 44
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-21 16:00:24.3607 DEBUG Setting the display and display size...
+2018-11-21 16:00:36.6563 DEBUG Setting the display and display size...
+2018-11-21 16:00:56.2470 ERROR System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.SZArrayHelper.get_Item[T](Int32 index)
+   at Support_Ticket_System.SupportTicketSystem.GetUserFromInput(IList`1 userNames) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 325
+   at Support_Ticket_System.SupportTicketSystem.GetWatchingInput(User submitter, User assigned) in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 408
+   at Support_Ticket_System.SupportTicketSystem.NewTicket() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 160
+   at Support_Ticket_System.SupportTicketSystem.Menu() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 68
+   at Support_Ticket_System.SupportTicketSystem.Start() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\SupportTicketSystem.cs:line 44
+   at Support_Ticket_System.Program.Main() in C:\Users\Joshua Rauch\source\repos\.Net-Database-Programming\Support Ticket System\Program.cs:line 25
+2018-11-21 16:02:47.2974 DEBUG Setting the display and display size...
+2018-11-21 16:10:38.9086 DEBUG Setting the display and display size...
+2018-11-21 16:18:42.1132 DEBUG Setting the display and display size...
+2018-11-21 16:27:11.4083 DEBUG Setting the display and display size...
+2018-11-21 16:32:34.4080 DEBUG Setting the display and display size...
+2018-11-21 16:38:14.4247 DEBUG Setting the display and display size...
+2018-11-21 16:58:40.7599 DEBUG Setting the display and display size...

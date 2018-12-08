@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TicketDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BugAttributes">
+    <Key>
+      <PropertyRef Name="BugAttrID" />
+    </Key>
+    <Property Name="BugAttrID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TicketID" Type="int" Nullable="false" />
+    <Property Name="Severity" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EnhancementAttributes">
+    <Key>
+      <PropertyRef Name="EnhanceAttrID" />
+    </Key>
+    <Property Name="EnhanceAttrID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TicketID" Type="int" Nullable="false" />
+    <Property Name="Software" Type="varchar" MaxLength="50" />
+    <Property Name="Cost" Type="varchar" MaxLength="50" />
+    <Property Name="Reason" Type="varchar" MaxLength="500" />
+    <Property Name="Estimate" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TaskAttributes">
+    <Key>
+      <PropertyRef Name="TaskAttrID" />
+    </Key>
+    <Property Name="TaskAttrID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TicketID" Type="int" Nullable="false" />
+    <Property Name="ProjectName" Type="varchar" MaxLength="50" />
+    <Property Name="DueDate" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Tickets">
+    <Key>
+      <PropertyRef Name="TicketID" />
+    </Key>
+    <Property Name="TicketID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Summary" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Priority" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Submitter" Type="int" Nullable="false" />
+    <Property Name="Assigned" Type="int" Nullable="false" />
+    <Property Name="TicketTypeID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TicketType">
+    <Key>
+      <PropertyRef Name="TicketTypeID" />
+    </Key>
+    <Property Name="TicketTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Department" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Enabled" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WatchingUsers">
+    <Key>
+      <PropertyRef Name="WatchingUserID" />
+    </Key>
+    <Property Name="WatchingUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="TicketID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Assigned_User">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Tickets">
+        <PropertyRef Name="Assigned" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bug_Ticket">
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+    <End Role="BugAttributes" Type="Self.BugAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tickets">
+        <PropertyRef Name="TicketID" />
+      </Principal>
+      <Dependent Role="BugAttributes">
+        <PropertyRef Name="TicketID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Enhance_Ticket">
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+    <End Role="EnhancementAttributes" Type="Self.EnhancementAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tickets">
+        <PropertyRef Name="TicketID" />
+      </Principal>
+      <Dependent Role="EnhancementAttributes">
+        <PropertyRef Name="TicketID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Submit_User">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Tickets">
+        <PropertyRef Name="Submitter" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_Ticket">
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+    <End Role="TaskAttributes" Type="Self.TaskAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tickets">
+        <PropertyRef Name="TicketID" />
+      </Principal>
+      <Dependent Role="TaskAttributes">
+        <PropertyRef Name="TicketID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tickets_TicketType">
+    <End Role="TicketType" Type="Self.TicketType" Multiplicity="1" />
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TicketType">
+        <PropertyRef Name="TicketTypeID" />
+      </Principal>
+      <Dependent Role="Tickets">
+        <PropertyRef Name="TicketTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Watching_Ticket">
+    <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
+    <End Role="WatchingUsers" Type="Self.WatchingUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tickets">
+        <PropertyRef Name="TicketID" />
+      </Principal>
+      <Dependent Role="WatchingUsers">
+        <PropertyRef Name="TicketID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Watching_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="WatchingUsers" Type="Self.WatchingUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="WatchingUsers">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TicketDBModelStoreContainer">
+    <EntitySet Name="BugAttributes" EntityType="Self.BugAttributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EnhancementAttributes" EntityType="Self.EnhancementAttributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TaskAttributes" EntityType="Self.TaskAttributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TicketType" EntityType="Self.TicketType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WatchingUsers" EntityType="Self.WatchingUsers" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Assigned_User" Association="Self.FK_Assigned_User">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Tickets" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bug_Ticket" Association="Self.FK_Bug_Ticket">
+      <End Role="Tickets" EntitySet="Tickets" />
+      <End Role="BugAttributes" EntitySet="BugAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Enhance_Ticket" Association="Self.FK_Enhance_Ticket">
+      <End Role="Tickets" EntitySet="Tickets" />
+      <End Role="EnhancementAttributes" EntitySet="EnhancementAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Submit_User" Association="Self.FK_Submit_User">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Tickets" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_Ticket" Association="Self.FK_Task_Ticket">
+      <End Role="Tickets" EntitySet="Tickets" />
+      <End Role="TaskAttributes" EntitySet="TaskAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tickets_TicketType" Association="Self.FK_Tickets_TicketType">
+      <End Role="TicketType" EntitySet="TicketType" />
+      <End Role="Tickets" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Watching_Ticket" Association="Self.FK_Watching_Ticket">
+      <End Role="Tickets" EntitySet="Tickets" />
+      <End Role="WatchingUsers" EntitySet="WatchingUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Watching_Users" Association="Self.FK_Watching_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="WatchingUsers" EntitySet="WatchingUsers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

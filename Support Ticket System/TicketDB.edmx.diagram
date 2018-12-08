@@ -4,22 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="dce284f85c97460eadcc13010e5c5f57" Name="Diagram1">
-        <EntityTypeShape EntityType="TicketDBModel.BugAttribute" Width="1.5" PointX="5.25" PointY="2.75" />
-        <EntityTypeShape EntityType="TicketDBModel.EnhancementAttribute" Width="1.5" PointX="5.25" PointY="10.75" />
-        <EntityTypeShape EntityType="TicketDBModel.TaskAttribute" Width="1.5" PointX="5.25" PointY="5.25" />
-        <EntityTypeShape EntityType="TicketDBModel.Ticket" Width="1.5" PointX="3" PointY="4.625" />
-        <EntityTypeShape EntityType="TicketDBModel.TicketType" Width="1.5" PointX="0.75" PointY="2.75" />
-        <EntityTypeShape EntityType="TicketDBModel.User" Width="1.5" PointX="0.75" PointY="5.25" />
-        <EntityTypeShape EntityType="TicketDBModel.WatchingUser" Width="1.5" PointX="8.25" PointY="5.5" />
-        <AssociationConnector Association="TicketDBModel.FK_Bug_Ticket" />
-        <AssociationConnector Association="TicketDBModel.FK_Enhance_Ticket" />
-        <AssociationConnector Association="TicketDBModel.FK_Task_Ticket" />
-        <AssociationConnector Association="TicketDBModel.FK_Assigned_User" />
-        <AssociationConnector Association="TicketDBModel.FK_Submit_User" />
-        <AssociationConnector Association="TicketDBModel.FK_Tickets_TicketType" />
-        <AssociationConnector Association="TicketDBModel.FK_Watching_Ticket" />
-        <AssociationConnector Association="TicketDBModel.FK_Watching_Users" />
+      <Diagram DiagramId="485fabe4b1c04df5a9a29dbf2e6c0110" Name="Diagram1">
+        <EntityTypeShape EntityType="TicketDBModel.BugAttribute" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketDBModel.EnhancementAttribute" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketDBModel.TaskAttribute" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketDBModel.Ticket" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketDBModel.TicketType" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketDBModel.User" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TicketDBModel.WatchingUser" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="TicketDBModel.FK_Bug_Ticket" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Enhance_Ticket" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Task_Ticket" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Assigned_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Submit_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Tickets_TicketType" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Watching_Ticket" ManuallyRouted="false" />
+        <AssociationConnector Association="TicketDBModel.FK_Watching_Users" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
