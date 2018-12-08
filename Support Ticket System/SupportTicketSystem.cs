@@ -19,9 +19,9 @@ namespace Support_Ticket_System
         // Set of strings used throughout the SupportTicketSystem class.
         private const char SpecialCharacter = '*';
         private const string Header = "Support Desk Ticket System";
-        private const string NewBugTicketHeader = "New Bug Ticket";
-        private const string NewEnhancementTicketHeader = "New Enhancement Ticket";
-        private const string NewTaskTicketHeader = "New Task Ticket";
+        private const string BugTicketHeader = "New Bug Ticket";
+        private const string EnhancementTicketHeader = "New Enhancement Ticket";
+        private const string TaskTicketHeader = "New Task Ticket";
         private const string InvalidInput = "Try again. Invalid input: ";
         
         // Constructor for SupportTicketSystem.
@@ -67,7 +67,7 @@ namespace Support_Ticket_System
 
                 switch (input)
                 {
-                    case "1": NewTicket();
+                    case "1": GenerateNewTicket();
                         break;              
                     case "2": UpdateTicket();
                         break;
@@ -103,7 +103,7 @@ namespace Support_Ticket_System
         }
 
         // Create a new Ticket
-        private void NewTicket()
+        private void GenerateNewTicket()
         {
             var subHeader = "Add a New Ticket";
             var newTicket = new Ticket { Status = Status.Open.ToString() };
@@ -147,13 +147,13 @@ namespace Support_Ticket_System
                             switch (ticketType.Description)
                             {
                                 case "Bug":
-                                    subHeader = NewBugTicketHeader;
+                                    subHeader = BugTicketHeader;
                                     var bugAttribute = new BugAttribute
                                         { Severity = GetSeverityInput(subHeader).ToString() };
                                     newTicket.BugAttributes.Add(bugAttribute);
                                     break;
                                 case "Enhancement":
-                                    subHeader = NewEnhancementTicketHeader;
+                                    subHeader = EnhancementTicketHeader;
                                     var enhancementAttribute = new EnhancementAttribute
                                     {
                                         Cost = GetCostInput(subHeader),
@@ -164,7 +164,7 @@ namespace Support_Ticket_System
                                     newTicket.EnhancementAttributes.Add(enhancementAttribute);
                                     break;
                                 case "Task":
-                                    subHeader = NewTaskTicketHeader;
+                                    subHeader = TaskTicketHeader;
                                     var taskAttribute = new TaskAttribute
                                     {
                                         DueDate = GetDueDateInput(subHeader),
@@ -201,6 +201,7 @@ namespace Support_Ticket_System
                     _logger.Debug("Saving changes to database...");
                     db.SaveChanges();
                     _display.Clear();
+                    PrintFullHeader(subHeader);
                     _display.WriteLine("Ticket added successfully.");
                     PressToContinue();
                 }
@@ -711,37 +712,92 @@ namespace Support_Ticket_System
                         db.WatchingUsers.RemoveRange(ticket.WatchingUsers);
                         ticket.WatchingUsers = watchingUsers;
                         break;
-                    case "6": ticket.BugAttributes.Single().Severity = GetSeverityInput(subHeader).ToString();
-                        break;
+                    case "6":
+                        if (ticket.BugAttributes.Count > 0)
+                        {
+                            ticket.BugAttributes.Single().Severity = GetSeverityInput(subHeader).ToString();
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     case "7":
-                        ticket.EnhancementAttributes.Single().Cost =
-                            GetCostInput(subHeader, ticket.EnhancementAttributes.Single().Cost);
-                        break;
+                        if (ticket.EnhancementAttributes.Count > 0)
+                        {
+                            ticket.EnhancementAttributes.Single().Cost =
+                                GetCostInput(subHeader, ticket.EnhancementAttributes.Single().Cost);
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     case "8":
-                        ticket.EnhancementAttributes.Single().Estimate = GetEstimateInput(subHeader,
-                            ticket.EnhancementAttributes.Single().Estimate);
-                        break;
+                        if (ticket.EnhancementAttributes.Count > 0)
+                        {
+                            ticket.EnhancementAttributes.Single().Estimate = GetEstimateInput(subHeader,
+                                ticket.EnhancementAttributes.Single().Estimate);
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     case "9":
-                        ticket.EnhancementAttributes.Single().Reason =
-                            GetReasonInput(subHeader, ticket.EnhancementAttributes.Single().Reason);
-                        break;
+                        if (ticket.EnhancementAttributes.Count > 1)
+                        {
+                            ticket.EnhancementAttributes.Single().Reason =
+                                GetReasonInput(subHeader, ticket.EnhancementAttributes.Single().Reason);
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     case "10":
-                        ticket.EnhancementAttributes.Single().Software = GetSoftwareInput(subHeader,
-                            ticket.EnhancementAttributes.Single().Software);
-                        break;
+                        if (ticket.EnhancementAttributes.Count > 1)
+                        {
+                            ticket.EnhancementAttributes.Single().Software = GetSoftwareInput(subHeader,
+                                ticket.EnhancementAttributes.Single().Software);
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     case "11":
-                        ticket.TaskAttributes.Single().ProjectName =
-                            GetProjectNameInput(subHeader, ticket.TaskAttributes.Single().ProjectName);
-                        break;
+                        if (ticket.TaskAttributes.Count > 1)
+                        {
+                            ticket.TaskAttributes.Single().ProjectName =
+                                GetProjectNameInput(subHeader, ticket.TaskAttributes.Single().ProjectName);
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     case "12":
-                        ticket.TaskAttributes.Single().DueDate =
-                            GetDueDateInput(subHeader, ticket.TaskAttributes.Single().DueDate);
-                        break;
+                        if (ticket.TaskAttributes.Count > 1)
+                        {
+                            ticket.TaskAttributes.Single().DueDate =
+                                GetDueDateInput(subHeader, ticket.TaskAttributes.Single().DueDate);
+                            break;
+                        }
+                        else
+                        {
+                            PrintInvalidInputMessage(input);
+                            continue;
+                        }
                     default: PrintInvalidInputMessage(input);
-                        break;
+                        continue;
                 }
-
-                _display.Clear();
             } while (true);
         }
 
