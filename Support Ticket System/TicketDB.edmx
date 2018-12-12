@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TicketDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TicketDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BugAttributes">
           <Key>
             <PropertyRef Name="BugAttrID" />
@@ -166,6 +166,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spDeleteUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spUpsertUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="LastName" Type="varchar" Mode="In" />
+          <Parameter Name="Department" Type="varchar" Mode="In" />
+          <Parameter Name="Enabled" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TicketWithMostWatchingUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="TicketID" Type="int" />
+                <Property Name="Summary" Type="nvarchar" MaxLength="4000" />
+                <Property Name="Status" Type="nvarchar" MaxLength="10" />
+                <Property Name="Priority" Type="nvarchar" MaxLength="10" />
+                <Property Name="SubmitterID" Type="int" />
+                <Property Name="SubmitterFirstName" Type="nvarchar" MaxLength="50" />
+                <Property Name="SubmitterLastName" Type="nvarchar" MaxLength="50" />
+                <Property Name="SubmitterDepartment" Type="nvarchar" MaxLength="50" />
+                <Property Name="SubmitterEnabled" Type="int" />
+                <Property Name="AssignedID" Type="int" />
+                <Property Name="AssignedFirstName" Type="nvarchar" MaxLength="50" />
+                <Property Name="AssignedLastName" Type="nvarchar" MaxLength="50" />
+                <Property Name="AssignedDepartment" Type="nvarchar" MaxLength="50" />
+                <Property Name="AssignedEnabled" Type="int" />
+                <Property Name="WatchingID" Type="int" />
+                <Property Name="WatchingFirstName" Type="nvarchar" MaxLength="50" />
+                <Property Name="WatchingLastName" Type="nvarchar" MaxLength="50" />
+                <Property Name="WatchingDepartment" Type="nvarchar" MaxLength="50" />
+                <Property Name="WatchingEnabled" Type="int" />
+                <Property Name="TicketType" Type="nvarchar" MaxLength="50" />
+                <Property Name="BugAttrID" Type="int" />
+                <Property Name="Severity" Type="nvarchar" MaxLength="50" />
+                <Property Name="EnhanceAttrID" Type="int" />
+                <Property Name="Cost" Type="nvarchar" MaxLength="50" />
+                <Property Name="Estimate" Type="nvarchar" MaxLength="50" />
+                <Property Name="Reason" Type="nvarchar" MaxLength="500" />
+                <Property Name="Software" Type="nvarchar" MaxLength="50" />
+                <Property Name="TaskAttrID" Type="int" />
+                <Property Name="ProjectName" Type="nvarchar" MaxLength="50" />
+                <Property Name="DueDate" Type="nvarchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="TicketDBModelStoreContainer">
           <EntitySet Name="BugAttributes" EntityType="Self.BugAttributes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EnhancementAttributes" EntityType="Self.EnhancementAttributes" Schema="dbo" store:Type="Tables" />
@@ -207,8 +255,7 @@
             <End Role="WatchingUsers" EntitySet="WatchingUsers" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TicketDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -429,7 +476,50 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="WatchingUsers" EntitySet="WatchingUsers" />
           </AssociationSet>
+          <FunctionImport Name="spUpsertUser">
+            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Department" Mode="In" Type="String" />
+            <Parameter Name="Enabled" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spDeleteUser">
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="TicketWithMostWatchingUsers" IsComposable="true" ReturnType="Collection(TicketDBModel.TicketWithMostWatchingUsers_Result)" />
         </EntityContainer>
+        <ComplexType Name="TicketWithMostWatchingUsers_Result">
+          <Property Type="Int32" Name="TicketID" Nullable="true" />
+          <Property Type="String" Name="Summary" Nullable="true" MaxLength="4000" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Priority" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="SubmitterID" Nullable="true" />
+          <Property Type="String" Name="SubmitterFirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SubmitterLastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SubmitterDepartment" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="SubmitterEnabled" Nullable="true" />
+          <Property Type="Int32" Name="AssignedID" Nullable="true" />
+          <Property Type="String" Name="AssignedFirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AssignedLastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AssignedDepartment" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="AssignedEnabled" Nullable="true" />
+          <Property Type="Int32" Name="WatchingID" Nullable="true" />
+          <Property Type="String" Name="WatchingFirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WatchingLastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="WatchingDepartment" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="WatchingEnabled" Nullable="true" />
+          <Property Type="String" Name="TicketType" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="BugAttrID" Nullable="true" />
+          <Property Type="String" Name="Severity" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EnhanceAttrID" Nullable="true" />
+          <Property Type="String" Name="Cost" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Estimate" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Reason" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Software" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="TaskAttrID" Nullable="true" />
+          <Property Type="String" Name="ProjectName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="DueDate" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -498,6 +588,27 @@
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
               </MappingFragment>
             </EntityTypeMapping>
+            <EntityTypeMapping TypeName="TicketDBModel.User">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="TicketDBModel.Store.spUpsertUser">
+                  <ScalarProperty Name="Enabled" ParameterName="Enabled" />
+                  <ScalarProperty Name="Department" ParameterName="Department" />
+                  <ScalarProperty Name="LastName" ParameterName="LastName" />
+                  <ScalarProperty Name="FirstName" ParameterName="FirstName" />
+                  <ScalarProperty Name="UserID" ParameterName="UserID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="TicketDBModel.Store.spUpsertUser">
+                  <ScalarProperty Name="Enabled" ParameterName="Enabled" Version="Current" />
+                  <ScalarProperty Name="Department" ParameterName="Department" Version="Current" />
+                  <ScalarProperty Name="LastName" ParameterName="LastName" Version="Current" />
+                  <ScalarProperty Name="FirstName" ParameterName="FirstName" Version="Current" />
+                  <ScalarProperty Name="UserID" ParameterName="UserID" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="TicketDBModel.Store.spDeleteUser">
+                  <ScalarProperty Name="UserID" ParameterName="UserID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WatchingUsers">
             <EntityTypeMapping TypeName="TicketDBModel.WatchingUser">
@@ -508,6 +619,44 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spUpsertUser" FunctionName="TicketDBModel.Store.spUpsertUser" />
+          <FunctionImportMapping FunctionImportName="spDeleteUser" FunctionName="TicketDBModel.Store.spDeleteUser" />
+          <FunctionImportMapping FunctionImportName="TicketWithMostWatchingUsers" FunctionName="TicketDBModel.Store.TicketWithMostWatchingUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TicketDBModel.TicketWithMostWatchingUsers_Result">
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="SubmitterID" ColumnName="SubmitterID" />
+                <ScalarProperty Name="SubmitterFirstName" ColumnName="SubmitterFirstName" />
+                <ScalarProperty Name="SubmitterLastName" ColumnName="SubmitterLastName" />
+                <ScalarProperty Name="SubmitterDepartment" ColumnName="SubmitterDepartment" />
+                <ScalarProperty Name="SubmitterEnabled" ColumnName="SubmitterEnabled" />
+                <ScalarProperty Name="AssignedID" ColumnName="AssignedID" />
+                <ScalarProperty Name="AssignedFirstName" ColumnName="AssignedFirstName" />
+                <ScalarProperty Name="AssignedLastName" ColumnName="AssignedLastName" />
+                <ScalarProperty Name="AssignedDepartment" ColumnName="AssignedDepartment" />
+                <ScalarProperty Name="AssignedEnabled" ColumnName="AssignedEnabled" />
+                <ScalarProperty Name="WatchingID" ColumnName="WatchingID" />
+                <ScalarProperty Name="WatchingFirstName" ColumnName="WatchingFirstName" />
+                <ScalarProperty Name="WatchingLastName" ColumnName="WatchingLastName" />
+                <ScalarProperty Name="WatchingDepartment" ColumnName="WatchingDepartment" />
+                <ScalarProperty Name="WatchingEnabled" ColumnName="WatchingEnabled" />
+                <ScalarProperty Name="TicketType" ColumnName="TicketType" />
+                <ScalarProperty Name="BugAttrID" ColumnName="BugAttrID" />
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
+                <ScalarProperty Name="EnhanceAttrID" ColumnName="EnhanceAttrID" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Estimate" ColumnName="Estimate" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Software" ColumnName="Software" />
+                <ScalarProperty Name="TaskAttrID" ColumnName="TaskAttrID" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

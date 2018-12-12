@@ -63,6 +63,27 @@
           <ScalarProperty Name="Enabled" ColumnName="Enabled" />
         </MappingFragment>
       </EntityTypeMapping>
+      <EntityTypeMapping TypeName="TicketDBModel.User">
+        <ModificationFunctionMapping>
+          <InsertFunction FunctionName="TicketDBModel.Store.spUpsertUser">
+            <ScalarProperty Name="Enabled" ParameterName="Enabled" />
+            <ScalarProperty Name="Department" ParameterName="Department" />
+            <ScalarProperty Name="LastName" ParameterName="LastName" />
+            <ScalarProperty Name="FirstName" ParameterName="FirstName" />
+            <ScalarProperty Name="UserID" ParameterName="UserID" />
+          </InsertFunction>
+          <UpdateFunction FunctionName="TicketDBModel.Store.spUpsertUser">
+            <ScalarProperty Name="Enabled" ParameterName="Enabled" Version="Current" />
+            <ScalarProperty Name="Department" ParameterName="Department" Version="Current" />
+            <ScalarProperty Name="LastName" ParameterName="LastName" Version="Current" />
+            <ScalarProperty Name="FirstName" ParameterName="FirstName" Version="Current" />
+            <ScalarProperty Name="UserID" ParameterName="UserID" Version="Current" />
+          </UpdateFunction>
+          <DeleteFunction FunctionName="TicketDBModel.Store.spDeleteUser">
+            <ScalarProperty Name="UserID" ParameterName="UserID" />
+          </DeleteFunction>
+        </ModificationFunctionMapping>
+      </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="WatchingUsers">
       <EntityTypeMapping TypeName="TicketDBModel.WatchingUser">
@@ -73,5 +94,43 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spUpsertUser" FunctionName="TicketDBModel.Store.spUpsertUser" />
+    <FunctionImportMapping FunctionImportName="spDeleteUser" FunctionName="TicketDBModel.Store.spDeleteUser" />
+    <FunctionImportMapping FunctionImportName="TicketWithMostWatchingUsers" FunctionName="TicketDBModel.Store.TicketWithMostWatchingUsers">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TicketDBModel.TicketWithMostWatchingUsers_Result">
+          <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="SubmitterID" ColumnName="SubmitterID" />
+          <ScalarProperty Name="SubmitterFirstName" ColumnName="SubmitterFirstName" />
+          <ScalarProperty Name="SubmitterLastName" ColumnName="SubmitterLastName" />
+          <ScalarProperty Name="SubmitterDepartment" ColumnName="SubmitterDepartment" />
+          <ScalarProperty Name="SubmitterEnabled" ColumnName="SubmitterEnabled" />
+          <ScalarProperty Name="AssignedID" ColumnName="AssignedID" />
+          <ScalarProperty Name="AssignedFirstName" ColumnName="AssignedFirstName" />
+          <ScalarProperty Name="AssignedLastName" ColumnName="AssignedLastName" />
+          <ScalarProperty Name="AssignedDepartment" ColumnName="AssignedDepartment" />
+          <ScalarProperty Name="AssignedEnabled" ColumnName="AssignedEnabled" />
+          <ScalarProperty Name="WatchingID" ColumnName="WatchingID" />
+          <ScalarProperty Name="WatchingFirstName" ColumnName="WatchingFirstName" />
+          <ScalarProperty Name="WatchingLastName" ColumnName="WatchingLastName" />
+          <ScalarProperty Name="WatchingDepartment" ColumnName="WatchingDepartment" />
+          <ScalarProperty Name="WatchingEnabled" ColumnName="WatchingEnabled" />
+          <ScalarProperty Name="TicketType" ColumnName="TicketType" />
+          <ScalarProperty Name="BugAttrID" ColumnName="BugAttrID" />
+          <ScalarProperty Name="Severity" ColumnName="Severity" />
+          <ScalarProperty Name="EnhanceAttrID" ColumnName="EnhanceAttrID" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+          <ScalarProperty Name="Estimate" ColumnName="Estimate" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="Software" ColumnName="Software" />
+          <ScalarProperty Name="TaskAttrID" ColumnName="TaskAttrID" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

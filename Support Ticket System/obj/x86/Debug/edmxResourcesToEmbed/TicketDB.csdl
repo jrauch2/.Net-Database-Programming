@@ -217,5 +217,48 @@
       <End Role="Users" EntitySet="Users" />
       <End Role="WatchingUsers" EntitySet="WatchingUsers" />
     </AssociationSet>
+    <FunctionImport Name="spUpsertUser">
+      <Parameter Name="UserID" Mode="In" Type="Int32" />
+      <Parameter Name="FirstName" Mode="In" Type="String" />
+      <Parameter Name="LastName" Mode="In" Type="String" />
+      <Parameter Name="Department" Mode="In" Type="String" />
+      <Parameter Name="Enabled" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spDeleteUser">
+      <Parameter Name="UserID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="TicketWithMostWatchingUsers" IsComposable="true" ReturnType="Collection(TicketDBModel.TicketWithMostWatchingUsers_Result)" />
   </EntityContainer>
+  <ComplexType Name="TicketWithMostWatchingUsers_Result">
+    <Property Type="Int32" Name="TicketID" Nullable="true" />
+    <Property Type="String" Name="Summary" Nullable="true" MaxLength="4000" />
+    <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="Priority" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="SubmitterID" Nullable="true" />
+    <Property Type="String" Name="SubmitterFirstName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="SubmitterLastName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="SubmitterDepartment" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="SubmitterEnabled" Nullable="true" />
+    <Property Type="Int32" Name="AssignedID" Nullable="true" />
+    <Property Type="String" Name="AssignedFirstName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="AssignedLastName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="AssignedDepartment" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="AssignedEnabled" Nullable="true" />
+    <Property Type="Int32" Name="WatchingID" Nullable="true" />
+    <Property Type="String" Name="WatchingFirstName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="WatchingLastName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="WatchingDepartment" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="WatchingEnabled" Nullable="true" />
+    <Property Type="String" Name="TicketType" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="BugAttrID" Nullable="true" />
+    <Property Type="String" Name="Severity" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="EnhanceAttrID" Nullable="true" />
+    <Property Type="String" Name="Cost" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Estimate" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Reason" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Software" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="TaskAttrID" Nullable="true" />
+    <Property Type="String" Name="ProjectName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="DueDate" Nullable="true" MaxLength="50" />
+  </ComplexType>
 </Schema>

@@ -46,18 +46,15 @@ namespace Support_Ticket_System
         // The Main Menu for SupportTicketSystem
         private void Menu()
         {
-            const string subHeader = "Main Menu";
+            var subHeader = "Main Menu";
 
             do
             {
                 _display.Clear();
                 PrintFullHeader(subHeader);
-                _display.WriteLine("1) New Ticket");
-                _display.WriteLine("2) Update Ticket");
-                _display.WriteLine("3) Print All Tickets");
-                _display.WriteLine("4) Search Tickets");
-                _display.WriteLine("5) Delete Ticket");
-                _display.WriteLine("6) Add New User");
+                _display.WriteLine("1) Manage Tickets");
+                _display.WriteLine("2) Manage Users");
+                _display.WriteLine("3) Statistics");
                 _display.WriteLine("0) Exit");
                 _display.WriteSpecialLine();
 
@@ -67,43 +64,336 @@ namespace Support_Ticket_System
 
                 switch (input)
                 {
-                    case "1": GenerateNewTicket();
-                        break;              
-                    case "2": UpdateTicket();
-                        break;
-                    case "3": PrintAllTickets();
-                        break;
-                    case "4": SearchAllTickets();
-                        break;
-                    case "5": DeleteTicket();
-                        break;
-                    case "6":
-                        _logger.Debug("Opening connection to database to add new user...");
-                        using (var db = new TicketDBContext())
-                        {
-                            try
-                            {
-                                _display.WriteLine("New user \"" + AddUser(db) + "\" added successfully.");
-                                PressToContinue();
-                            }
-                            catch (Exception e)
-                            {
-                                _logger.Error(e.GetBaseException());
-                                PrintExceptionCaughtMessage();
-                            }
+                    case "1":
+                        subHeader = "Ticket Menu";
+                        _display.Clear();
+                        PrintFullHeader(subHeader);
+                        _display.WriteLine("1) New Ticket");
+                        _display.WriteLine("2) Update Ticket");
+                        _display.WriteLine("3) Print All Tickets");
+                        _display.WriteLine("4) Search Tickets");
+                        _display.WriteLine("5) Delete Ticket");
+                        _display.WriteLine("0) Cancel");
+                        _logger.Trace("reading user input for Main Menu");
+                        _display.Write("Select an option: ");
+                        var ticketMenuInput = _display.GetInput();
+
+                        switch (ticketMenuInput) { 
+                            case "1": AddTicket(); break;
+                            case "2": UpdateTicket(); break;
+                            case "3": PrintAllTickets(); break;
+                            case "4": SearchAllTickets(); break;
+                            case "5": DeleteTicket(); break;
+                            case "0": break;
+                            default: PrintInvalidInputMessage(input); break;
                         }
                         break;
-                    case "0": CloseProgram();
+                    case "2":
+                        subHeader = "User Menu";
+                        _display.Clear();
+                        PrintFullHeader(subHeader);
+                        _display.WriteLine("1) Add User");
+                        _display.WriteLine("2) Update User");
+                        _display.WriteLine("3) Print All Users");
+                        _display.WriteLine("4) Search Users");
+                        _display.WriteLine("5) Delete User");
+                        _display.WriteLine("0) Cancel");
+                        _logger.Trace("reading user input for Main Menu");
+                        _display.Write("Select an option: ");
+                        var userMenuInput = _display.GetInput();
+
+                        switch (userMenuInput)
+                        {
+                            case "1": AddUser(out _); break;
+                            case "2": UpdateUser(); break;
+                            case "3": PrintAllUsers(); break;
+                            case "4": SearchAllUsers(); break;
+                            case "5": DeleteUser(); break;
+                            case "0": break;
+                            default: PrintInvalidInputMessage(userMenuInput); break;
+                        }
                         break;
-                    default: PrintInvalidInputMessage(input);
+                    case "3":
+                        _display.Clear();
+                        subHeader = "Statistics";
+                        PrintFullHeader(subHeader);
+                        _display.WriteSpecialLine();
+                        _display.WriteLine("1) Tickets With Most Watching Users");
+                        _display.WriteLine("0) Cancel");
+                        _logger.Trace("reading user input for Main Menu");
+                        _display.Write("Select an option: ");
+                        var statisticsMenuInput = _display.GetInput();
+
+                        switch (statisticsMenuInput)
+                        {
+                            case "1": TicketsWithMostWatchingUsers(); break;
+                            case "0": break;
+                            default: PrintInvalidInputMessage(statisticsMenuInput); break;
+                        }
                         break;
+                    case "0": CloseProgram(); break;
+                    default: PrintInvalidInputMessage(input); break;
                 }
             } while (true);
             // ReSharper disable once FunctionNeverReturns
         }
 
+        private void TicketsWithMostWatchingUsers()
+        {
+            var tickets = new List<TicketResult>();
+            var ticketResult = new TicketResult { TicketID = 0 };
+
+            using (var db = new TicketDBContext())
+            {
+                var list = db.TicketWithMostWatchingUsers().Select(t => t).ToList();
+                
+                foreach (var ticketWithMostWatchingUsersResult in list)
+                {
+                    if (ticketWithMostWatchingUsersResult.TicketID == null) continue;
+                    var ticketId = (int) ticketWithMostWatchingUsersResult.TicketID;
+                    if (ticketResult.TicketID == ticketId)
+                    {
+                        if (ticketWithMostWatchingUsersResult.WatchingID == null) continue;
+                        var watchingId = (int) ticketWithMostWatchingUsersResult.WatchingID;
+                        if (ticketWithMostWatchingUsersResult.WatchingEnabled == null) continue;
+                        var watchingUser = new WatchingUser
+                        {
+                            User = new User
+                            {
+                                UserID = watchingId,
+                                FirstName = ticketWithMostWatchingUsersResult.WatchingFirstName,
+                                LastName = ticketWithMostWatchingUsersResult.WatchingLastName,
+                                Department = ticketWithMostWatchingUsersResult.WatchingDepartment,
+                                Enabled = (int)ticketWithMostWatchingUsersResult.WatchingEnabled
+                            }
+                        };
+                        if (!ticketResult.WatchingUsers.Contains(watchingUser))
+                        {
+                            ticketResult.WatchingUsers.Add(watchingUser);
+                        }
+                    }
+                    else
+                    {
+                        tickets.Add(ticketResult);
+                        ticketResult = new TicketResult
+                        {
+                            TicketID = ticketWithMostWatchingUsersResult.TicketID,
+                            Summary = ticketWithMostWatchingUsersResult.Summary,
+                            Status = ticketWithMostWatchingUsersResult.Status,
+                            Priority = ticketWithMostWatchingUsersResult.Priority,
+                            SubmitterID = ticketWithMostWatchingUsersResult.SubmitterID,
+                            SubmitterFirstName = ticketWithMostWatchingUsersResult.SubmitterFirstName,
+                            SubmitterLastName = ticketWithMostWatchingUsersResult.SubmitterLastName,
+                            SubmitterDepartment = ticketWithMostWatchingUsersResult.SubmitterDepartment,
+                            SubmitterEnabled = ticketWithMostWatchingUsersResult.SubmitterEnabled,
+                            AssignedID = ticketWithMostWatchingUsersResult.AssignedID,
+                            AssignedFirstName = ticketWithMostWatchingUsersResult.AssignedFirstName,
+                            AssignedLastName = ticketWithMostWatchingUsersResult.AssignedLastName,
+                            AssignedDepartment = ticketWithMostWatchingUsersResult.AssignedDepartment,
+                            AssignedEnabled = ticketWithMostWatchingUsersResult.AssignedEnabled,
+                            TicketType = ticketWithMostWatchingUsersResult.TicketType,
+                            BugAttrID = ticketWithMostWatchingUsersResult.BugAttrID,
+                            Severity = ticketWithMostWatchingUsersResult.Severity,
+                            EnhanceAttrID = ticketWithMostWatchingUsersResult.EnhanceAttrID,
+                            Cost = ticketWithMostWatchingUsersResult.Cost,
+                            Estimate = ticketWithMostWatchingUsersResult.Estimate,
+                            Reason = ticketWithMostWatchingUsersResult.Reason,
+                            Software = ticketWithMostWatchingUsersResult.Software,
+                            TaskAttrID = ticketWithMostWatchingUsersResult.TaskAttrID,
+                            ProjectName = ticketWithMostWatchingUsersResult.ProjectName,
+                            DueDate = ticketWithMostWatchingUsersResult.DueDate,
+                            WatchingUsers = new List<WatchingUser>()
+                        };
+
+                        if (ticketWithMostWatchingUsersResult.WatchingID == null) continue;
+                        if (ticketWithMostWatchingUsersResult.WatchingEnabled != null)
+                            ticketResult.WatchingUsers.Add(
+                                new WatchingUser
+                                {
+                                    User = new User()
+                                    {
+                                        UserID = (int) ticketWithMostWatchingUsersResult.WatchingID,
+                                        FirstName = ticketWithMostWatchingUsersResult.WatchingFirstName,
+                                        LastName = ticketWithMostWatchingUsersResult.WatchingLastName,
+                                        Department = ticketWithMostWatchingUsersResult.WatchingDepartment,
+                                        Enabled = (int) ticketWithMostWatchingUsersResult.WatchingEnabled
+                                    }
+                                });
+                    }
+                }
+            }
+
+            var subHeader = "Tickets With the Most Watching Users";
+            _display.Clear();
+            PrintFullHeader(subHeader, "Number of Watching Users: " + ticketResult.WatchingUsers.Count);
+            _display.WriteLine("Ticket ID: " + ticketResult.TicketID);
+            _display.WriteLine("Status: " + ticketResult.Status + "     Priority: " + ticketResult.Priority);
+            _display.WriteLine("Summary: " + ticketResult.Summary);
+            if (ticketResult.TicketType.Equals("Bug"))
+            {
+                _display.WriteLine("Severity: Tier " + (int)ticketResult.Severity.ToSeverity());
+            }
+            if (ticketResult.TicketType.Equals("Enhancement"))
+            {
+                _display.WriteLine("Software: " + ticketResult.Software);
+                _display.WriteLine("Reason: " + ticketResult.Reason);
+                _display.WriteLine("Estimate: " + ticketResult.Estimate);
+                _display.WriteLine("Cost: " + ticketResult.Cost);
+            }
+            if (ticketResult.TicketType.Equals("Task"))
+            {
+                _display.WriteLine("Project Name: " + ticketResult.ProjectName);
+                _display.WriteLine("Due Date: " + ticketResult.DueDate);
+            }
+            _display.WriteLine("Submitter: " + ticketResult.SubmitterFirstName + " " + ticketResult.SubmitterLastName);
+            _display.WriteLine("Assigned: " + ticketResult.AssignedFirstName + " " + ticketResult.AssignedLastName);
+            _display.WriteLine("Watching Users:");
+            _display.WriteLine(ticketResult.WatchingUsers.ToFormattedString());
+            _display.WriteSpecialLine();
+            PressToContinue();
+        }
+
+        private void DeleteUser()
+        {
+            const string subHeader = "Delete User";
+            var done = false;
+            using (var db = new TicketDBContext())
+            {
+                try
+                {
+                    do
+                    {
+                        _display.Clear();
+                        PrintFullHeader(subHeader);
+                        _display.Write("Enter User ID (0 to cancel): ");
+                        var input = _display.GetInput();
+                        if (int.TryParse(input, out var id))
+                        {
+                            if (id < 1) return;
+                            if (!TryGetUserById(id, db, out var user))
+                            {
+                                _display.WriteLine("User ID not found.");
+                                PressToContinue();
+                                continue;   
+                            } 
+                            _display.Clear();
+                            PrintFullHeader(subHeader, "User ID \"" + user.UserID + "\" found");
+                            user.Print(_display);
+                            _display.WriteLine("Are you sure you want to delete this user?");
+                            _display.WriteLine("THIS ACTION CANNOT BE UNDONE! (Y/N):");
+                            input = _display.GetInput().ToUpper();
+                            if (input.Equals("Y"))
+                            {
+                                db.Users.Remove(user);
+                                db.SaveChanges();
+                                done = true;
+                                _display.Clear();
+                                PrintFullHeader(subHeader);
+                                _display.WriteLine("User deleted successfully.");
+                                PressToContinue();
+                            }
+                            else if (input.Equals("N")) done = true;
+                            else PrintInvalidInputMessage(input);
+                        }
+                        else PrintInvalidInputMessage(input);
+                    } while (!done);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e.GetBaseException());
+                    PrintExceptionCaughtMessage();
+                }
+            }
+        }
+
+        private bool TryGetUserById(int id, TicketDBContext db, out User user)
+        {
+            user = null;
+
+            if (id < 1) return false;
+            _logger.Debug("Opening connection to database to retrieve and update ticket...");
+            try
+            {
+                var result = db.Users.SingleOrDefault(u => u.UserID == id);
+                    
+                if (result == null) return false;
+                if (result.Enabled == 0)
+                {
+                    user = result;
+                    return false;
+                }
+                user = result;
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e.GetBaseException());
+                PrintExceptionCaughtMessage();
+            }
+
+            return false;
+        }
+
+        private void SearchAllUsers()
+        {
+            _display.Clear();
+            var subHeader = "Search All Users";
+            PrintFullHeader(subHeader);
+            _display.Write("Enter search term: ");
+            var searchTerm = _display.GetInput().ToLower();
+
+            _display.Clear();
+            subHeader = "Results for \"" + searchTerm + "\"";
+            PrintFullHeader(subHeader);
+
+            _logger.Debug("Opening connection to database to search users...");
+            using (var db = new TicketDBContext())
+            {
+                try
+                {
+                    var results = db.Users
+                        .Where(u => u.UserID.ToString().ToLower().Equals(searchTerm)
+                                    || u.FirstName.ToLower().Contains(searchTerm)
+                                    || u.LastName.ToLower().Contains(searchTerm)
+                                    || u.Department.ToLower().Contains(searchTerm))
+                        .Select(u => u);
+                    _logger.Debug("Executing user search query \"" + searchTerm + "\"...");
+                    foreach (var record in results) record.Print(_display);
+                    PressToContinue();
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e.GetBaseException());
+                    PrintExceptionCaughtMessage();
+                }
+            }
+        }
+
+        private void PrintAllUsers()
+        {
+            _display.Clear();
+            const string subHeader = "All Users";
+            PrintFullHeader(subHeader);
+
+            _logger.Debug("Opening connection to database to print all users...");
+            using (var db = new TicketDBContext())
+            {
+                try
+                {
+                    var results = db.Users.ToList();
+                    foreach (var record in results) record.Print(_display);
+                    PressToContinue();
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e.GetBaseException());
+                    PrintExceptionCaughtMessage();
+                }
+            }
+        }
+
         // Create a new Ticket
-        private void GenerateNewTicket()
+        private void AddTicket()
         {
             var subHeader = "Add a New Ticket";
             var newTicket = new Ticket { Status = Status.Open.ToString() };
@@ -125,7 +415,6 @@ namespace Support_Ticket_System
                         _display.WriteLine("3) New Task Ticket");
                         _display.WriteLine("0) Cancel");
                         _display.WriteSpecialLine();
-
                         _display.Write("Select a ticket type: ");
                         input = _display.GetInput();
 
@@ -141,63 +430,64 @@ namespace Support_Ticket_System
                     } while (!valid);
 
                     if (ticketType == null) PrintInvalidInputMessage(input);
-                        else
+                    else
+                    {
+                        newTicket.TicketType = ticketType;
+                        switch (ticketType.Description)
                         {
-                            newTicket.TicketType = ticketType;
-                            switch (ticketType.Description)
-                            {
-                                case "Bug":
-                                    subHeader = BugTicketHeader;
-                                    var bugAttribute = new BugAttribute
-                                        { Severity = GetSeverityInput(subHeader).ToString() };
-                                    newTicket.BugAttributes.Add(bugAttribute);
-                                    break;
-                                case "Enhancement":
-                                    subHeader = EnhancementTicketHeader;
-                                    var enhancementAttribute = new EnhancementAttribute
-                                    {
-                                        Cost = GetCostInput(subHeader),
-                                        Estimate = GetEstimateInput(subHeader),
-                                        Reason = GetReasonInput(subHeader),
-                                        Software = GetSoftwareInput(subHeader)
-                                    };
-                                    newTicket.EnhancementAttributes.Add(enhancementAttribute);
-                                    break;
-                                case "Task":
-                                    subHeader = TaskTicketHeader;
-                                    var taskAttribute = new TaskAttribute
-                                    {
-                                        DueDate = GetDueDateInput(subHeader),
-                                        ProjectName = GetProjectNameInput(subHeader)
-                                    };
-                                    newTicket.TaskAttributes.Add(taskAttribute);
-                                    break;
-                                default:
-                                    _display.WriteLine("The ticket type \"" + ticketType.Description +
-                                                       "\" is not supported by this application.");
-                                    PressToContinue();
-                                    break;
-                            }
+                            case "Bug":
+                                subHeader = BugTicketHeader;
+                                var bugAttribute = new BugAttribute
+                                    {Severity = GetSeverityInput(subHeader).ToString()};
+                                newTicket.BugAttributes.Add(bugAttribute);
+                                break;
+                            case "Enhancement":
+                                subHeader = EnhancementTicketHeader;
+                                var enhancementAttribute = new EnhancementAttribute
+                                {
+                                    Cost = GetInput(subHeader, "Cost of enhancement:"),
+                                    Estimate = GetInput(subHeader, "Estimate: "),
+                                    Reason = GetInput(subHeader, "Reason for enhancement:"),
+                                    Software = GetInput(subHeader, "Requested software:")
+                                };
+                                newTicket.EnhancementAttributes.Add(enhancementAttribute);
+                                break;
+                            case "Task":
+                                subHeader = TaskTicketHeader;
+                                var taskAttribute = new TaskAttribute
+                                {
+                                    DueDate = GetInput(subHeader, "Task Due Date:"),
+                                    ProjectName = GetInput(subHeader, "Project Name:")
+                                };
+                                newTicket.TaskAttributes.Add(taskAttribute);
+                                break;
+                            default:
+                                _display.WriteLine("The ticket type \"" + ticketType.Description +
+                                                   "\" is not supported by this application.");
+                                PressToContinue();
+                                break;
                         }
+                    }
 
-                    newTicket.Summary = GetSummaryInput(subHeader);
+                    newTicket.Summary = GetInput(subHeader, "Write a summary of the issue (254 Char Max):");
                     newTicket.Priority = GetPriorityInput(subHeader).ToString();
 
                     do
                     {
-                        newTicket.SubmitterUser = GetUserFromInput(subHeader, "submitter", db);
+                        newTicket.SubmitterUser = GetUserFromInput(db, subHeader, "submitter", "first and last name");
                     } while (newTicket.SubmitterUser == null);
 
                     do
                     {
-                        newTicket.AssignedUser = GetUserFromInput(subHeader, "assigned", db);
+                        newTicket.AssignedUser = GetUserFromInput(db, subHeader, "assigned", "first and last name");
                     } while (newTicket.AssignedUser == null);
 
                     newTicket.WatchingUsers =
-                        GetWatchingInput(subHeader, db, newTicket.SubmitterUser, newTicket.AssignedUser);
+                        GetWatchingInput(subHeader, newTicket.SubmitterUser, newTicket.AssignedUser, db);
+                    var correctedTicket = GetCorrectTicketInput(subHeader, db, newTicket);
 
                     _logger.Debug("Adding Ticket to database...");
-                    db.Tickets.Add(GetCorrectInput(subHeader, db, newTicket));
+                    db.Tickets.Add(correctedTicket);
                     _logger.Debug("Saving changes to database...");
                     db.SaveChanges();
                     _display.Clear();
@@ -313,18 +603,21 @@ namespace Support_Ticket_System
                         if (int.TryParse(input, out var id))
                         {
                             if (id == 0) return;
-                            if (!TryGetTicketById(db, id, out var ticket))
+                            if (!TryGetTicketById(id, db, out var ticket))
                             {
+                                _display.Clear();
+                                PrintFullHeader(subHeader);
                                 _display.WriteLine("Ticket ID not found.");
                                 PressToContinue();
                                 continue;
                             }
-                            GetCorrectInput(subHeader, db, ticket);
+                            GetCorrectTicketInput(subHeader, db, ticket);
                             _logger.Debug("Saving changes to ticket...");
                             db.SaveChanges();
                             _logger.Info("Ticket updated successfully.");
                             done = true;
                             _display.Clear();
+                            PrintFullHeader(subHeader);
                             _display.WriteLine("Ticket updated successfully.");
                             PressToContinue();
                         }
@@ -356,7 +649,7 @@ namespace Support_Ticket_System
                         if (int.TryParse(input, out var id))
                         {
                             if (id == 0) return;
-                            if (!TryGetTicketById(db, id, out var ticket))
+                            if (!TryGetTicketById(id, db, out var ticket))
                             {
                                 _display.WriteLine("Ticket ID not found.");
                                 PressToContinue();
@@ -378,6 +671,7 @@ namespace Support_Ticket_System
                                 db.SaveChanges();
                                 done = true;
                                 _display.Clear();
+                                PrintFullHeader(subHeader);
                                 _display.WriteLine("Ticket deleted successfully.");
                                 PressToContinue();
                             }
@@ -430,77 +724,11 @@ namespace Support_Ticket_System
         // Get the Estimate input from the user
         // accepts string subHeader to dynamically display sub-header depending on the calling method
         // accepts string estimate to display the previous value for editing
-        private string GetEstimateInput(string subHeader, string estimate = null)
+        private string GetInput(string subHeader, string requestForInput, string previousValue = null)
         {
             _display.Clear();
-            PrintFullHeader(subHeader, "Estimate:");
-            if (estimate != null) _display.SendWait(estimate);
-            return _display.GetInput();
-        }
-
-        // Get the Reason input from the user
-        // accepts string subHeader to dynamically display sub-header depending on the calling method
-        // accepts string reason to display the previous value for editing
-        private string GetReasonInput(string subHeader, string reason = null)
-        {
-            _display.Clear();
-            PrintFullHeader(subHeader, "Reason for enhancement:");
-            if (reason != null) _display.SendWait(reason);
-            return _display.GetInput();
-        }
-
-        // Get the Cost input from the user
-        // accepts string subHeader to dynamically display sub-header depending on the calling method
-        // accepts string cost to display the previous value for editing
-        private string GetCostInput(string subHeader, string cost = null)
-        {
-            _display.Clear();
-            PrintFullHeader(subHeader, "Cost of enhancement:");
-            if (cost != null) _display.SendWait(cost);
-            return _display.GetInput();
-        }
-
-        // Get the Software input from the user
-        // accepts string subHeader to dynamically display sub-header depending on the calling method
-        // accepts string software to display the previous value for editing
-        private string GetSoftwareInput(string subHeader, string software = null)
-        {
-            _display.Clear();
-            PrintFullHeader(subHeader, "Requested software:");
-            if (software != null) _display.SendWait(software);
-            return _display.GetInput();
-        }
-
-        // Get the DueDate input from the user
-        // accepts string subHeader to dynamically display sub-header depending on the calling method
-        // accepts string dueDate to display the previous value for editing
-        private string GetDueDateInput(string subHeader, string dueDate = null)
-        {
-            _display.Clear();
-            PrintFullHeader(subHeader, "Task Due Date:");
-            if (dueDate != null) _display.SendWait(dueDate);
-            return _display.GetInput();
-        }
-
-        // Get the ProjectName input from the user
-        // accepts string subHeader to dynamically display sub-header depending on the calling method
-        // accepts string projectName to display the previous value for editing
-        private string GetProjectNameInput(string subHeader, string projectName = null)
-        {
-            _display.Clear();
-            PrintFullHeader(subHeader, "Project Name:");
-            if (projectName != null) _display.SendWait(projectName);
-            return _display.GetInput();
-        }
-
-        // Get the Summary input from the user
-        // accepts string subHeader to dynamically display sub-header depending on the calling method
-        // accepts string summary to display the previous value for editing
-        private string GetSummaryInput(string subHeader, string summary = null)
-        {
-            _display.Clear();
-            PrintFullHeader(subHeader, "Write a summary of the issue (254 Char Max):");
-            if ( summary != null) _display.SendWait(summary);
+            PrintFullHeader(subHeader, requestForInput);
+            if (previousValue != null) _display.SendWait(previousValue);
             return _display.GetInput();
         }
 
@@ -537,20 +765,21 @@ namespace Support_Ticket_System
         // Get the Submitter name from the user
         // accepts string subHeader to dynamically display sub-header depending on the calling method
         // accepts the database context to retrieve a user
-        private User GetUserFromInput(string subHeader, string userRole, TicketDBContext db, User user = null)
+        private User GetUserFromInput(TicketDBContext db, string subHeader, string userRole, string infoType = "", string previousValue = "", User user = null)
         {
             do
             {
-                _display.Clear();
-                PrintFullHeader(subHeader, "Enter " + userRole.ToLower() +" name (First Last):");
-                if (user != null) _display.SendWait(user);
-                var firstAndLastNames = _display.GetInput().Trim().Split(' ');
-                
+                var firstAndLastNames = GetUserInfo(subHeader, userRole, infoType, user == null ? previousValue : user.ToString()).Trim().Split(' ');
                 if (firstAndLastNames.Length != 2) PrintInvalidInputMessage("Only one first name and one last name may be entered. ");
-                else if (TryGetUserByName(db, firstAndLastNames[0], firstAndLastNames[1], out user)) return user;
+                else if (TryGetUserByName(subHeader, firstAndLastNames[0], firstAndLastNames[1], db, out user)) return user;
+                else if (user != null)
+                {
+                    _display.Clear();
+                    PrintInvalidInputMessage("User \"" + user.UserID + ") " + user.FirstName + " " + user.LastName + "\" was found, but is disabled.\nPlease re-enable user to use.");
+                     _display.WriteLine();  
+                }
                 else
                 {
-                    var valid = false;
                     do
                     {
                         firstAndLastNames[0] = _textInfo.ToTitleCase(firstAndLastNames[0].ToLower());
@@ -563,23 +792,22 @@ namespace Support_Ticket_System
 
                         if (input.ToUpper().Equals("Y"))
                         {
-                            valid = true;
-                            AddUser(db, firstAndLastNames[0], firstAndLastNames[1]);
+                            AddUser(out user, subHeader, firstAndLastNames[0], firstAndLastNames[1]);
+                            return user;
                         }
-                        else if (input.ToUpper().Equals("N")) return user;
-                        else PrintInvalidInputMessage(input);
-                    } while (!valid);
-                }
-            } while (user == null);
 
-            return user;
+                        if (input.ToUpper().Equals("N")) return null;
+                        PrintInvalidInputMessage(input);
+                    } while (true);
+                }
+            } while (true);
         }
 
         // Get the WatchingUsers names from the user
         // accepts string subHeader to dynamically display sub-header depending on the calling method
         // accepts the submitterUser and assignedUser to add to watchingUsers, as those users are required to be watching
         // accepts the database context to retrieve users
-        private ICollection<WatchingUser> GetWatchingInput(string subHeader, TicketDBContext db, User submitter, User assigned, List<WatchingUser> watchingUsers = null)
+        private ICollection<WatchingUser> GetWatchingInput(string subHeader, User submitter, User assigned, TicketDBContext db, List<WatchingUser> watchingUsers = null)
         {
             var userList = new List<User>();
 
@@ -596,12 +824,12 @@ namespace Support_Ticket_System
 
             _display.Clear();
             PrintFullHeader(subHeader, "Enter watching names, comma separated(First Last, First Last):");
-            if (submitter != assigned) _display.Write(submitter + ", " + assigned + ", ");
+            if (!submitter.Equals(assigned)) _display.Write(submitter + ", " + assigned + ", ");
             else _display.Write(submitter + ", ");
             if (watchingUsers != null) _display.SendWait(watchingUsers.ToFormattedString());
             var userInput = _display.GetInput();
 
-            if (submitter != assigned)
+            if (!submitter.Equals(assigned))
             {
                 watchingUsers = new List<WatchingUser>
                 {
@@ -618,40 +846,28 @@ namespace Support_Ticket_System
                 var firstAndLastNames = name.Trim().Split(' ');
 
                 if (firstAndLastNames.Length != 2) PrintInvalidInputMessage("Only one first name and one last name may be entered. ");
-                else if (TryGetUserByName(db, firstAndLastNames[0], firstAndLastNames[0], out var user)) userList.Add(user);
-                else
+                else if (TryGetUserByName(subHeader, firstAndLastNames[0], firstAndLastNames[1], db, out var user))
                 {
-                    var valid = false;
-                    do
-                    {
-                        firstAndLastNames[0] = _textInfo.ToTitleCase(firstAndLastNames[0].ToLower());
-                        firstAndLastNames[1] = _textInfo.ToTitleCase(firstAndLastNames[1].ToLower());
-                        _display.Clear();
-                        PrintFullHeader("User \"" + firstAndLastNames[0] + " "
-                                        + firstAndLastNames[1] + "\" does not exist.",
-                            " Would you like to add user? Y/N: ");
-                        var input = _display.GetInput();
-
-                        if (input.ToUpper().Equals("Y"))
-                        {
-                            valid = true;
-                            AddUser(db, firstAndLastNames[0], firstAndLastNames[1]);
-                        }
-                        else if (input.ToUpper().Equals("N")) valid = true;
-                        else PrintInvalidInputMessage(input);
-                    } while (!valid);
+                    userList.Add(user);
+                }
+                else if (user != null)
+                {
+                    _display.Clear();
+                    PrintFullHeader(subHeader, "User \"" + user.UserID + ") " + user.FirstName + " " + user.LastName + "\" was found, but is disabled.\nPlease re-enable user to use.");
+                    _display.WriteLine();
                 }
             }
 
             foreach (var user in userList)
             {
-                for (var i = 0; i < watchingUsers.Count; i++)
+                var watchingUser = new WatchingUser{ User = user};
+                if (!watchingUsers.Contains(watchingUser))
                 {
-                    if (watchingUsers[i].User == user) continue;
-                    watchingUsers.Add(new WatchingUser { User = user });
+                    watchingUsers.Add(watchingUser);
                 }
             }
 
+            
             return watchingUsers;
         }
 
@@ -659,7 +875,7 @@ namespace Support_Ticket_System
         // accepts string subHeader to dynamically display sub-header depending on the calling method
         // accepts the database context to retrieve information from the database
         // accepts the ticket to be validated by the user
-        private Ticket GetCorrectInput(string subHeader, TicketDBContext db, Ticket ticket)
+        private Ticket GetCorrectTicketInput(string subHeader, TicketDBContext db, Ticket ticket)
         {
             do
             {
@@ -689,7 +905,6 @@ namespace Support_Ticket_System
                         _display.WriteLine("11) Project Name: " + ticketTaskAttribute.ProjectName);
                         _display.WriteLine("12) Due Date: " + ticketTaskAttribute.DueDate);
                     }
-                // START HERE
                 _display.WriteLine();
                 _display.WriteSpecialLine();
                 _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
@@ -698,16 +913,16 @@ namespace Support_Ticket_System
                 switch (input)
                 {
                     case "0": return ticket;
-                    case "1": ticket.Summary = GetSummaryInput(subHeader, ticket.Summary);
+                    case "1": ticket.Summary = GetInput(subHeader, "Write a summary of the issue (254 Char Max):", ticket.Summary);
                         break;
                     case "2": ticket.Priority = GetPriorityInput(subHeader).ToString();
                         break;
-                    case "3": ticket.SubmitterUser = GetUserFromInput(subHeader, "submitter", db, ticket.SubmitterUser);
+                    case "3": ticket.SubmitterUser = GetUserFromInput(db, subHeader, "submitter", "first and last name", user: ticket.SubmitterUser);
                         break;
-                    case "4": ticket.AssignedUser = GetUserFromInput(subHeader, "assigned", db, ticket.AssignedUser);
+                    case "4": ticket.AssignedUser = GetUserFromInput(db, subHeader, "assigned", "first and last name", user: ticket.AssignedUser);
                         break;
                     case "5":
-                        var watchingUsers = GetWatchingInput(subHeader, db, ticket.SubmitterUser, ticket.AssignedUser,
+                        var watchingUsers = GetWatchingInput(subHeader, ticket.SubmitterUser, ticket.AssignedUser, db,
                             ticket.WatchingUsers.ToList());
                         db.WatchingUsers.RemoveRange(ticket.WatchingUsers);
                         ticket.WatchingUsers = watchingUsers;
@@ -727,7 +942,7 @@ namespace Support_Ticket_System
                         if (ticket.EnhancementAttributes.Count > 0)
                         {
                             ticket.EnhancementAttributes.Single().Cost =
-                                GetCostInput(subHeader, ticket.EnhancementAttributes.Single().Cost);
+                                GetInput(subHeader, "Cost of enhancement:", ticket.EnhancementAttributes.Single().Cost);
                             break;
                         }
                         else
@@ -738,7 +953,7 @@ namespace Support_Ticket_System
                     case "8":
                         if (ticket.EnhancementAttributes.Count > 0)
                         {
-                            ticket.EnhancementAttributes.Single().Estimate = GetEstimateInput(subHeader,
+                            ticket.EnhancementAttributes.Single().Estimate = GetInput(subHeader,
                                 ticket.EnhancementAttributes.Single().Estimate);
                             break;
                         }
@@ -751,7 +966,7 @@ namespace Support_Ticket_System
                         if (ticket.EnhancementAttributes.Count > 1)
                         {
                             ticket.EnhancementAttributes.Single().Reason =
-                                GetReasonInput(subHeader, ticket.EnhancementAttributes.Single().Reason);
+                                GetInput(subHeader, ticket.EnhancementAttributes.Single().Reason);
                             break;
                         }
                         else
@@ -762,7 +977,7 @@ namespace Support_Ticket_System
                     case "10":
                         if (ticket.EnhancementAttributes.Count > 1)
                         {
-                            ticket.EnhancementAttributes.Single().Software = GetSoftwareInput(subHeader,
+                            ticket.EnhancementAttributes.Single().Software = GetInput(subHeader, "Requested software:",
                                 ticket.EnhancementAttributes.Single().Software);
                             break;
                         }
@@ -775,7 +990,7 @@ namespace Support_Ticket_System
                         if (ticket.TaskAttributes.Count > 1)
                         {
                             ticket.TaskAttributes.Single().ProjectName =
-                                GetProjectNameInput(subHeader, ticket.TaskAttributes.Single().ProjectName);
+                                GetInput(subHeader, "Project Name:", ticket.TaskAttributes.Single().ProjectName);
                             break;
                         }
                         else
@@ -787,7 +1002,7 @@ namespace Support_Ticket_System
                         if (ticket.TaskAttributes.Count > 1)
                         {
                             ticket.TaskAttributes.Single().DueDate =
-                                GetDueDateInput(subHeader, ticket.TaskAttributes.Single().DueDate);
+                                GetInput(subHeader, "Task Due Date:", ticket.TaskAttributes.Single().DueDate);
                             break;
                         }
                         else
@@ -805,8 +1020,10 @@ namespace Support_Ticket_System
         // accepts the database context for retrieving a user
         // accepts first and last names as strings
         // output argument "user" is the user retrieved from the database
-        private bool TryGetUserByName(TicketDBContext db, string fName, string lName, out User user)
+        private bool TryGetUserByName(string subHeader, string fName, string lName, TicketDBContext db, out User user)
         {
+            user = null;
+            
             IQueryable<User> users = null;
             try
             {
@@ -819,47 +1036,41 @@ namespace Support_Ticket_System
                 Console.WriteLine(e.GetBaseException());
                 PrintExceptionCaughtMessage();
             }
+
             if (users?.Count() == 1)
             {
                 user = users.First();
-                return true;
+                return user.Enabled != 0;
             }
 
-            if (users?.Count() > 1)
+            if (!(users?.Count() > 1)) return false;
+            
+            do
             {
-                do
+                _display.Clear();
+                PrintFullHeader(subHeader, "More than 1 result found. Select which user:");
+                _display.WriteLine();
+                foreach (var user1 in users)
                 {
-                    _display.WriteLine("More than 1 result found");
-                    _display.WriteLine("Select which user: ");
-                    foreach (var user1 in users)
-                    {
-                        _display.WriteLine(
-                            user1.UserID + ") " + user1.FirstName + " " + user1.LastName + ", " +
-                            user1.Department);
-                    }
+                    _display.WriteLine(
+                        user1.UserID + ") " + user1.FirstName + " " + user1.LastName + ", " +
+                        user1.Department);
+                }
 
-                    _display.WriteLine("0) None of the above.");
-                    var input = _display.GetInput();
-                    if (!int.TryParse(input, out var inputResult)) continue;
-                    if (inputResult == 0)
-                    {
-                        user = null;
-                        return false;
-                    }
-
-                    foreach (var u in users)
-                    {
-                        if (inputResult != u.UserID) continue;
-                        user = u;
-                        return true;
-                    }
-                } while (true);
-            }
-            user = null;
-            return false;
+                _display.WriteLine("0) None of the above.");
+                var input = _display.GetInput();
+                if (!int.TryParse(input, out var inputResult)) continue;
+                if (inputResult == 0) return false;
+                foreach (var u in users)
+                {
+                    if (inputResult != u.UserID) continue;
+                    user = u;
+                    return true;
+                }
+            } while (true);
         }
 
-        private bool TryGetTicketById(TicketDBContext db, int id, out Ticket ticket)
+        private bool TryGetTicketById(int id, TicketDBContext db, out Ticket ticket)
         {
             ticket = null;
             
@@ -867,6 +1078,7 @@ namespace Support_Ticket_System
             _logger.Debug("Opening connection to database to retrieve and update ticket...");
             try
             {
+                
                 var result = db.Tickets
                     .Include(wu => wu.WatchingUsers)
                     .Include(tt => tt.TicketType)
@@ -875,12 +1087,9 @@ namespace Support_Ticket_System
                     .Include(ta => ta.TaskAttributes)
                     .Include(wu => wu.WatchingUsers.Select(u => u.User))
                     .SingleOrDefault(t => t.TicketID == id);
-                if (result == null) PrintInvalidInputMessage(id);
-                else
-                {
-                    ticket = result;
-                    return true;
-                }
+                if (result == null) return false;
+                ticket = result;
+                return true;
             }
             catch (Exception e)
             {
@@ -891,90 +1100,198 @@ namespace Support_Ticket_System
             return false;
         }
 
+        private string GetUserInfo(string subHeader, string userRole = "", string infoType = "", string previousValue = "")
+        {
+            _display.Clear();
+            PrintFullHeader(subHeader, "Enter " + userRole +" user's " + infoType.ToLower() + " (0 to cancel):");
+            if (previousValue != null) _display.SendWait(previousValue);
+            var input = _display.GetInput();
+            return input == "0" ? null : input;
+        }
+
         // add a user to the database from first and last name
         // accepts the database context and the strings for first and last names
-        private User AddUser(TicketDBContext db, string fName = null, string lName = null)
+        private void AddUser(out User user, string subHeader = "Add User", string fName = null, string lName = null)
         {
-            string dept;
-            if (fName != null && lName != null)
+            user = null;
+            
+            try
             {
-                var done = false;
+                if (fName == null && lName == null)
+                {
+                    var correct = false;
+                    do
+                    {
+                        var name = GetUserInfo(subHeader, "", "first and last name");
+                        if (name == null) return;
+                        var nameArray = name.Trim().Split();
+                        if (nameArray.Length != 2)
+                            PrintInvalidInputMessage(
+                                "Enter exactly one first name and one last name, separated by a space.");
+                        else
+                        {
+                            fName = nameArray[0];
+                            lName = nameArray[1];
+                            correct = true;
+                        }
+                    } while (!correct);
+                }
 
-                _display.WriteLine("Enter user's first name:");
-                fName = _display.GetInput();
-                _display.WriteLine("Enter user's last name:");
-                lName = _display.GetInput();
-                _display.WriteLine("Enter user's department: ");
-                dept = _display.GetInput();
+                var dept = GetUserInfo(subHeader,"", "department");
+                if (dept == null)
+                {
+                    user = null;
+                    return;
+                }
+
+                GetCorrectUserInput(subHeader, fName, lName, dept, out _);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e.GetBaseException());
+                PrintExceptionCaughtMessage();
+            }
+            
+            user = null;
+        }
+
+        private void UpdateUser()
+        {
+            using (var db = new TicketDBContext())
+            {
+                var subHeader = "Update Ticket";
+                var valid = false;
+                var done = false;
+                User user;
+
                 do
                 {
-                    _display.WriteLine("1) " + fName);
-                    _display.WriteLine("2) " + lName);
-                    _display.WriteLine("3) " + dept);
+                    var input = GetUserInfo(subHeader, "", "first and last name to update");
+                    if (input == null) return;
+                    var firstAndLastName = input.Trim().Split(' ');
+                    if (firstAndLastName.Length != 2)
+                        PrintInvalidInputMessage("Enter exactly one first name and one last name");
+                    if (!TryGetUserByName(subHeader, firstAndLastName[0], firstAndLastName[1], db, out user))
+                    {
+                        if (user != null)
+                        {
+                            _display.Clear();
+                            PrintFullHeader(subHeader, "User \"" + user.UserID + ") " + user.FirstName + " " + user.LastName + "\" was found, but is disabled.\nPlease re-enable user to use.");
+                            _display.WriteLine();
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    valid = true;
+                } while (!valid);
+                do
+                {
+                    _display.Clear();
+                    PrintFullHeader(subHeader);
+                    _display.WriteLine("User ID: " + user.UserID);
+                    _display.WriteLine("1) First Name: " + user.FirstName);
+                    _display.WriteLine("2) Last Name: " + user.LastName);
+                    _display.WriteLine("3) Department: " + user.Department);
+                    _display.WriteLine("4) Enabled: " + (user.Enabled == 1 ? "Yes" : "No"));
+                    _display.WriteSpecialLine();
                     _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
                     var input = _display.GetInput();
-                    switch (input.ToUpper())
+
+                    switch (input)
                     {
                         case "0":
                             done = true;
+                            db.SaveChanges();
                             break;
-                        case "1":
-                            _display.WriteLine("Enter user's first name:");
-                            fName = _display.GetInput();
+                        case "1": user.FirstName = GetUserInfo(subHeader, "", "first name", user.FirstName); break;
+                        case "2": user.LastName = GetUserInfo(subHeader, "", "last name", user.LastName); break;
+                        case "3": user.Department = GetUserInfo(subHeader, "", "department", user.Department); break;
+                        case "4":
+                            var enabled = GetUserInfo(subHeader, "", "enabled", (user.Enabled == 1 ? "Yes" : "No"));
+                            if (enabled.ToLower() == "yes" || enabled.ToLower() == "no")
+                                user.Enabled = enabled.ToLower() == "yes" ? 1 : 0;
                             break;
-                        case "2":
-                            _display.WriteLine("Enter user's last name:");
-                            lName = _display.GetInput();
-                            break;
-                        case "3":
-                            _display.WriteLine("Enter user's department: ");
-                            dept = _display.GetInput();
-                            break;
-                        default:
-                            PrintInvalidInputMessage(input);
-                            break;
+                        default: PrintInvalidInputMessage(input); break;
                     }
                 } while (!done);
             }
-            var valid = false;
-            if (TryGetUserByName(db, fName, lName, out var user))
-            {
-                do
-                {
-                    _display.WriteLine("That user's name already exist. Is this a new user with the same name? Y/N:");
-                    var input = _display.GetInput();
-                    switch (input.ToUpper())
-                    {
-                        case "Y": valid = true;
-                            break;
-                        case "N": break;
-                        default: PrintInvalidInputMessage(input);
-                            break;
-                    }
-                } while (!valid);
-            }
-            valid = false;
-            do
-            {
-                _display.WriteLine("Enter user's department: ");
-                dept = _display.GetInput();
-                _display.Write("Is this correct?: " + dept + "\nY/N: ");
-                var input = _display.GetInput();
-                switch (input.ToUpper())
-                {
-                    case "Y": valid = true;
-                        break;
-                    case "N": break;
-                    default: PrintInvalidInputMessage(input);
-                        break;
-                }
-            } while (!valid);
-            user = new User { FirstName = fName, LastName = lName, Department = dept };
-            db.Users.Add(user);
-            db.SaveChanges();
-            return user;
         }
 
+        private void GetCorrectUserInput(string subHeader, string fName, string  lName, string dept, out User user)
+        {
+            var done = false;
+            do
+            {
+                _display.Clear();
+                PrintFullHeader(subHeader);
+                _display.WriteLine("1) " + fName + " " + lName);
+                _display.WriteLine("2) " + dept);
+                _display.WriteSpecialLine();
+                _display.Write("Would you like to make a change?\n(enter 0 to accept): ");
+                var input = _display.GetInput();
+                switch (input)
+                {
+                    case "0":
+                        done = true;
+                        break;
+                    case "1":
+                        var name = GetUserInfo(subHeader, "", "first and last name", fName + " " + lName);
+                        if (name == null)
+                        {
+                            user = null;
+                            return;
+                        }
+                        var nameArray = name.Trim().Split();
+                        if (nameArray.Length != 2) PrintInvalidInputMessage("Enter exactly one first name and one last name, separated by a space.");
+                        fName = nameArray[0];
+                        lName = nameArray[1];
+                        continue;
+                    case "2":
+                        dept = GetUserInfo(subHeader, "", "department", dept);
+                        continue;
+                    default:
+                        PrintInvalidInputMessage(input);
+                        continue;
+                }
+            } while (!done);
+
+            using (var db = new TicketDBContext())
+            {
+                if (TryGetUserByName(subHeader, fName, lName, db, out user))
+                {
+                    var valid = false;
+                    do
+                    {
+                        _display.Clear();
+                        PrintFullHeader(subHeader,
+                            "That user's name already exist. Is this a new user with the same name?");
+                        _display.Write("Y/N:");
+                        var input = _display.GetInput();
+                        switch (input.ToUpper())
+                        {
+                            case "Y":
+                                valid = true;
+                                break;
+                            case "N": return;
+                            default:
+                                PrintInvalidInputMessage(input);
+                                break;
+                        }
+                    } while (!valid);
+                }
+
+                user = new User {FirstName = fName, LastName = lName, Department = dept, Enabled = 1};
+                db.Users.Add(user);
+                db.SaveChanges();
+            }
+
+            _display.Clear();
+            PrintFullHeader(subHeader, "New user \"" + user + "\" added successfully.");
+            _display.WriteLine();
+            PressToContinue();
+        }
         private void PrintInvalidInputMessage<T>(T input)
         {
             _display.Clear();
@@ -988,22 +1305,15 @@ namespace Support_Ticket_System
             PressToContinue();
         }
 
-        private void PrintFullHeader(string subHeader, string requestForInput)
+        private void PrintFullHeader(string subHeader, string requestForInput = null)
         {
             _display.WriteSpecialLine();
             _display.WriteLine(Header);
             _display.WriteLine();
             _display.WriteLine(subHeader);
             _display.WriteSpecialLine();
+            if (requestForInput == null) return;
             _display.WriteLine(requestForInput);
-            _display.WriteSpecialLine();
-        }
-
-        private void PrintFullHeader(string subHeader)
-        {
-            _display.WriteSpecialLine();
-            _display.WriteLine(Header);
-            _display.WriteLine(subHeader);
             _display.WriteSpecialLine();
         }
 

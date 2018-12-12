@@ -122,7 +122,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TicketDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="TicketResult.cs" />
     <Compile Include="TicketType.cs">
+      <DependentUpon>TicketDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TicketWithMostWatchingUsers_Result.cs">
       <DependentUpon>TicketDB.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">

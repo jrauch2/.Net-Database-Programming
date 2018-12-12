@@ -161,6 +161,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="spDeleteUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spUpsertUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="In" />
+    <Parameter Name="FirstName" Type="varchar" Mode="In" />
+    <Parameter Name="LastName" Type="varchar" Mode="In" />
+    <Parameter Name="Department" Type="varchar" Mode="In" />
+    <Parameter Name="Enabled" Type="int" Mode="In" />
+  </Function>
+  <Function Name="TicketWithMostWatchingUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="TicketID" Type="int" />
+          <Property Name="Summary" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="10" />
+          <Property Name="SubmitterID" Type="int" />
+          <Property Name="SubmitterFirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SubmitterLastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SubmitterDepartment" Type="nvarchar" MaxLength="50" />
+          <Property Name="SubmitterEnabled" Type="int" />
+          <Property Name="AssignedID" Type="int" />
+          <Property Name="AssignedFirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AssignedLastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AssignedDepartment" Type="nvarchar" MaxLength="50" />
+          <Property Name="AssignedEnabled" Type="int" />
+          <Property Name="WatchingID" Type="int" />
+          <Property Name="WatchingFirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WatchingLastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WatchingDepartment" Type="nvarchar" MaxLength="50" />
+          <Property Name="WatchingEnabled" Type="int" />
+          <Property Name="TicketType" Type="nvarchar" MaxLength="50" />
+          <Property Name="BugAttrID" Type="int" />
+          <Property Name="Severity" Type="nvarchar" MaxLength="50" />
+          <Property Name="EnhanceAttrID" Type="int" />
+          <Property Name="Cost" Type="nvarchar" MaxLength="50" />
+          <Property Name="Estimate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="500" />
+          <Property Name="Software" Type="nvarchar" MaxLength="50" />
+          <Property Name="TaskAttrID" Type="int" />
+          <Property Name="ProjectName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DueDate" Type="nvarchar" MaxLength="50" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
   <EntityContainer Name="TicketDBModelStoreContainer">
     <EntitySet Name="BugAttributes" EntityType="Self.BugAttributes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EnhancementAttributes" EntityType="Self.EnhancementAttributes" Schema="dbo" store:Type="Tables" />

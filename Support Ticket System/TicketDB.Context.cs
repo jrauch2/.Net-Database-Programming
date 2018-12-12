@@ -12,6 +12,8 @@ namespace Support_Ticket_System
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class TicketDBContext : DbContext
     {
@@ -32,5 +34,45 @@ namespace Support_Ticket_System
         public virtual DbSet<TicketType> TicketTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WatchingUser> WatchingUsers { get; set; }
+    
+        public virtual int spUpsertUser(Nullable<int> userID, string firstName, string lastName, string department, Nullable<int> enabled)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var departmentParameter = department != null ?
+                new ObjectParameter("Department", department) :
+                new ObjectParameter("Department", typeof(string));
+    
+            var enabledParameter = enabled.HasValue ?
+                new ObjectParameter("Enabled", enabled) :
+                new ObjectParameter("Enabled", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpsertUser", userIDParameter, firstNameParameter, lastNameParameter, departmentParameter, enabledParameter);
+        }
+    
+        public virtual int spDeleteUser(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spDeleteUser", userIDParameter);
+        }
+    
+        [DbFunction("TicketDBContext", "TicketWithMostWatchingUsers")]
+        public virtual IQueryable<TicketWithMostWatchingUsers_Result> TicketWithMostWatchingUsers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<TicketWithMostWatchingUsers_Result>("[TicketDBContext].[TicketWithMostWatchingUsers]()");
+        }
     }
 }
